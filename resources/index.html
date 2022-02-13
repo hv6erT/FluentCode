@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Fluecode</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/cssRules.css">
+    <link rel="stylesheet" href="css/fluentIconFont.css">
+    <link rel="stylesheet" href="css/fluentFont.css">
+    <!-- Neutralino.js client. -->
+    <script src="js/neutralino.js"></script>
+    <!-- Fluecode app's source files -->
+    <script type="module" src="js/main.js"></script>
+    <script async src="js/events.js"></script>
+    <script async src="js/style.js"></script>
+    <script defer src="js/file.js"></script>
+    <script defer src="js/editor.js"></script>
+    <script defer src="js/fileNav.js"></script>
+    <script defer src="js/storage.js"></script>
+  </head>
+  <body>
+    <main id="content-main" style="display: none;">
+      <nav class="top-nav justify-between">
+        <div class="flex">
+          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
+            <fluent-menu id="addFiles-fluent-menu" style="display: none;">
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFile();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="createNewFile();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFolder();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
+            </fluent-menu>
+          </div>
+          <form id="searchAndReplace-form" role="search" style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);"></form>
+          <div class="flex" style="gap: 10px; padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>
+            <fluent-button appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>
+            <fluent-button appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
+          </div>
+          <div style="padding: 0 10px;">
+            <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
+            <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
+              <fluent-menu-item><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--Delete"></span><span>Delete file</span></div></fluent-menu-item>
+              <fluent-menu-item><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
+            </fluent-menu>
+          </div>
+        </div>
+        <div class="flex">
+          <fluent-button appearance="stealth" onclick="showSettingsMain();"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
+        </div>
+      </nav>
+      <section class="main-section">
+        <nav id="fileSide-nav" class="side-nav">
+          <div class="margin-x padding-x margin-y flex justify-center">
+            <fluent-text-field style="width: 100%;" appearance="outline" placeholder="Search in files" oninput="FileNav.searchInFileItems(this.value)"></fluent-text-field>
+          </div>
+          <fluent-tabs activeid="fileNavTab-container">
+            <fluent-tab id="fileNavTab-container" style="padding: 0px calc(calc(var(--nav-width) - 80px) / 4);">Files</fluent-tab>
+            <fluent-tab id="searchNavTab-container" style="padding: 0px calc(calc(var(--nav-width) - 80px) / 4);">Search</fluent-tab>
+            <fluent-tab-panel>
+              <fluent-tree-view id="fileNav-container"></fluent-tree-view>
+            </fluent-tab-panel>
+            <fluent-tab-panel>
+              <fluent-tree-view id="searchNav-container"></fluent-tree-view>
+            </fluent-tab-panel>
+          </fluent-tabs>
+        </nav>
+        <article id="editor-article" class="editor-article" style="display: none;"></article>
+        <article id="editorStartPage-article" class="editor-article">
+          <div class="flex" style="flex-wrap: wrap; width: 100%; padding: 40px; gap: 20px; overflow-x: hidden;">
+            <div class="flex flex-col" style="flex: 300px; gap: 10px; width: calc(50% - 20px); height: 220px;">
+              <header>Files</header>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="uploadFile();">
+                <span class="fluent-icon fluent-icon--Upload"></span><span>Open files</span>
+              </fluent-card>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="createNewFile();">
+                <span class="fluent-icon fluent-icon--Add"></span><span>Create file</span>
+              </fluent-card>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="uploadFolder();">
+                <span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span>
+              </fluent-card>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="openLastFilesFromStorage();">
+                <span class="fluent-icon fluent-icon--CalendarAgenda"></span><span>Restore last files</span>
+              </fluent-card>
+            </div>
+            <div class="flex flex-col" style="flex: 300px; gap: 10px; width: calc(50% - 20px); height: 180px;">
+              <header>Customization</header>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="showSettingsMain();">
+                <span class="fluent-icon fluent-icon--Settings"></span><span>Open settings</span>
+              </fluent-card>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="openSettingsFile();">
+                <span class="fluent-icon fluent-icon--TextDocumentSettings"></span><span>Open settings file</span>
+              </fluent-card>
+            </div>
+          </div>
+        </article>
+      </section>
+      <nav class="bottom-nav">
+        <div id="bottomInfo-div" class="flex" style="width: inherit; display: none;">
+          <div class="flex justify-start" style="width: 50%; gap: 5px;">
+            <span data-fileInfo="path"></span>
+          </div>
+          <div class="flex justify-end" style="width: 50%; gap: 5px;">
+            <span>Ln: </span><span data-editorInfo="currentLine"></span>
+            <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y"> | </span>
+            <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y"> | </span>
+            <span data-fileInfo="language"></span>
+          </div>
+        </div>
+      </nav>
+    </main>
+    <main id="settings-main" style="display: none;">
+      <nav class="top-nav justify-between">
+        <div class="flex">
+          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
+          </div>
+          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="settings.changeSettingsToDefault();">
+              <div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--DefaultSettings"></span><span>Change to default</span></div>
+            </fluent-button>
+          </div>
+          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="openSettingsFile();">
+              <div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--TextDocumentSettings"></span><span>Open settings file</span></div>
+            </fluent-button>
+          </div>
+        </div>
+        <div>
+          <fluent-button appearance="stealth" onclick='Neutralino.events.dispatch("windowClose"); Neutralino.app.restartProcess();'>
+            <span class="fluent-icon fluent-icon--Sync"></span>
+          </fluent-button>
+        </div>
+      </nav>
+      <section class="main-section">
+        <nav class="side-nav">
+          <fluent-tabs class="padding-y margin-y margin-x" activeid="settingsTab-container" orientation="vertical">
+            <fluent-tab id="settingsThemingTab-container"><div onclick='scrollIntoView("#settingsTheming-div")'>Theming</div></fluent-tab>
+            <fluent-tab id="settingsEditorTab-container"><div onclick='scrollIntoView("#settingsEditors-div")'>Editors</div></fluent-tab>
+            <fluent-tab id="settingsFileTab-container"><div onclick='scrollIntoView("#settingsFiles-div")'>Files</div></fluent-tab>
+            <fluent-tab id="settingsInfoTab-container"><div onclick='scrollIntoView("#settingsInfo-div")'>Info</div></fluent-tab>
+            <fluent-tab-panel></fluent-tab-panel>
+            <fluent-tab-panel></fluent-tab-panel>
+            <fluent-tab-panel></fluent-tab-panel>
+            <fluent-tab-panel></fluent-tab-panel>
+          </fluent-tabs>
+        </nav>
+        <article class="editor-article">
+          <div class="flex flex-col padding-x padding-y margin-x margin-y" style="width: 100%; gap: 30px;">
+            <div id="settingsTheming-div" class="padding-x padding-y">
+              <header>Theming</header>
+              <span>Change app color and add custom themes</span>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Color mode</h2>
+                    <span>Color mode specify which color theme should be applied</span>
+                  </div>
+                  <fluent-select data-settings='["mode"]'>
+                    <fluent-option value="system">Current system mode</fluent-option>
+                    <fluent-option value="light">Light mode</fluent-option>
+                    <fluent-option value="dark">Dark mode</fluent-option>
+                  </fluent-select>
+                </div>
+                <div class="flex flex-col" style="gap: 20px;">
+                  <div>
+                    <h2>Themes and colors</h2>
+                    <span>Change theme colors, customize editor</span>
+                  </div>
+                  <fluent-accordion style="gap: 10px;">
+                    <fluent-accordion-item>
+                      <span slot="heading">Light mode</span>
+                      <div class="flex flex-col" style="max-width: 500px; gap: 10px;">
+                        <fluent-text-field data-settings='["modes", "light-mode", "accent-bg-color"]' appearance="stealth">Accent color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "light-mode", "first-bg-color"]' appearance="stealth">First background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "light-mode", "second-bg-color"]' appearance="stealth">Second background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "light-mode", "third-bg-color"]' appearance="stealth">Third background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "light-mode", "nav-width"]' appearance="stealth">Navigation width</fluent-text-field>
+                        <div class="flex" style="gap: 20px; align-items: flex-end;">
+                          <div>
+                            <h3>Light mode theme</h3>
+                            <span>Theme applied to editor in light mode</span>
+                          </div>
+                          <fluent-select data-settings='["modes", "light-mode", "theme"]'>
+                            <fluent-option value="../jsModules/theme/webidea-light.js">WebIdea Light</fluent-option>
+                          </fluent-select>
+                        </div>
+                        <div class="flex" style="gap: 20px; align-items: flex-end;">
+                          <div>
+                            <h3>Light mode highlight</h3>
+                            <span>Higlight used by editor in light mode</span>
+                          </div>
+                          <fluent-select data-settings='["modes", "light-mode", "highlight"]'>
+                              <fluent-option value="../jsModules/highlight/atom-one-light.js">Atom One Light</fluent-option>
+                              <fluent-option value="../jsModules/highlight/dracula.js">Dracula</fluent-option>
+                              <fluent-option value="../jsModules/highlight/github-light.js">Github Light</fluent-option>
+                              <fluent-option value="../jsModules/highlight/solarized-light.js">Solarized Light</fluent-option>
+                              <fluent-option value="../jsModules/highlight/material-light.js">Material Light</fluent-option>
+                          </fluent-select>
+                        </div>
+                      </div>
+                    </fluent-accordion-item>
+                    <fluent-accordion-item>
+                      <span slot="heading">Dark mode</span>
+                      <div class="flex flex-col" style="max-width: 500px; gap: 10px;">
+                        <fluent-text-field data-settings='["modes", "dark-mode", "accent-bg-color"]' appearance="stealth">Accent color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "dark-mode", "first-bg-color"]' appearance="stealth">First background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "dark-mode", "second-bg-color"]' appearance="stealth">Second background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "dark-mode", "third-bg-color"]' appearance="stealth">Third background color </fluent-text-field>
+                        <fluent-text-field data-settings='["modes", "dark-mode", "nav-width"]' appearance="stealth">Navigation width</fluent-text-field>
+                        <div class="flex" style="gap: 20px; align-items: flex-end;">
+                          <div>
+                            <h3>Dark mode theme</h3>
+                            <span>Theme applied to editor in light mode</span>
+                          </div>
+                          <fluent-select data-settings='["modes", "dark-mode", "theme"]'>
+                            <fluent-option value="../jsModules/theme/webidea-dark.js">WebIdea Dark</fluent-option>
+                          </fluent-select>
+                        </div>
+                        <div class="flex" style="gap: 20px; align-items: flex-end;">
+                          <div>
+                            <h3>Dark mode highlight</h3>
+                            <span>Higlight used by editor in light mode</span>
+                          </div>
+                          <fluent-select data-settings='["modes", "dark-mode", "highlight"]'>
+                              <fluent-option value="../jsModules/highlight/atom-one-dark.js">Atom One Dark</fluent-option>
+                              <fluent-option value="../jsModules/highlight/dracula.js">Dracula</fluent-option>
+                              <fluent-option value="../jsModules/highlight/github-dark.js">Github Dark</fluent-option>
+                              <fluent-option value="../jsModules/highlight/solarized-dark.js">Solarized Dark</fluent-option>
+                              <fluent-option value="../jsModules/highlight/material-dark.js">Material Dark</fluent-option>
+                          </fluent-select>
+                        </div>
+                      </div>
+                    </fluent-accordion-item>
+                  </fluent-accordion>
+                </div>
+              </div>
+            </div>
+            <fluent-divider></fluent-divider>
+            <div id="settingsEditors-div" class="padding-x padding-y">
+              <header>Editors</header>
+              <span>Editor editor configuration, to make coding more pleasant</span>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Font size</h2>
+                    <span>Font size used in editor</span>
+                  </div>
+                  <fluent-number-field min="8" max="72" data-settings='["editor", "font-size"]'></fluent-number-field>
+                </div>
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Tab size</h2>
+                    <span>Set tab size to get better code linting</span>
+                  </div>
+                  <fluent-number-field min="1" max="10" data-settings='["editor", "tab-size"]'></fluent-number-field>
+                </div>
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Language autocomplete</h2>
+                    <span>Autocompletion suggest keywords and structures typical for detected programing language.</span>
+                  </div>
+                  <fluent-switch data-settings='["editor", "language-autocompletion"]' data-settings-type="checkbox">
+                    <span slot="checked-message">On</span>
+                    <span slot="unchecked-message">Off</span>
+                    <label for="cap-switch"></label>
+                  </fluent-switch>
+                </div>
+                <div class="flex flex-col" style="gap: 20px;">
+                  <div>
+                    <h2>Extra features</h2>
+                    <span>Switch on extra features to improve your productivity</span>
+                  </div>
+                  <div class="flex" style="gap: 20px; align-items: flex-end;">
+                    <div>
+                      <h3>Color preview</h3>
+                      <span>This feature let you to preview color by hover property value</span>
+                    </div>
+                    <fluent-switch data-settings='["editor", "color-preview"]' data-settings-type="checkbox">
+                      <span slot="checked-message">On</span>
+                      <span slot="unchecked-message">Off</span>
+                      <label for="cap-switch"></label>
+                    </fluent-switch>
+                  </div>
+                  <div class="flex" style="gap: 20px; align-items: flex-end;">
+                    <div>
+                      <h3>Progress bar</h3>
+                      <span>Progress bar show scroll progress</span>
+                    </div>
+                    <fluent-switch data-settings='["editor", "progress-bar"]' data-settings-type="checkbox">
+                      <span slot="checked-message">On</span>
+                      <span slot="unchecked-message">Off</span>
+                      <label for="cap-switch"></label>
+                    </fluent-switch>
+                  </div>
+                  <div class="flex" style="gap: 5px;">
+                    <span class="fluent-icon fluent-icon--6PointStar"></span><span>More features are coming soon</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <fluent-divider></fluent-divider>
+            <div id="settingsFiles-div" class="padding-x padding-y">
+              <header>Files</header>
+              <span>Modify file settings, to never lose your work</span>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Saving files</h2>
+                    <span>Save files before closing file or exiting editor</span>
+                  </div>
+                  <fluent-switch data-settings='["file", "save-before-close"]' data-settings-type="checkbox">
+                    <span slot="checked-message">On</span>
+                    <span slot="unchecked-message">Off</span>
+                    <label for="cap-switch"></label>
+                  </fluent-switch>
+                </div>
+                <div class="flex flex-col" style="gap: 20px;">
+                  <div>
+                    <h2>Auto save files</h2>
+                    <span>Save files after some time to do not lose your work</span>
+                  </div>
+                  <div class="flex" style="gap: 20px; align-items: flex-end;">
+                    <div>
+                      <h3>Enable auto save</h3>
+                      <span>Switch to enable or disable auto save</span>
+                    </div>
+                    <fluent-switch data-settings='["file", "auto-save"]' data-settings-type="checkbox">
+                      <span slot="checked-message">On</span>
+                      <span slot="unchecked-message">Off</span>
+                      <label for="cap-switch"></label>
+                    </fluent-switch>
+                  </div>
+                  <div class="flex" style="gap: 20px; align-items: flex-end;">
+                    <div>
+                      <h3>Auto save time</h3>
+                      <span>Choose auto save time to specify how often files will be saved. Time value is in miliseconds.</span>
+                    </div>
+                    <fluent-number-field min="1000" data-settings='["file", "auto-save-time"]'></fluent-number-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <fluent-divider></fluent-divider>
+            <div id="settingsInfo-div" class="padding-x padding-y">
+              <header>Info</header>
+              <span>Check current version and read more about Fluent Code</span>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Fluent Code version</h2>
+                    <span>Your Fluent Code app version</span>
+                  </div>
+                  <div id="settingsInfoAppVersion-div"></div>
+                </div>
+              </div>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div>
+                  <h2>Fluent Code license</h2>
+                  <span>Licenses, third part packages and others</span>
+                </div>
+                <div class="flex flex-col" style="gap: 20px;">
+                  <div>
+                    <h3>Fluent Code license</h3>
+                    <span>License of Fluent Code</span>
+                  </div>
+                  <div>Fluent Code elements, code and packages are licensed under MIT license.</div>
+                  <div>Fluent Code installers and other distribution forms are licensed under Creative Commons License Attribution-ShareAlike 4.0</div>
+                </div>
+                <div class="flex flex-col" style="gap: 20px;">
+                  <div>
+                    <h3>Fluent Code third part packages</h3>
+                    <span>License of third part packages</span>
+                  </div>
+                  <fluent-accordion>
+                    <fluent-accordion-item>
+                      <span slot="heading">Third part packages</span>
+                      <div class="flex flex-col" style="max-width: 500px; gap: 10px;">
+                        <ul style="list-style-type: '► '; ">
+                          <span>Fluent Code depends on this packages:</span>
+                          <li>Neutralino JS</li>
+                          <li>Codemirror 6</li>
+                          <li>Fluent WebComponents</li>
+                          <li>Fabric UI icon font from MDL Package</li>
+                          <li>Segoe UI font from MDL Package</li>
+                        </ul>
+                      </div>
+                    </fluent-accordion-item>
+                  </fluent-accordion>
+                  <fluent-anchor appearence="outline">Special thanks to Marijn Haverbeke</fluent-anchor>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </section>
+      <nav class="bottom-nav">
+        <div class="flex justify-start" style="width: 50%; gap: 5px;">
+          <span>Settings</span>
+        </div>
+        <div class="flex justify-end" style="width: 50%; gap: 5px;"></div>
+      </nav>
+    </main>
+    <main id="loading-main">
+      <div class="flex" style="width: 100vw; height: 100vh; justify-content: center; align-items: center;">
+        <fluent-progress-ring></fluent-progress-ring>
+      </div>
+    </main>
+  </body>
+</html>

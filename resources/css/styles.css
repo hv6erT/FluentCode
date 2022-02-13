@@ -1,0 +1,148 @@
+/*default styles*/
+:root{
+  --top-nav-height: 43px;
+  --bottom-nav-height: 22px;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 13px;
+  color: var(--basic-color);
+}
+html, body{
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+main{
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--first-bg-color);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+header{
+  font-size: 25px;
+}
+h1, h2, h3, h4, h5, h6{
+  font-weight: normal;
+}
+*{
+  box-sizing: border-box;
+}
+::-webkit-scrollbar
+{
+  	background-color: transparent;
+  	width: 5px;
+  	height: 5px;
+}
+::-webkit-scrollbar-thumb
+{
+  	background-clip: content-box;
+  	background-color: var(--scrollbar-color);
+  	border-radius: 3px;
+}
+::-webkit-scrollbar-corner
+{
+  	background-color: transparent;
+}
+/*universal classes*/
+.padding-x{
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.padding-y{
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.margin-x{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.margin-top{
+  margin-top: 5px;
+}
+.margin-bottom{
+  margin-bottom: 5px;
+}
+.margin-y{
+  margin-left: 5px;
+  margin-right: 5px;
+}
+/*fluent components*/
+fluent-menu{
+  position: absolute;
+  z-index: 999;
+  margin-top: 10px;
+}
+fluent-tab-panel{
+  padding: 0;
+}
+/*default classes*/
+.top-nav{
+  width: 100vw;
+  height: var(--top-nav-height);
+  background-color: var(--second-bg-color);
+  border-bottom: 1px solid var(--third-bg-color);
+  display: flex;
+  padding: 5px;
+}
+.bottom-nav{
+  width: 100vw;
+  height: var(--bottom-nav-height);
+  background-color: var(--accent-bg-color);
+  border-top: 1px solid var(--third-bg-color);
+  font-size: 12px;
+  display: flex;
+  padding: 0 5px;
+}
+.side-nav{
+  width: var(--nav-width);
+  height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+  background-color: var(--first-bg-color);
+}
+.side-nav *{
+  max-width: calc(var(--nav-width) - 10px);
+}
+.fileNavItem .fileNavItemCloseButton-span{
+  position: absolute;
+  margin-left: calc(100% - 30px);
+  max-width: 20px;
+  display: flex;
+  justify-content: center;
+  visibility: hidden;
+}
+.fileNavItem .fileNavItemCloseButton-span .fluent-icon{
+  font-size: 10px;
+}
+.fileNavItem:hover .fileNavItemCloseButton-span{
+  visibility: visible;
+}
+.fileNavItem .fileNavItemTitle-span{
+  position: absolute;
+  margin-left: 0;
+  width: calc(100% - 40px);
+  overflow: hidden;
+}
+.editor-article{
+  width: calc(100vw - var(--nav-width));
+  height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+  background-color: var(--first-bg-color);
+  border-left: 1px solid var(--third-bg-color);
+  border-right: 1px solid var(--third-bg-color);
+  display: flex;
+  overflow: auto;
+}
+.main-section{
+  width: 100vw;
+  height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+  background-color: var(--first-bg-color);
+  display: flex;
+  overflow: hidden;
+}
+.editor-div{
+  overflow: auto;
+  height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+}
