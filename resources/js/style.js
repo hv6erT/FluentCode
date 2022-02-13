@@ -64,15 +64,3 @@ const hideNode = async nodeOrNodeSelector => {
 }
 
 const preventDefault = (event) => event.preventDefault();
-
-const scrollIntoView = async nodeOrNodeSelector => {
-  let node = null;
-
-  if(typeof nodeOrNodeSelector === "string")
-    node = document.querySelector(nodeOrNodeSelector);
-  else if(nodeOrNodeSelector instanceof Element)
-    node = nodeOrNodeSelector;
-  
-  if(node)
-    node.scrollIntoView({behavior: "smooth"});
-}
