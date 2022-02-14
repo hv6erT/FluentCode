@@ -52,8 +52,7 @@ export default class Features{
           const word = validateProperty(getWordByPosition(view.state.doc.toString(), pos));
           const dom = document.createElement("div");
   
-          if (isColor(word)===false){
-            dom.style.display = "none";
+          if (isColor(word) === false){
             return {dom};
           }
             

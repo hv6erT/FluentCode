@@ -2,7 +2,7 @@ window.addEventListener("DOMContentLoaded", async function() {
   document.getElementById("settingsInfoAppVersion-div").innerText = NL_APPVERSION;
 });
 
-window.addEventListener("load", async function(){
+window.addEventListener("DOMContentLoaded", async function(){
   await EditorManager.openEditor();
   await openFilesAndEditorsFromStorage();
 
@@ -12,6 +12,10 @@ window.addEventListener("load", async function(){
   FileManager.startAutoSave();
   
   showContentMain();
+});
+
+window.addEventListener("load", function() {
+  Keybindings.setListener();
 });
 
 window.addEventListener("focus", async function (){

@@ -62,6 +62,9 @@ const setSettings = async () => {
       "auto-save": true,
       "auto-save-time": 60000,
       "save-before-close": true
+    },
+    "keybindings": {
+      "Ctrl-S": "saveAllFiles"
     }
   };
   
@@ -97,7 +100,7 @@ const setTheme = async ()=> {
   Css.setCSSVariable("nav-width", `max(${settings.settings.modes[mode]["nav-width"]}, ${userPreferences.sideNavMinWidth})`);
 
   Css.changeColorSchame(userPreferences.colorMode);
-  //Css.setTitleBarColor(settings.settings.modes[mode]["second-bg-color"], settings.settings.modes[mode]["second-bg-color"]);
+  Css.setTitleBarColor(settings.settings.modes[mode]["second-bg-color"], settings.settings.modes[mode]["second-bg-color"]);
 
   if(userPreferences.colorMode === "dark")
     baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
