@@ -40,8 +40,9 @@
           <div style="padding: 0 10px;">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
-              <fluent-menu-item><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--Delete"></span><span>Delete file</span></div></fluent-menu-item>
-              <fluent-menu-item><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="FileManager.closeAllFiles();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
+              <fluent-divider></fluent-divider>
+              <fluent-menu-item onmousedown="preventDefault(event);" disabled><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
         </div>

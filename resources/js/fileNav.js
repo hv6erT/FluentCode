@@ -82,6 +82,22 @@ class FileNav {
         await FileNav.#removeGroupItem(folderKey);
     }
   }
+  static async removeAllItems(){
+    for(const fileKey in FileNav.#fileItems){
+      FileNav.#fileItems[fileKey].remove();
+      
+      if(FileNav.#searchItems.hasOwnProperty(fileKey) === true)
+        FileNav.#searchItems[fileKey].remove();
+    }
+      
+    FileNav.#fileItems = {};
+    FileNav.#searchItems = {};
+
+    for(const folderKey in FileNav.#groupItems)
+      FileNav.#groupItems[folderKey].remove();
+
+    FileNav.#groupItems = {};
+  }
   static async #removeGroupItem(folderKey){
     if(FileNav.#groupItems.hasOwnProperty(folderKey) === false)
       return;

@@ -208,9 +208,11 @@ class FileManager {
     FileManager.files = [];
     FileManager.activeFile = null;
 
-    if(Object.keys(EditorManager.editor).length > 1){
-      for(let i = (Object.keys(EditorManager.editor).length - 1); i>1; i--)
-        EditorManager.closeEditor(Object.keys(EditorManager.editor)[i]);
+    await FileNav.removeAllItems();
+
+    if(Object.keys(EditorManager.editors).length > 1){
+      for(let i = (Object.keys(EditorManager.editors).length - 1); i>1; i--)
+        EditorManager.closeEditor(Object.keys(EditorManager.editors)[i]);
     }
     
   }
