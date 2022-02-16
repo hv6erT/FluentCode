@@ -20,7 +20,7 @@ export default EditorView.theme({
   },
   ".cm-activeLineGutter": { 
     backgroundColor: "transparent",
-    color: "var(--basic-color)"
+    color: fontColor
   },
   "&.cm-focused .cm-cursor": {
     borderLeft: "2px solid gray",

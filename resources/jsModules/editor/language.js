@@ -53,7 +53,6 @@ export default class Language{
     let langSupport;
     switch(langName){
       case "html":
-      case "svg":
         langSupport = (await import("./codemirror.js")).html();
         break;
       case "css":
@@ -83,6 +82,10 @@ export default class Language{
       case "c":
       case "c++":
         langSupport = (await import("./codemirror.js")).cpp();
+        break;
+      case "xml":
+      case "svg":
+        langSupport = (await import("./codemirror.js")).xml();
         break;
     }
     return langSupport;

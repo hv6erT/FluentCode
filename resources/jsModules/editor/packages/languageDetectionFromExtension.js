@@ -26,6 +26,8 @@ export default function(extName){
       return "C++";
     case "cs":
       return "C#";
+    case "lua":
+      return "Lua";
     case "php":
       return "PHP";
     case "py": 

@@ -24,3 +24,4 @@ export { javaLanguage, java } from "@codemirror/lang-java";
 export { cppLanguage, cpp } from "@codemirror/lang-cpp";
 export { rustLanguage, rust } from "@codemirror/lang-rust";
 export { phpLanguage, php } from "@codemirror/lang-php";
+export { xmlLanguage, xml } from "@codemirror/lang-xml";
