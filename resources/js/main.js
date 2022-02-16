@@ -108,7 +108,10 @@ const setTheme = async ()=> {
     baseLayerLuminance.setValueFor(document.body, StandardLuminance.LightMode);
 }
 
-try{await setSettings();}catch{
+try{
+  await setSettings();
+  Neutralino.events.dispatch("mainReady");
+}catch{
   Neutralino.os.showMessageBox("Settings error", "Try to delete file Document/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
 }
 
