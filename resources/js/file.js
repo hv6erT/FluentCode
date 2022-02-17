@@ -123,7 +123,7 @@ class FileManager {
       colorPreview: settings.settings.editor["color-preview"],
       customSelectionTooltip: false,
       customSearchPanel: 
-        `<div class="flex" style="gap: 10px;">
+        `<div class="flex gap">
           <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace({search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>

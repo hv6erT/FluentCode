@@ -23,26 +23,26 @@
     <main id="content-main" style="display: none;">
       <nav class="top-nav justify-between">
         <div class="flex">
-          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
-            <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
+          <div class="padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex gap"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
             <fluent-menu id="addFiles-fluent-menu" style="display: none;">
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFile();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="createNewFile();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFolder();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="createNewFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
-          <form id="searchAndReplace-form" role="search" style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);"></form>
-          <div class="flex" style="gap: 10px; padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+          <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
+          <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>
             <fluent-button appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>
             <fluent-button appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
           </div>
-          <div style="padding: 0 10px;">
+          <div class="padding-y">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="FileManager.closeAllFiles();"><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
-              <fluent-menu-item onmousedown="preventDefault(event);" disabled><div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="preventDefault(event);" disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
         </div>
@@ -98,10 +98,10 @@
       </section>
       <nav class="bottom-nav">
         <div id="bottomInfo-div" class="flex" style="width: inherit; display: none;">
-          <div class="flex justify-start" style="width: 50%; gap: 5px;">
+          <div class="flex justify-start gap" style="width: 50%;>
             <span data-fileInfo="path"></span>
           </div>
-          <div class="flex justify-end" style="width: 50%; gap: 5px;">
+          <div class="flex justify-end gap" style="width: 50%;">
             <span>Ln: </span><span data-editorInfo="currentLine"></span>
             <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y"> | </span>
             <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y"> | </span>
@@ -113,17 +113,17 @@
     <main id="settings-main" style="display: none;">
       <nav class="top-nav justify-between">
         <div class="flex">
-          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+          <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
           </div>
-          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+          <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="settings.changeSettingsToDefault();">
-              <div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--DefaultSettings"></span><span>Change to default</span></div>
+              <div class="flex gap"><span class="fluent-icon fluent-icon--DefaultSettings"></span><span>Change to default</span></div>
             </fluent-button>
           </div>
-          <div style="padding: 0 10px; border-right: 1px solid var(--third-bg-color);">
+          <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="openSettingsFile();">
-              <div class="flex" style="gap: 5px;"><span class="fluent-icon fluent-icon--TextDocumentSettings"></span><span>Open settings file</span></div>
+              <div class="flex gap"><span class="fluent-icon fluent-icon--TextDocumentSettings"></span><span>Open settings file</span></div>
             </fluent-button>
           </div>
         </div>
