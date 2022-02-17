@@ -244,8 +244,8 @@ class FileManager {
 
   	const fileInfo = FileManager.files[filePath].fileInfo();
   	const infoFunction = async function(){
-      document.querySelector('[data-fileInfo="language"]').textContent = fileInfo.language;
-      document.querySelector('[data-fileInfo="path"]').textContent = filePath;
+      document.querySelector('[data-fileInfo="language"]').textContent = fileInfo?.language ?? "";
+      document.querySelector('[data-fileInfo="path"]').textContent = filePath ?? "";
   	}
     
   	if (useTimeout === true)

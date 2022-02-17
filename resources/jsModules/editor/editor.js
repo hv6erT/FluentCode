@@ -221,9 +221,9 @@ class EditorInfo {
     }catch{}
 
     return {
-      currentPosition: line.from + column,
-      currentLine: line.number,
-      currentColumn: column
+      currentPosition: (line?.from + column) ?? null,
+      currentLine: line?.number ?? null,
+      currentColumn: column ?? null
     }
   }
   static countLines(editor) {

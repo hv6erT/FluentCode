@@ -175,9 +175,9 @@ class EditorManager {
   
  	const editorInfo = EditorManager.editors[editorName].editorInfo();
 	const infoFunction = async function () {
-      document.querySelector('[data-editorInfo="currentLine"]').textContent = editorInfo.currentLine;
-      document.querySelector('[data-editorInfo="currentColumn"]').textContent = editorInfo.currentColumn;
-      document.querySelector('[data-editorInfo="length"]').textContent = editorInfo.length;  
+      document.querySelector('[data-editorInfo="currentLine"]').textContent = editorInfo?.currentLine ?? "";
+      document.querySelector('[data-editorInfo="currentColumn"]').textContent = editorInfo?.currentColumn ?? "";
+      document.querySelector('[data-editorInfo="length"]').textContent = editorInfo?.length ?? "";  
 	}
   	if (useTimeout === true)
       EditorManager.#editorInfoTimeout = setTimeout(infoFunction, 300);
