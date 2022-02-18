@@ -1,81 +1,84 @@
+function getWordByPosition(str, pos){
+  const leftSideString = str.substr(0, pos);
+  const rightSideString = str.substr(pos);  
+  
+  const leftMatch = leftSideString.match(/[^,\s]*$/);
+  const rightMatch = rightSideString.match(/^[^,\s]*/);
+          
+  let word = '';
+          
+  if (leftMatch) 
+    word += leftMatch[0];
+          
+  if (rightMatch) 
+    word += rightMatch[0];
+      
+  return word;
+}
+
+function validateProperty(string){
+  return string.replace(new RegExp("^:"), "").replace(new RegExp(";+$"), "").replace(new RegExp(",+$"), "");
+}
+
 export default class Features{
-  static async colorPreviewTooltip(){      
-    function getWordByPosition(str, pos){
-      const leftSideString = str.substr(0, pos);
-      const rightSideString = str.substr(pos);
-          
-      const leftMatch = leftSideString.match(/[^,\s]*$/);
-      const rightMatch = rightSideString.match(/^[^,\s]*/);
-          
-      let word = '';
-          
-      if (leftMatch) 
-        word += leftMatch[0];
-          
-      if (rightMatch) 
-        word += rightMatch[0];
-      
-      return word;
-    }
-      
+  static async colorPreviewTooltip(){    
     function isColor(string){
       const span = document.createElement("span");
-      span.style.color = string;
-      return (span.style.color.length > 0 && !string.includes("var("));
+      span.style.backgroundColor = "transparent";
+      span.style.backgroundColor = string;
+      return (span.style.backgroundColor !== "transparent" && span.style.backgroundColor.length > 0 && !string.includes("var"));
     }
-      
-    function validateProperty(string){
-      //delete ":" from the start 
-      if (string.charAt(0) == ":")
-        string = string.slice(1);
-      //delete "," or ";" from the end
-      if (string.charAt(string.length - 1) == ";")
-        string = string.slice(0, (string.length - 1));
-      if (string.charAt(string.length - 1) == ",")
-        string = string.slice(0, (string.length - 1));
+    
+    function colorPreviewTooltip(state){
+      return state.selection.ranges.filter(range => range.empty).filter(range => {
+        const word = validateProperty(getWordByPosition(state.doc.toString(), range.head));
+        if(isColor(word) === true)
+          return range;
+      }).map(range => {
+        return {
+          pos: range.head,
+          above: true,
+          strictSide: true,
+          arrow: true,
+          create: () => {
+            const word = validateProperty(getWordByPosition(state.doc.toString(), range.head));
             
-      //delete `"` from the start or end
-      if (string.charAt(0) == `"`)
-        string = string.slice(1);
-      if (string.charAt(string.length - 1) == `"`)
-        string = string.slice(0, (string.length - 1));
-              
-      return string;
-    }
-
-    const hoverTooltip = (await import("./codemirror.js")).hoverTooltip;
-    return hoverTooltip((view, pos, side) => {
-      return {
-        pos: pos,
-        above: true,
-        create(view) {
-          const word = validateProperty(getWordByPosition(view.state.doc.toString(), pos));
-          const dom = document.createElement("div");
-  
-          if (isColor(word) === false){
+            const dom = document.createElement("div");              
+            dom.classList.add("cm-color-preview-background");
+            dom.style.minWidth = "20px";
+            dom.style.minWeight = "20px";
+                      
+            const colorDom = document.createElement("div");
+            colorDom.classList.add("cm-color-preview");
+            colorDom.style.position = "relative";
+            colorDom.style.left = "1px"
+            colorDom.style.right = "1px"
+            colorDom.style.top = "1px"
+            colorDom.style.bottom = "1px"
+            colorDom.style.width = "calc(100% - 2px)";
+            colorDom.style.height = "calc(100% - 2px)";
+            colorDom.style.backgroundColor = word;
+                      
+            dom.appendChild(colorDom);
+                
             return {dom};
           }
-            
-          dom.classList.add("cm-color-preview-background");
-          dom.style.minWidth = "20px";
-          dom.style.minHeight = "20px";
-                    
-          const colorDom = document.createElement("div");
-          colorDom.classList.add("cm-color-preview");
-          colorDom.style.position = "relative";
-          colorDom.style.left = "-1px"
-          colorDom.style.right = "-1px"
-          colorDom.style.top = "-1px"
-          colorDom.style.bottom = "-1px"
-          colorDom.style.width = "calc(100% + 2px)";
-          colorDom.style.height = "calc(100% + 2px)";
-          colorDom.style.backgroundColor = word;
-                    
-          dom.appendChild(colorDom);
-              
-          return {dom};
         }
-      }
+      });
+    }
+
+    const StateField = (await import("./codemirror.js")).StateField;
+    const showTooltip = (await import("./codemirror.js")).showTooltip;
+
+    return StateField.define({
+      create: colorPreviewTooltip,
+      update(tooltips, tr) {
+        if (!tr.selection) 
+          return tooltips; 
+        else
+          return colorPreviewTooltip(tr.state);
+      },
+      provide: f => showTooltip.computeN([f], state => state.field(f))
     });
   }
   static async scrollProgressBar(){

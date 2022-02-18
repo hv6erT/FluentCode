@@ -22,34 +22,22 @@ export default EditorView.theme({
     zIndex: "100",
     transitionDuration: "1s"
   },
-  ".cm-color-preview":{
-    backgroundColor: "var(--third-bg-color)",
-    zIndex: "100",
-    borderRadius: "2px"
-  },
   ".cm-color-preview-background":{
     width: "40px",
     height: "40px",
     boxSizing: "border-box",
-    borderRadius: "2px",
-    border: "2px solid var(--second-bg-color)",
+    borderRadius: "6px",
+    border: "4px solid var(--third-bg-color)",
     backgroundImage: `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABABAMAAABYR2ztAAAAHlBMVEX////Dw8Pb29vz8/Pn5+fPz8/k5OTg4ODs7OzW1tbwviBrAAAAo0lEQVRIx9WTPQoCQQyFU+gBoicw+FNLQLATCdiKELDWG4hX2BPshTd1tkiR5u10D74ZmO8lFGfH/CRaM28iMPON6My8JVpFWAYgIn+zj8jR7BHBzH4ie7O7yCnC7EZ+EQJw96/q4P5WvURQ1YP7qHp1f0WAUN0Gym9CdFEB5chBqG4DEKr7QC4nlwehugTyouRFglDdBspvQnRRAeXIQahuAxNvHqitIul4lQAAAABJRU5ErkJggg==")`,
     backgroundSize: "contain",
     backgroundRepeat: "no-repeat",
     zIndex: "200",
     bottom: "150%",
-    left: "50%",
-    "&::after": {
-      content: '""',
-      position: "absolute",
-      display: "block",
-      top: "100%",
-      left: "50%",
-      marginLeft: "-5px",
-      borderWidth: "5px",
-      borderStyle: "solid",
-      borderColor: "var(--second-bg-color) transparent transparent transparent"
-    }
+    left: "50%"
+  },
+  ".cm-color-preview":{
+    zIndex: "100",
+    borderRadius: "4px"
   },
   ".cm-selection-tooltip":{
     width: "80px",
