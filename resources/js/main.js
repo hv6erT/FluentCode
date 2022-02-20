@@ -77,16 +77,18 @@ const setSettings = async () => {
   }
 
   window.settings = new Settings(defaultSettings, userSettings);
+  Neutralino.events.dispatch("mainReady");
 }
 const setColorMode = async () => {
   if(settings.settings.mode === "light" || settings.settings.mode === "dark")
     userPreferences.colorMode = settings.settings.mode;
   else
     userPreferences.colorMode = (window.matchMedia("(prefers-color-scheme: light)").matches === true) ? "light" : "dark";
+
+  Neutralino.events.dispatch("colorReady");
 }
 
 import Css from "../jsModules/css/index.js";
-import {StandardLuminance, baseLayerLuminance} from "./bundles/fluentWebComponents.js";
 
 const setTheme = async ()=> {
   const include = ["accent-bg-color", "first-bg-color", "second-bg-color", "third-bg-color", "basic-color", "scrollbar-color"];
@@ -99,18 +101,13 @@ const setTheme = async ()=> {
 
   Css.setCSSVariable("nav-width", `max(${settings.settings.modes[mode]["nav-width"]}, ${userPreferences.sideNavMinWidth})`);
 
+  Neutralino.events.dispatch("themeReady");
+  
   Css.changeColorSchame(userPreferences.colorMode);
-  Css.setTitleBarColor(settings.settings.modes[mode]["second-bg-color"], settings.settings.modes[mode]["second-bg-color"]);
-
-  if(userPreferences.colorMode === "dark")
-    baseLayerLuminance.setValueFor(document.body, StandardLuminance.DarkMode);
-  else
-    baseLayerLuminance.setValueFor(document.body, StandardLuminance.LightMode);
 }
 
 try{
   await setSettings();
-  Neutralino.events.dispatch("mainReady");
 }catch{
   Neutralino.os.showMessageBox("Settings error", "Try to delete file Document/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
 }

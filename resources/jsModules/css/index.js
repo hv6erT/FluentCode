@@ -37,11 +37,4 @@ export default class Css {
     else
       throw new Error("Invalid colorSchame param value");
   }
-  static setTitleBarColor(lightModeColor, darkModeColor){
-    if(!lightModeColor || !darkModeColor)
-      throw new Error("Invalid params value");
-    
-    document.head.innerHTML += `<meta name="theme-color" media="(prefers-color-scheme: light)" content="${lightModeColor}">
-      <meta name="theme-color" media="(prefers-color-scheme: dark)" content="${darkModeColor}">`;
-  }
 }

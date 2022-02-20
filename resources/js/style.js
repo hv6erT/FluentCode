@@ -62,5 +62,3 @@ const hideNode = async nodeOrNodeSelector => {
   if(node && node.style.display !== "none")
     node.style.display = "none";
 }
-
-const preventDefault = (event) => event.preventDefault();

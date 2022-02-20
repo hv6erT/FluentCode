@@ -11,6 +11,8 @@
     <script src="js/neutralino.js"></script>
     <!-- Fluecode app's source files -->
     <script type="module" src="js/main.js"></script>
+    <script async type="module" src="js/assets.js"></script>
+    
     <script async src="js/events.js"></script>
     <script async src="js/style.js"></script>
     <script defer src="js/file.js"></script>
@@ -26,9 +28,9 @@
           <div class="padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex gap"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
             <fluent-menu id="addFiles-fluent-menu" style="display: none;">
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="createNewFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
+              <fluent-menu-item onclick="uploadFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
+              <fluent-menu-item onclick="createNewFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
+              <fluent-menu-item onclick="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
           <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
@@ -40,9 +42,9 @@
           <div class="padding-y">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
-              <fluent-menu-item onmousedown="preventDefault(event);" onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
+              <fluent-menu-item onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
-              <fluent-menu-item onmousedown="preventDefault(event);" disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
+              <fluent-menu-item disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
         </div>
@@ -98,10 +100,10 @@
       </section>
       <nav class="bottom-nav">
         <div id="bottomInfo-div" class="flex" style="width: inherit; display: none;">
-          <div class="flex justify-start gap" style="width: 50%;">
+          <div class="flex justify-start gap" style="width: 60%; overflow: hidden; text-overflow: ellipsis;">
             <span data-fileInfo="path"></span>
           </div>
-          <div class="flex justify-end gap" style="width: 50%;">
+          <div class="flex justify-end gap" style="min-width: fit-content; width: 40%; overflow: hidden; text-overflow: ellipsis;">
             <span>Ln: </span><span data-editorInfo="currentLine"></span>
             <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y"> | </span>
             <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y"> | </span>

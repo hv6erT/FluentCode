@@ -1,8 +1,7 @@
 import File from "./file.js";
 
 import {EditorView, EditorState, Annotation} from "./codemirror.js";
-import {openSearchPanel, closeSearchPanel, findNext, findPrevious, replaceNext, replaceAll, SearchQuery, setSearchQuery, getSearchQuery} from "./codemirror.js";
-import {undoSelection, redoSelection} from "./codemirror.js";
+import {SearchQuery, setSearchQuery, getSearchQuery} from "./codemirror.js";
 
 const syncAnnotation = Annotation.define();
 
@@ -20,9 +19,9 @@ export default class Editor extends EventTarget {
     this.options = {...defaultOptions, ...options};
 
     this.#view = new EditorView({
-        state: this.options.defaultState,
-        parent: this.options.parentNode,
-        dispatch: this.#synchronizeEditorChanges()
+      state: this.options.defaultState,
+      parent: this.options.parentNode,
+      dispatch: this.#synchronizeEditorChanges()
     });
   }
   #active = null;
@@ -33,30 +32,30 @@ export default class Editor extends EventTarget {
   getActive(){
     return this.#active;
   }
-  openSearchPanel(){
-    openSearchPanel(this.#view);
+  async openSearchPanel(){
+    (await import("./codemirror.js")).openSearchPanel(this.#view);
     this.#view.focus();
   }
-  closeSearchPanel(){
-    closeSearchPanel(this.#view);
+  async closeSearchPanel(){
+    (await import("./codemirror.js")).closeSearchPanel(this.#view);
   }
-  findNext(){
-    findNext(this.#view);
+  async findNext(){
+    (await import("./codemirror.js")).findNext(this.#view);
   }
-  findPrevious(){
-    findPrevious(this.#view);
+  async findPrevious(){
+    (await import("./codemirror.js")).findPrevious(this.#view);
   }
-  replaceNext(){
-    replaceNext(this.#view);
+  async replaceNext(){
+    (await import("./codemirror.js")).replaceNext(this.#view);
   }
-  replaceAll(){
-    replaceAll(this.#view);
+  async replaceAll(){
+    (await import("./codemirror.js")).replaceAll(this.#view);
   }
-  undo(){
-    undoSelection(this.#view);
+  async undo(){
+    (await import("./codemirror.js")).undoSelection(this.#view);
   }
-  redo(){
-    redoSelection(this.#view);
+  async redo(){
+    (await import("./codemirror.js")).redoSelection(this.#view);
   }
   insertText(text, position){
     if(typeof text !== "string")

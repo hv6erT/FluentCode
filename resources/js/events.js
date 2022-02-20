@@ -1,17 +1,19 @@
 window.addEventListener("DOMContentLoaded", async function() {
+  for(const fluentMenuItem of document.getElementsByTagName("fluent-menu-item"))
+    fluentMenuItem.addEventListener("mousedown", event => event.preventDefault());
+  
   document.getElementById("settingsInfoAppVersion-div").innerText = NL_APPVERSION;
 });
 
 window.addEventListener("mainReady", async function(){
   await EditorManager.openEditor();
   await openFilesAndEditorsFromStorage();
+  showContentMain();
 
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();
 
-  FileManager.startAutoSave();
-  
-  showContentMain();
+  await FileManager.startAutoSave();
 });
 
 window.addEventListener("load", async function() {
@@ -19,11 +21,11 @@ window.addEventListener("load", async function() {
 });
 
 window.addEventListener("focus", async function (){
-  await FileManager.startAutoSave();
+  try{await FileManager.startAutoSave();}catch{}
 });
 
 window.addEventListener("blur", async function () {
-  await FileManager.stopAutoSave();
+  try{await FileManager.stopAutoSave();}catch{}
 })
 
 Neutralino.events.on("windowClose", async function() {
