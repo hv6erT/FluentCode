@@ -138,14 +138,13 @@ class FileManager {
 
     FileManager.files[filePath].addEventListener("state-click", async function(event) {
       const dataEditor = event.detail?.dom.parentNode.getAttribute("data-editorName");
-      
-      if (dataEditor !== EditorManager.activeEditorName)
+
+      if (dataEditor !== EditorManager.activeEditorName){
         await EditorManager.changeActive(dataEditor);
-      else{
-        FileManager.changeActive(EditorManager.editors[dataEditor].getActive().path);
-        EditorManager.editorInfo(dataEditor);
+        FileManager.changeActive(filePath);
       }
-    
+      else
+        EditorManager.editorInfo(dataEditor);     
     });
 
   	FileManager.files[filePath].addEventListener("state-keyup", async function() {

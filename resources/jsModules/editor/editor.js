@@ -155,7 +155,7 @@ export default class Editor extends EventTarget {
       self.getView().update([tr]);
       if(!tr.changes.empty && !tr.annotation(syncAnnotation)){
         for(const editor of self.#synchronizedEditors){
-          if(editor.active && self.active && editor.active.path === self.active.path){
+          if(editor.getActive() && self.getActive() && editor.getActive().path === self.getActive().path){
             editor.getView().dispatch({
               changes: tr.changes,
               annotations: syncAnnotation.of("editor-synchronize-changes")
@@ -166,7 +166,7 @@ export default class Editor extends EventTarget {
       }
     }
   }
-  //removes all synchronized editors and synchronize news
+  //removes all synchronized editors and synchronize new ones
   synchronizeEditor(editorArray){
     if(!editorArray)
       throw new Error("Invalid value of first parametr");
@@ -184,6 +184,10 @@ export default class Editor extends EventTarget {
         this.dispatchEvent(new Event("editor-synchronize"));
       }
     }
+  }
+  remove(){
+    this.#view.dom.parentNode.remove();
+    this.#view.destroy();
   }
   toSerelizedObject(){      	
     return {

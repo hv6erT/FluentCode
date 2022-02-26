@@ -1,3 +1,24 @@
+const createSplitView = async () =>{
+  if(Object.keys(FileManager.files).length === 0)
+    return;
+  
+  await EditorManager.openEditor();
+
+  const editorName = Object.keys(EditorManager.editors).pop();
+  const filePath = Object.keys(FileManager.files).pop();
+
+  EditorManager.showFileInEditor(editorName, filePath);
+}
+
+const exitSplitView = async () =>{
+  if(Object.keys(FileManager.files).length === 0 || Object.keys(EditorManager.editors).length <= 1)
+    return;
+  
+  const editorName = Object.keys(EditorManager.editors).pop();
+
+  await EditorManager.closeEditor(editorName);
+}
+
 class EditorManager {
   static editors = {};
   static activeEditorName = null;
@@ -94,11 +115,12 @@ class EditorManager {
     if(Object.keys(EditorManager.editors).length === 1)
       showEditorStartPageArticle();
 
-    EditorManager.editors[editorName].options.parentNode.remove();
-    
+    EditorManager.editors[editorName].remove();
     delete EditorManager.editors[editorName];
 
-    const nodeWidth = 100 / (Object.keys(EditorManager.editors))+ "%";
+    EditorManager.changeActive(Object.keys(EditorManager.editors).pop());
+
+    const nodeWidth = 100 / (Object.keys(EditorManager.editors).length)+ "%";
     for(const node of Array.from(document.querySelectorAll("[data-editorName]")))
       node.style.width = nodeWidth;
   }
