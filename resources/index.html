@@ -35,6 +35,10 @@
           </div>
           <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
+            <fluent-button appearance="stealth" onclick="exitSplitView();"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
+          </div>
+          <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>
             <fluent-button appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>
             <fluent-button appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
@@ -55,7 +59,7 @@
       <section class="main-section">
         <nav id="fileSide-nav" class="side-nav">
           <div class="margin-x padding-x margin-y flex justify-center">
-            <fluent-text-field style="width: 100%;" appearance="outline" placeholder="Search in files" oninput="FileNav.searchInFileItems(this.value)"></fluent-text-field>
+            <fluent-search style="width: 100%;" appearance="outline" placeholder="Search in files" oninput="FileNav.searchInFileItems(this.value)"></fluent-search>
           </div>
           <fluent-tabs activeid="fileNavTab-container">
             <fluent-tab id="fileNavTab-container" style="padding: 0px calc(calc(var(--nav-width) - 80px) / 4);">Files</fluent-tab>
