@@ -91,12 +91,15 @@
               </fluent-card>
             </div>
             <div class="flex flex-col" style="flex: 300px; gap: 10px; width: calc(50% - 20px); height: 180px;">
-              <header>Customization</header>
+              <header>Settings</header>
               <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="showSettingsMain();">
                 <span class="fluent-icon fluent-icon--Settings"></span><span>Open settings</span>
               </fluent-card>
               <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="openSettingsFile();">
                 <span class="fluent-icon fluent-icon--TextDocumentSettings"></span><span>Open settings file</span>
+              </fluent-card>
+              <fluent-card class="flex" style="padding: 10px; gap: 10px; min-width: 150px; max-width: 300px; height: 40px;" onclick="showSettingsMain(); location.href='#settingsInfo-div'"">
+                <span class="fluent-icon fluent-icon--Info"></span><span>Fluent Code info</span>
               </fluent-card>
             </div>
           </div>
@@ -358,7 +361,7 @@
                     <h2>Fluent Code version</h2>
                     <span>Your Fluent Code app version</span>
                   </div>
-                  <div id="settingsInfoAppVersion-div"></div>
+                  <fluent-badge id="settingsInfoAppVersion-div"></fluent-badge>
                 </div>
               </div>
               <div class="flex flex-col" style="gap: 20px;">

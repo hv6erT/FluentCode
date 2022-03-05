@@ -481,4 +481,4 @@ const namespaces = [
     boost: 0
 }];
 
-module.exports = completeFromList([...keywords, ...types, ...namespaces]);*/
+export default completeFromList([...keywords, ...types, ...namespaces]);
