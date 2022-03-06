@@ -1,0 +1,14 @@
+{
+  "name": "Bundle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [],
+  "author": "Hubert Rączkiewicz",
+  "license": "MIT",
+  "dependencies": {
+  }
+}
