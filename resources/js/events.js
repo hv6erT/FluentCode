@@ -34,10 +34,12 @@ Neutralino.events.on("windowClose", async function() {
 
   if(settings.hasChanged() === true)
     await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings));
-  
-  await Storage.saveFileKeys();
-  await Storage.saveEditorKeys();
-  await Storage.saveLastFileKeys();
+
+  try{
+    await Storage.saveFileKeys();
+    await Storage.saveEditorKeys();
+    await Storage.saveLastFileKeys();
+  }catch{}
     
   await Neutralino.app.exit();
 });
