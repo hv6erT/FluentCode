@@ -36,7 +36,10 @@
           <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="exitSplitView();"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
+            <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
+          </div>
+          <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
+            <fluent-button appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>
@@ -46,6 +49,8 @@
           <div class="padding-y">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
+              <fluent-menu-item onclick="EditorManager.undo();"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
+              <fluent-divider></fluent-divider>
               <fluent-menu-item onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
               <fluent-menu-item disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
