@@ -5,7 +5,7 @@ window.addEventListener("DOMContentLoaded", async function() {
   document.getElementById("settingsInfoAppVersion-div").innerText = NL_APPVERSION;
 });
 
-window.addEventListener("mainReady", async function(){
+Neutralino.events.on("mainReady", async function(){
   await EditorManager.openEditor();
   await openFilesAndEditorsFromStorage();
   showContentMain();
@@ -45,7 +45,7 @@ Neutralino.events.on("windowClose", async function() {
     }
 
   if(settings.hasChanged() === true)
-    try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings));}catch(error){
+    try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings, "", 4));}catch(error){
       const settingsSaveConfirmResponse = await Neutralino.os.showMessageBox("Error: Settings could not be saved", `Settings could not be saved, do you want to close anyway? \n Error message: "${error.message}"`, "YES_NO", "ERROR");
 
       if(settingsSaveConfirmResponse === "NO")
