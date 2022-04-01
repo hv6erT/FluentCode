@@ -61,10 +61,13 @@ const setSettings = async () => {
     "file": {
       "auto-save": true,
       "auto-save-time": 60000,
-      "save-before-close": true
+      "save-before-close": true,
+      "templates": true
     },
     "keybindings": {
-      "Ctrl-S": "saveAllFiles"
+      "Ctrl-S": "saveAllFiles",
+      "Ctrl-\\": "createSplitView",
+      "Ctrl-\/": "exitSplitView" 
     }
   };
   

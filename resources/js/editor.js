@@ -194,6 +194,10 @@ class EditorManager {
     if(EditorManager.editors[editorName])
       EditorManager.editors[editorName].replaceSelection(await Neutralino.clipboard.readText());
   }
+  static async insertText(editorName = EditorManager.activeEditorName, text){
+    if(EditorManager.editors[editorName])
+      EditorManager.editors[editorName].insertText(text);
+  }
   static #editorInfoTimeout = null;
   static async editorInfo(editorName, useTimeout = true){
     if(Object.keys(FileManager.files).length === 0 || EditorManager.isOpened(editorName) === false)

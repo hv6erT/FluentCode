@@ -1,7 +1,9 @@
 class Keybindings{
   static #actions = {
+    "createSplitView": async function(){createSplitView();},
+    "exitSplitView": async function(){exitSplitView();},
     "saveFile": async function(){FileManager.saveFile(FileManager.activeFilePath);},
-    "saveAllFiles": FileManager.saveAllFiles
+    "saveAllFiles": async function(){FileManager.saveAllFiles();}
   };
   static async executeKeybindingEvent(event){
     if(!event instanceof KeyboardEvent)
