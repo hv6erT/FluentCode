@@ -28,7 +28,8 @@ export default EditorView.theme({
     position: "static !important",
     display: "flex",
     backgroundColor: "transparent !important",
-    border: "none"
+    border: "none",
+    fontWeight: "normal"
   },
   ".cm-panel": {
     display: "flex",

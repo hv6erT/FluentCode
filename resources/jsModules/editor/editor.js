@@ -57,7 +57,7 @@ export default class Editor extends EventTarget {
   async redo(){
     (await import("./codemirror.js")).redoSelection(this.#view);
   }
-  insertText(text, position){
+  async insertText(text, position){
     if(typeof text !== "string")
       throw new Error("Text param could be only typeof string");
 
