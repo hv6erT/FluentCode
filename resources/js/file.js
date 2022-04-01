@@ -28,6 +28,13 @@ const createNewFile = async () => {
   await Neutralino.filesystem.writeFile(filePath, "");
   await FileManager.openFile(filePath);
   EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+  if(settings.settings.file.templates === true){
+    const Templates = (await import("../jsModules/templates/index.js")).default;
+
+    const fileLanguage = File.getLanguageNameFromFilename(filePath).toLowerCase();
+    if(Templates.supportedLanguages.includes(fileLanguage))
+      EditorManager.insertText(EditorManager.activeEditorName, Templates.languageTemplateFromLangName(fileLanguage));
+  }
 }
 
 const uploadFolder = async () => {
@@ -125,11 +132,17 @@ class FileManager {
       customSearchPanel: 
         `<div class="flex gap">
           <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace({search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
-          <fluent-button appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
-          <fluent-button appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
+          <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
+          <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
           <fluent-text-field name="replace" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace({replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
-          <fluent-button appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
-          <fluent-button appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
+          <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
+          <fluent-button id="replaceAll=fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
+        </div>
+        <div>
+          <fluent-tooltip anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
+          <fluent-tooltip anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
+          <fluent-tooltip anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
+          <fluent-tooltip anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
         </div>
         `,
       languageAutocomplete: settings.settings.editor["language-autocompletion"],

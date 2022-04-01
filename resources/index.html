@@ -35,19 +35,31 @@
           </div>
           <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
-            <fluent-button appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
-            <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
+            <fluent-button id="createSplitView-fluent-button" appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
+            <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button> 
+          </div>
+          <div>
+            <fluent-tooltip anchor="createSplitView-fluent-button" position="bottom">Split view</fluent-tooltip>
+            <fluent-tooltip anchor="exitSplitView-fluent-button" position="bottom">Close split view</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
-            <fluent-button appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
+            <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
+          </div>
+          <div>
+            <fluent-tooltip anchor="saveAllFiles-fluent-button" position="bottom">Save</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
-            <fluent-button appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
+            <fluent-button id="cutText-fluent-button" appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>   
+            <fluent-button id="copyText-fluent-button" appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>   
+            <fluent-button id="pasteText-fluent-button" appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
+          </div>
+          <div>
+            <fluent-tooltip anchor="cutText-fluent-button" position="bottom">Cut</fluent-tooltip>
+            <fluent-tooltip anchor="copyText-fluent-button" position="bottom">Copy</fluent-tooltip>
+            <fluent-tooltip anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
           </div>
           <div class="padding-y">
-            <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
+            <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
               <fluent-menu-item onclick="EditorManager.undo();"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
@@ -55,6 +67,9 @@
               <fluent-divider></fluent-divider>
               <fluent-menu-item disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
+          </div>
+          <div>
+            <fluent-tooltip anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
           </div>
         </div>
         <div class="flex">
@@ -353,6 +368,17 @@
                     </div>
                     <fluent-number-field min="1000" data-settings='["file", "auto-save-time"]'></fluent-number-field>
                   </div>
+                </div>
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>File templates</h2>
+                    <span>Specify if file templates should be applied when creating new files.</span>
+                  </div>
+                  <fluent-switch data-settings='["file", "templates"]' data-settings-type="checkbox">
+                    <span slot="checked-message">On</span>
+                    <span slot="unchecked-message">Off</span>
+                    <label for="cap-switch"></label>
+                  </fluent-switch>
                 </div>
               </div>
             </div>
