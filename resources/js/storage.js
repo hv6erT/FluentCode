@@ -2,8 +2,11 @@ const openFilesAndEditorsFromStorage = async () => {
   const fileObject = await Storage.getFileKeys();
   const editorObject = await Storage.getEditorKeys();
 
+  const openFilePromises = [];
   for(const fileKey in fileObject)
-    await FileManager.openFile(fileKey);
+    openFilePromises.push(FileManager.openFile(fileKey));
+
+  await Promise.allSettled(openFilePromises);
   
   for(const editorKey in editorObject){
     if(editorKey != 0)
@@ -26,8 +29,11 @@ const openFilesAndEditorsFromStorage = async () => {
 const openLastFilesFromStorage = async () => {
   const fileObject = await Storage.getLastFileKeys();
 
+  const openFilePromises = [];
   for(const fileKey in fileObject)
-    await FileManager.openFile(fileKey);
+    openFilePromises.push(FileManager.openFile(fileKey));
+
+  await Promise.allSettled(openFilePromises);
 
   if(FileManager.activeFilePath === null && Object.keys(FileManager.files).length > 0)
     await EditorManager.showFileInEditor(EditorManager.activeEditorName, Object.keys(FileManager.files)[0]);

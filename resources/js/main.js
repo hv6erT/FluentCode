@@ -1,6 +1,4 @@
 "use-strict";
-//Neutralino initiation
-Neutralino.init();
 
 //global scope functions and vars
 window.normalizePath = function(filePath) {
@@ -112,7 +110,7 @@ const setTheme = async ()=> {
 try{
   await setSettings();
 }catch{
-  Neutralino.os.showMessageBox("Settings error", "Try to delete file Document/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
+  Neutralino.os.showMessageBox("Settings error", "Try to delete file Documents/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
 }
 
 await setColorMode();
