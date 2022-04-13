@@ -57,8 +57,9 @@ Neutralino.events.on("windowClose", async function() {
     await Storage.saveEditorKeys();
     await Storage.saveLastFileKeys();
   }catch{}
-    
-  await Neutralino.app.exit();
+
+  if(NL_OS !== "Darwin")
+    await Neutralino.app.exit();
 });
 
 window.keyboardEventActions = (event, actionKey, action) => {
