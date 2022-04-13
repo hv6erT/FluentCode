@@ -2,7 +2,3 @@ window.Neutralino = function(e){"use strict";function t(e,t,n,i){return new(n||(
 
 //Neutralino initiation
 Neutralino.init();
-
-Neutralino.events.on("ready", async function(){
-  NL_LOADED = true;
-});

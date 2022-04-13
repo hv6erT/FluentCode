@@ -1,7 +1,7 @@
 "use-strict";
 
 //global scope functions and vars
-window.normalizePath = function(filePath) {
+window.normalizePath = (filePath) => {
   if (typeof filePath === "string")
     return filePath.replace(/^\\\\\?\\/,"").replace(/\\/g,'\/').replace(/\/\/+/g,'\/');
   else throw new Error("Invalid argument type, normalizePath requires string");
@@ -78,7 +78,8 @@ const setSettings = async () => {
   }
 
   window.settings = new Settings(defaultSettings, userSettings);
-  Neutralino.events.dispatch("mainReady");
+  
+  Neutralino.events.dispatch("settingsReady");
 }
 const setColorMode = async () => {
   if(settings.settings.mode === "light" || settings.settings.mode === "dark")
@@ -107,14 +108,19 @@ const setTheme = async ()=> {
   Css.changeColorSchame(userPreferences.colorMode);
 }
 
-try{
-  await setSettings();
-}catch{
-  Neutralino.os.showMessageBox("Settings error", "Try to delete file Documents/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
-}
-
-await setColorMode();
-await setTheme();
+(async function(){
+  try{
+    await setSettings();
+    NL_LOADED.push("SETTINGS");
+  }catch{
+    Neutralino.os.showMessageBox("Settings error", "Try to delete file Documents/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
+  }
+  
+  await setColorMode();
+  NL_LOADED.push("COLOR");
+  await setTheme();
+  NL_LOADED.push("THEME");
+})();
 
 //global events listeners
 window.addEventListener("contextmenu", async function(event) {

@@ -5,10 +5,10 @@ window.addEventListener("DOMContentLoaded", async function() {
   document.getElementById("settingsInfoAppVersion-div").innerText = NL_APPVERSION;
 });
 
-Neutralino.events.on("mainReady", async function(){
+Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
-  await openFilesAndEditorsFromStorage();
   showContentMain();
+  await openFilesAndEditorsFromStorage();
 
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();
@@ -61,7 +61,7 @@ Neutralino.events.on("windowClose", async function() {
   await Neutralino.app.exit();
 });
 
-const keyboardEventActions = (event, actionKey, action) => {
+window.keyboardEventActions = (event, actionKey, action) => {
   if(!event || !actionKey || !action)
     return;
   if(event.key == actionKey)

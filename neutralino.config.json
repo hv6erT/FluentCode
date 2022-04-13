@@ -22,16 +22,7 @@
     "extensions.*"
   ],
   "globalVariables": {
-    "TEST1": "Hello",
-    "TEST2": [
-      2,
-      4,
-      5
-    ],
-    "TEST3": {
-      "value1": 10,
-      "value2": {}
-    }
+    "LOADED": []
   },
   "modes": {
     "window": {
