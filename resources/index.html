@@ -10,7 +10,7 @@
     <!-- Neutralino.js client. -->
     <script src="js/neutralino.js"></script>
     <!-- Fluecode app's source files -->
-    <script type="module" src="js/main.js"></script>
+    <script async type="module" src="js/main.js"></script>
     <script async type="module" src="js/assets.js"></script>
     
     <script async src="js/events.js"></script>
@@ -73,7 +73,10 @@
           </div>
         </div>
         <div class="flex">
-          <fluent-button appearance="stealth" onclick="showSettingsMain();"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
+          <fluent-button id="settings-fluent-button" appearance="stealth" onclick="showSettingsMain();"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
+          <div>
+            <fluent-tooltip anchor="settings-fluent-button" position="bottom">Settings</fluent-tooltip>   
+          </div>
         </div>
       </nav>
       <section class="main-section">
@@ -443,8 +446,11 @@
       </nav>
     </main>
     <main id="loading-main">
-      <div class="flex" style="width: 100vw; height: 100vh; justify-content: center; align-items: center;">
+      <div class="flex" style="position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
         <fluent-progress-ring></fluent-progress-ring>
+      </div>
+      <div class="flex" style="position: absolute; width: 100%; height: 100%; justify-content: center; padding-top: 75vh;">
+        <fluent-anchor appearance="lightweight">Loading editor...</fluent-anchor>
       </div>
     </main>
   </body>
