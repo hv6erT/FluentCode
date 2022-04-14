@@ -52,11 +52,7 @@ Neutralino.events.on("windowClose", async function() {
         return;
     }
 
-  try{
-    await Storage.saveFileKeys();
-    await Storage.saveEditorKeys();
-    await Storage.saveLastFileKeys();
-  }catch{}
+  await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
 
   if(NL_OS !== "Darwin")
     await Neutralino.app.exit();

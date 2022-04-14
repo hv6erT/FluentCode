@@ -240,6 +240,9 @@ class FileManager {
     }
   }
   static async saveAllFiles(){
+    if(Object.keys(FileManager.files).length === 0)
+      return;
+    
     await EditorManager.compareEditorsChanges();
     for(const filePath in FileManager.files){
       if(FileManager.isChanged(filePath) === true){
