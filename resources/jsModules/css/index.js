@@ -1,12 +1,12 @@
 export default class Css {
-  static insertCSS(cssText){
+  static async insertCSS(cssText){
     if(!cssText || typeof cssText !== "string")
       throw new Error("Param cssText must be instanceof string");
     const style = document.createElement('style');
     style.innerHTML = cssText;
     document.head.appendChild(style);
   }
-  static setCSSVariable(property, value, media) {
+  static async setCSSVariable(property, value, media) {
     if(!property || !value)
       throw new Error("Invalid params value");
     if (!property.startsWith("--"))
@@ -19,14 +19,14 @@ export default class Css {
       Css.insertCSS(cssText);
     }
   }
-  static getCSSVariable(property) {
+  static async getCSSVariable(property) {
     if(!property)
       throw new Error("Invalid property param");
     if (!property.startsWith("--"))
       property = "--" + property;
     return getComputedStyle(document.documentElement).getPropertyValue(property);
   }
-  static changeColorSchame(colorSchame){
+  static async changeColorSchame(colorSchame){
     if(colorSchame === "system" || colorSchame === "normal"){
       document.documentElement.style.colorScheme = "normal";
     }
