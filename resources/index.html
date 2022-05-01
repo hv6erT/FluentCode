@@ -39,14 +39,14 @@
             <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button> 
           </div>
           <div>
-            <fluent-tooltip anchor="createSplitView-fluent-button" position="bottom">Split view</fluent-tooltip>
-            <fluent-tooltip anchor="exitSplitView-fluent-button" position="bottom">Close split view</fluent-tooltip>   
+            <fluent-tooltip class="title-tooltip" anchor="createSplitView-fluent-button" position="bottom">Split view</fluent-tooltip>
+            <fluent-tooltip class="title-tooltip" anchor="exitSplitView-fluent-button" position="bottom">Close split view</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
           </div>
           <div>
-            <fluent-tooltip anchor="saveAllFiles-fluent-button" position="bottom">Save</fluent-tooltip>   
+            <fluent-tooltip class="title-tooltip" anchor="saveAllFiles-fluent-button" position="bottom">Save</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="cutText-fluent-button" appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>   
@@ -54,9 +54,9 @@
             <fluent-button id="pasteText-fluent-button" appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
           </div>
           <div>
-            <fluent-tooltip anchor="cutText-fluent-button" position="bottom">Cut</fluent-tooltip>
-            <fluent-tooltip anchor="copyText-fluent-button" position="bottom">Copy</fluent-tooltip>
-            <fluent-tooltip anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
+            <fluent-tooltip class="title-tooltip" anchor="cutText-fluent-button" position="bottom">Cut</fluent-tooltip>
+            <fluent-tooltip class="title-tooltip" anchor="copyText-fluent-button" position="bottom">Copy</fluent-tooltip>
+            <fluent-tooltip class="title-tooltip" anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
           </div>
           <div class="padding-y">
             <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
@@ -69,13 +69,13 @@
             </fluent-menu>
           </div>
           <div>
-            <fluent-tooltip anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
+            <fluent-tooltip class="title-tooltip" anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
           </div>
         </div>
         <div class="flex">
           <fluent-button id="settings-fluent-button" appearance="stealth" onclick="showSettingsMain();"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
           <div>
-            <fluent-tooltip anchor="settings-fluent-button" position="bottom">Settings</fluent-tooltip>   
+            <fluent-tooltip class="title-tooltip" anchor="settings-fluent-button" position="bottom">Settings</fluent-tooltip>   
           </div>
         </div>
       </nav>
@@ -146,7 +146,8 @@
       <nav class="top-nav justify-between">
         <div class="flex">
           <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
-            <fluent-button appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
+            <fluent-button id="backFromSettings-fluent-button" appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
+            <fluent-tooltip class="title-tooltip" anchor="backFromSettings-fluent-button" position="bottom">Back</fluent-tooltip>   
           </div>
           <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="settings.changeSettingsToDefault();">
@@ -303,6 +304,17 @@
                   <div>
                     <h2>Extra features</h2>
                     <span>Switch on extra features to improve your productivity</span>
+                  </div>
+                  <div class="flex" style="gap: 20px; align-items: flex-end;">
+                    <div>
+                      <h3>Show helpful tooltips</h3>
+                      <span>Show tooltips when hover buttons</span>
+                    </div>
+                    <fluent-switch data-settings='["editor", "controls-titles"]' data-settings-type="checkbox">
+                      <span slot="checked-message">On</span>
+                      <span slot="unchecked-message">Off</span>
+                      <label for="cap-switch"></label>
+                    </fluent-switch>
                   </div>
                   <div class="flex" style="gap: 20px; align-items: flex-end;">
                     <div>

@@ -139,10 +139,10 @@ class FileManager {
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
         </div>
         <div>
-          <fluent-tooltip anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
-          <fluent-tooltip anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
-          <fluent-tooltip anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
-          <fluent-tooltip anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
+          <fluent-tooltip class="title-tooltip" anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
+          <fluent-tooltip class="title-tooltip" anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
+          <fluent-tooltip class="title-tooltip" anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
+          <fluent-tooltip class="title-tooltip" anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
         </div>
         `,
       languageAutocomplete: settings.settings.editor["language-autocompletion"],

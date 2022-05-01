@@ -9,6 +9,7 @@ window.normalizePath = (filePath) => {
 
 window.File = null;
 window.Editor = null;
+window.Css = null;
 window.settings = null;
 window.userPreferences = {
   colorMode: null,
@@ -32,7 +33,7 @@ const setSettings = async () => {
         "third-bg-color": "#e6e6e6",
         "basic-color": "#1a1a1a",
         "scrollbar-color": "#78909C",
-        "nav-width": "220px"
+        "nav-width": "230px"
       },
       "dark-mode": {
         "theme": "../jsModules/theme/webidea-dark.js",
@@ -43,7 +44,7 @@ const setSettings = async () => {
         "third-bg-color": "#373737",
         "basic-color": "#ffffff",
         "scrollbar-color": "#9E9E9E",
-        "nav-width": "220px"
+        "nav-width": "230px"
       },
     },
     "editor": {
@@ -52,6 +53,7 @@ const setSettings = async () => {
       "tab-size": 4,
       "color-preview": true,
       "progress-bar": false,
+      "controls-titles": true,
       "selection-tooltip": false,
       "language-autocompletion": true,
       "any-word-autocompletion": true
@@ -81,6 +83,7 @@ const setSettings = async () => {
   
   Neutralino.events.dispatch("settingsReady");
 }
+
 const setColorMode = async () => {
   if(settings.settings.mode === "light" || settings.settings.mode === "dark")
     userPreferences.colorMode = settings.settings.mode;
@@ -91,6 +94,7 @@ const setColorMode = async () => {
 }
 
 import Css from "../jsModules/css/index.js";
+window.Css = Css;
 
 const setTheme = async ()=> {
   const include = ["accent-bg-color", "first-bg-color", "second-bg-color", "third-bg-color", "basic-color", "scrollbar-color"];
