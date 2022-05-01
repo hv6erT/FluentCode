@@ -14,7 +14,7 @@ window.settings = null;
 window.userPreferences = {
   colorMode: null,
   settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
-  sideNavMinWidth: "200px",
+  sideNavMinWidth: "220px",
 };
 //other functions
 import Settings from "../jsModules/settings/index.js";

@@ -1,12 +1,32 @@
+const fileNavIcons = {
+  "C": '<i class="devicon-c-plain colored"></i>',
+  "C++": '<i class="devicon-cplusplus-plain colored"></i>',
+  "C#": '<i class="devicon-csharp-plain colored"></i>',
+  "CSS": '<i class="devicon-css3-plain colored"></i>',
+  "HTML": '<i class="devicon-html5-plain colored"></i>',
+  "Git files": '<i class="devicon-git-plain colored"></i>',
+  "Java": '<i class="devicon-java-plain colored"></i>',
+  "JavaScript": '<i class="devicon-javascript-plain colored"></i>',
+  "Lua": '<i class="devicon-lua-plain colored"></i>',
+  "Node JS": '<i class="devicon-nodejs-plain colored"></i>',
+  "PHP": '<i class="devicon-php-plain colored"></i>',
+  "Python": '<i class="devicon-python-plain colored"></i>',
+  "TypeScript": '<i class="devicon-typescript-plain colored"></i>'
+};
+
 class FileNav {
   static #fileItems = {};
   static #searchItems = {};
   static #groupItems = {};
   static #fileNavNode = document.getElementById("fileNav-container");
   static #searchNavNode = document.getElementById("searchNav-container");
-  static async addItem(fileKey){
+  static async addItem(fileKey, fileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === true)
       return;
+
+    const iconNode = document.createElement("span");
+    iconNode.className = "fileNavItemIcon-span";
+    iconNode.innerHTML = (fileNavIcons[fileIconKey] !== undefined) ? fileNavIcons[fileIconKey] : "";
 
     const titleNode = document.createElement("span");
     titleNode.className = "fileNavItemTitle-span";
@@ -36,6 +56,9 @@ class FileNav {
     FileNav.#fileItems[fileKey].addEventListener("click", function(){
       EditorManager.showFileInEditor(EditorManager.activeEditorName ?? 0, fileKey);
     });
+    
+    if (fileNavIcons[fileIconKey] !== undefined)
+      FileNav.#fileItems[fileKey].appendChild(iconNode);
     FileNav.#fileItems[fileKey].appendChild(titleNode);
     FileNav.#fileItems[fileKey].appendChild(closeButtonNode);
     

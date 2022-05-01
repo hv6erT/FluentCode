@@ -110,6 +110,19 @@ fluent-tab-panel{
 .side-nav *{
   max-width: calc(var(--nav-width) - 10px);
 }
+.fileNavItem .fileNavItemIcon-span{
+  position: absolute;
+  margin-left: 0;
+  max-width: 20px;
+  display: flex;
+  justify-content: center;
+}
+.fileNavItem .fileNavItemTitle-span{
+  position: absolute;
+  margin-left: 20px;
+  width: calc(100% - 60px);
+  overflow: hidden;
+}
 .fileNavItem .fileNavItemCloseButton-span{
   position: absolute;
   margin-left: calc(100% - 30px);
@@ -123,12 +136,6 @@ fluent-tab-panel{
 }
 .fileNavItem:hover .fileNavItemCloseButton-span{
   visibility: visible;
-}
-.fileNavItem .fileNavItemTitle-span{
-  position: absolute;
-  margin-left: 0;
-  width: calc(100% - 40px);
-  overflow: hidden;
 }
 .editor-article{
   width: calc(100vw - var(--nav-width));

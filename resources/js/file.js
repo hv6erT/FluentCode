@@ -164,13 +164,13 @@ class FileManager {
       EditorManager.editorInfo(EditorManager.activeEditorName);	
     });
 
-    await FileNav.addItem(filePath);
+    await FileNav.addItem(filePath, FileManager.files[filePath].language);
     
   }
   static async initializeFile(filePath){
     if(FileManager.isOpened(filePath) === false)
       return;
-    const fileContent = await Neutralino.filesystem.readFile(filePath) || "";
+    const fileContent = (await Neutralino.filesystem.readFile(filePath)) || "";
     await FileManager.files[filePath].init(fileContent);
   }
   static async changeActive(filePath){
