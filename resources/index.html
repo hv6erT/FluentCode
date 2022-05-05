@@ -40,14 +40,14 @@
             <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button> 
           </div>
           <div>
-            <fluent-tooltip class="title-tooltip" anchor="createSplitView-fluent-button" position="bottom">Split view</fluent-tooltip>
-            <fluent-tooltip class="title-tooltip" anchor="exitSplitView-fluent-button" position="bottom">Close split view</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="createSplitView-fluent-button" position="bottom">Split view</fluent-tooltip>
+            <fluent-tooltip data-tooltip="title" anchor="exitSplitView-fluent-button" position="bottom">Close split view</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
           </div>
           <div>
-            <fluent-tooltip class="title-tooltip" anchor="saveAllFiles-fluent-button" position="bottom">Save</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="saveAllFiles-fluent-button" position="bottom">Save</fluent-tooltip>   
           </div>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="cutText-fluent-button" appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>   
@@ -55,9 +55,9 @@
             <fluent-button id="pasteText-fluent-button" appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
           </div>
           <div>
-            <fluent-tooltip class="title-tooltip" anchor="cutText-fluent-button" position="bottom">Cut</fluent-tooltip>
-            <fluent-tooltip class="title-tooltip" anchor="copyText-fluent-button" position="bottom">Copy</fluent-tooltip>
-            <fluent-tooltip class="title-tooltip" anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="cutText-fluent-button" position="bottom">Cut</fluent-tooltip>
+            <fluent-tooltip data-tooltip="title" anchor="copyText-fluent-button" position="bottom">Copy</fluent-tooltip>
+            <fluent-tooltip data-tooltip="title" anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
           </div>
           <div class="padding-y">
             <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
@@ -70,13 +70,13 @@
             </fluent-menu>
           </div>
           <div>
-            <fluent-tooltip class="title-tooltip" anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
           </div>
         </div>
         <div class="flex">
           <fluent-button id="settings-fluent-button" appearance="stealth" onclick="showSettingsMain();"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
           <div>
-            <fluent-tooltip class="title-tooltip" anchor="settings-fluent-button" position="bottom">Settings</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="settings-fluent-button" position="bottom">Settings</fluent-tooltip>   
           </div>
         </div>
       </nav>
@@ -136,19 +136,46 @@
           </div>
           <div class="flex justify-end gap" style="min-width: fit-content; width: 40%; overflow: hidden; text-overflow: ellipsis;">
             <span>Ln: </span><span data-editorInfo="currentLine"></span>
-            <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y"> | </span>
-            <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y"> | </span>
+            <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
+            <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
             <span data-fileInfo="language"></span>
           </div>
         </div>
       </nav>
+      <fluent-dialog id="searchOptions-fluent-dialog" style="display: none;">
+        <div style="width: 100%; height: 100%; padding: 10px;">
+          <div class="flex" style="width: 100%; height: 15%;">
+            <div class="flex justify-start" style="width: 50%;">
+              <span class="text-2xl">Edit search query</span>
+            </div>
+            <div class="flex justify-end" style="width: 50%;">
+              <fluent-button class="relative" appearance="stealth" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')" style="left: 5px; top: -5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span></fluent-button>
+            </div>
+          </div>
+          <div class="flex flex-col margin-y" style="width: 100%; height: 75%; gap: 15px;">
+            <div class="flex gap">
+              <span class="text-lg">Search phrase: </span><fluent-text-field data-searchInfo="search"></fluent-text-field>
+            </div>
+            <fluent-checkbox data-searchInfo="caseSensitive">Case sensitivity</fluent-checkbox>
+            <fluent-checkbox data-searchInfo="regexp">Using regexp in search query</fluent-checkbox>
+            <fluent-divider></fluent-divider>
+            <div class="flex gap">
+              <span class="text-lg">Replace with: </span><fluent-text-field data-searchInfo="replace"></fluent-text-field>
+            </div>
+          </div>
+          <div class="flex gap justify-end" style="width: 100%; height: 10%;">
+            <fluent-button appearance="accent" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog'); EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName);">Search new query</fluent-button>
+            <fluent-button appearance="outline" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')">Discard changes</fluent-button>
+          </div>
+        </div>
+      </fluent-dialog>
     </main>
     <main id="settings-main" style="display: none;">
       <nav class="top-nav justify-between">
         <div class="flex">
           <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="backFromSettings-fluent-button" appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
-            <fluent-tooltip class="title-tooltip" anchor="backFromSettings-fluent-button" position="bottom">Back</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="backFromSettings-fluent-button" position="bottom">Back</fluent-tooltip>   
           </div>
           <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="settings.changeSettingsToDefault();">
@@ -421,8 +448,8 @@
                     <h3>Fluent Code license</h3>
                     <span>License of Fluent Code</span>
                   </div>
-                  <div>Fluent Code elements, code and packages are licensed under MIT license.</div>
-                  <div>Fluent Code installers and other distribution forms are licensed under Creative Commons License Attribution-ShareAlike 4.0</div>
+                  <div>Fluent Code elements, code and packages are licensed under <span class="font-bold">MIT</span> license.</div>
+                  <div>Fluent Code installers and other distribution forms are licensed under <span class="font-bold">Creative Commons License Attribution-ShareAlike 4.0</span></div>
                 </div>
                 <div class="flex flex-col" style="gap: 20px;">
                   <div>
