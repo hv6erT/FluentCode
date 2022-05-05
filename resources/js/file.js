@@ -131,18 +131,20 @@ class FileManager {
       customSelectionTooltip: false,
       customSearchPanel: 
         `<div class="flex gap">
-          <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace({search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
+          <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
-          <fluent-text-field name="replace" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace({replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
+          <fluent-button id="searchOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')"><span class="fluent-icon fluent-icon--DocumentSearch"></span></fluent-button>
+          <fluent-text-field name="replace" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
           <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
         </div>
         <div>
-          <fluent-tooltip class="title-tooltip" anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
-          <fluent-tooltip class="title-tooltip" anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
-          <fluent-tooltip class="title-tooltip" anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
-          <fluent-tooltip class="title-tooltip" anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
+          <fluent-tooltip data-tooltip="title" anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
+          <fluent-tooltip data-tooltip="title" anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
+          <fluent-tooltip data-tooltip="title" anchor="searchOptions-fluent-button" position="bottom">Search options</fluent-tooltip>  
+          <fluent-tooltip data-tooltip="title" anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
+          <fluent-tooltip data-tooltip="title" anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
         </div>
         `,
       languageAutocomplete: settings.settings.editor["language-autocompletion"],

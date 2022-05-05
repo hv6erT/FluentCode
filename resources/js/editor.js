@@ -133,14 +133,14 @@ class EditorManager {
     for(const editorName in EditorManager.editors)
       await EditorManager.editors[editorName].compareEditorChanges();
   }
-  static searchAndReplace(config){
-    if(!config || !EditorManager.editors[EditorManager.activeEditorName])
+  static searchAndReplace(editorName, config){
+    if(!editorName || !EditorManager.editors[editorName] || !config)
       return;
     
     if(config.search && typeof config.search === "string" && !/\S/.test(config.search))
       return;
           
-    const lastSearchQuery = EditorManager.editors[EditorManager.activeEditorName].getCurrentSearchQuery() ?? {};
+    const lastSearchQuery = EditorManager.editors[editorName].getCurrentSearchQuery() ?? {};
     const lastConfig = {
       search: lastSearchQuery.search,
       caseSensitive: lastSearchQuery.caseSensitive,
@@ -148,7 +148,29 @@ class EditorManager {
       replace: lastSearchQuery.replace
     };
     
-    EditorManager.editors[EditorManager.activeEditorName].searchInEditor({...lastConfig, ...config});
+    EditorManager.editors[editorName].searchInEditor({...lastConfig, ...config});
+    EditorManager.searchInfo(editorName);
+  }
+  static searchAndReplaceUsingForm(editorName){
+    if(!editorName || !EditorManager.editors[editorName])
+      return;
+    
+    const config = {
+      search: document.querySelector(`[data-searchInfo='search']`).value,
+      caseSensitive: document.querySelector(`[data-searchInfo='caseSensitive']`).checked,
+      regexp: document.querySelector(`[data-searchInfo='regexp']`).checked,
+      replace: document.querySelector(`[data-searchInfo='replace']`).value
+    };
+
+    EditorManager.editors[editorName].searchInEditor(config);
+  }
+  static async searchInfo(editorName){
+    const lastSearchQuery = EditorManager.editors[editorName].getCurrentSearchQuery() ?? {};
+
+    document.querySelector('[data-searchInfo="search"]').value = lastSearchQuery.search;
+    document.querySelector('[data-searchInfo="caseSensitive"]').checked = lastSearchQuery.caseSensitive;
+    document.querySelector('[data-searchInfo="regexp"]').checked = lastSearchQuery.regexp;
+    document.querySelector('[data-searchInfo="replace"]').value = lastSearchQuery.replace;
   }
   static findNext(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])

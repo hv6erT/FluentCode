@@ -84,6 +84,9 @@ fluent-menu{
 fluent-tab-panel{
   padding: 0;
 }
+fluent-dialog{
+  --dialog-height: 380px
+}
 /*default classes*/
 .top-nav{
   width: 100vw;
