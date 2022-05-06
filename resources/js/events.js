@@ -10,17 +10,23 @@ Neutralino.events.on("settingsReady", async function(){
   showContentMain();
   await openFilesAndEditorsFromStorage();
 
+  if(NL_ARGS.length > 1){
+    const filePath = normalizePath(NL_ARGS[1]);
+    await FileManager.openFile(filePath);
+    EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+  }
+
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();
 
-  await FileManager.startAutoSave();
-
   if(settings.settings.editor["controls-titles"] === false)
     Css.insertCSS(`[data-tooltip="title"]{ display: none !important;}`);
+
+  await FileManager.startAutoSave();
 });
 
 window.addEventListener("load", async function() {
-  Keybindings.setListener();
+  Keybindings.setListener();    
 });
 
 Neutralino.events.on("windowFocus", async function (){
