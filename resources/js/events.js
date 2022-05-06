@@ -23,13 +23,20 @@ window.addEventListener("load", async function() {
   Keybindings.setListener();
 });
 
-window.addEventListener("focus", async function (){
+Neutralino.events.on("windowFocus", async function (){
   try{await FileManager.startAutoSave();}catch{}
 });
 
-window.addEventListener("blur", async function () {
+Neutralino.events.on("windowBlur", async function () {
   try{await FileManager.stopAutoSave();}catch{}
-})
+});
+
+Neutralino.events.on("serverOffline", async function(){
+  const errorResponse = await Neutralino.os.showMessageBox("Error: App is not responding", "Try to restart app", "RETRY_CANCEL", "ERROR");
+
+  if(errorResponse === "RETRY")
+    Neutralino.app.restartProcess();
+});
 
 Neutralino.events.on("windowClose", async function() {
   if(settings.settings.file["save-before-close"] === true)
