@@ -1,6 +1,6 @@
-import {HighlightStyle, tags} from "../editor/index.js";
+import {HighlightStyle, tags, syntaxHighlighting} from "../editor/index.js";
 
-export default HighlightStyle.define([
+export default syntaxHighlighting(HighlightStyle.define([
   // const, let, function, if
   { tag: tags.keyword, color: '#39ADB5' },
   // document
@@ -27,4 +27,4 @@ export default HighlightStyle.define([
   { tag: tags.heading, fontWeight: 'bold', color: '#39ADB5' },
   { tag: [tags.atom, tags.bool, tags.special(tags.variableName)], color: '#90A4AE' },
   { tag: tags.invalid, color: '#E5393570' },
-]);
+]));

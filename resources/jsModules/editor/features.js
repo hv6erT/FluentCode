@@ -171,7 +171,7 @@ export default class Features{
 		if(!childDom)
           	throw new Error("Invalid value of first argument, childDom need to be Node or DOMString");
       
-        const searchConfig = (await import("./codemirror.js")).searchConfig;
+        const searchConfig = (await import("./codemirror.js")).search;
         const getSearchQuery = (await import("./codemirror.js")).getSearchQuery;
 
       	return searchConfig({

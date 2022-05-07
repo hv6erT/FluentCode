@@ -10,7 +10,6 @@ import { bracketMatching } from "./codemirror.js";
 import { closeBrackets, closeBracketsKeymap } from "./codemirror.js";
 import { highlightSelectionMatches, searchKeymap } from "./codemirror.js";
 import { autocompletion, completionKeymap } from "./codemirror.js";
-import { commentKeymap } from "./codemirror.js";
 import { rectangularSelection } from "./codemirror.js";
 import { lintKeymap } from "./codemirror.js";
 
@@ -173,7 +172,6 @@ export default class File extends EventTarget{
         ...searchKeymap,
         ...historyKeymap,
         ...foldKeymap,
-        ...commentKeymap,
         ...completionKeymap,
         ...lintKeymap
       ]));

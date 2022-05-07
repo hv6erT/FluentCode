@@ -1,4 +1,4 @@
-import {HighlightStyle, tags} from "../editor/index.js";
+import {HighlightStyle, tags, syntaxHighlighting} from "../editor/index.js";
 
 //copied from https://github.com/codemirror/theme-one-dark/blob/main/src/one-dark.ts
 
@@ -13,7 +13,7 @@ const chalky = "#e5c07b",
   whiskey = "#d19a66",
   violet = "#c678dd";
 
-export default HighlightStyle.define([
+export default syntaxHighlighting(HighlightStyle.define([
   {tag: tags.keyword,
     color: violet},
   {tag: [tags.name, tags.deleted, tags.character, tags.propertyName, tags.macroName],
@@ -48,4 +48,4 @@ export default HighlightStyle.define([
     color: sage},
   {tag: tags.invalid,
     color: invalid}
-]);
+]));

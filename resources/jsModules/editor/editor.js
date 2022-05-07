@@ -124,7 +124,7 @@ export default class Editor extends EventTarget {
     this.#view.setState(file.getState());
     this.dispatchEvent(new Event("active-state-change"));
 
-	this.#view.scrollPosIntoView(EditorInfo.getCurrentPosition(this).currentPosition || 0); 
+    this.#view.dispatch({effects: EditorView.scrollIntoView(EditorInfo.getCurrentPosition(this).currentPosition || 0)})
     this.#view.focus();
   }
   async searchInEditor(config){

@@ -1,4 +1,4 @@
-import {HighlightStyle, tags} from "../editor/index.js";
+import {HighlightStyle, tags, syntaxHighlighting} from "../editor/index.js";
 
 const byzantine = "#A626A4",
   silver = "#A0A1A7",
@@ -11,7 +11,7 @@ const byzantine = "#A626A4",
   redwood = "#9b5656",
   steel = "#5c8198"
 
-export default HighlightStyle.define([
+export default syntaxHighlighting(HighlightStyle.define([
   {tag: tags.keyword,
     color: byzantine},
   {tag: [tags.meta, tags.comment],
@@ -46,7 +46,7 @@ export default HighlightStyle.define([
     textDecoration: "underline"},
   {tag: tags.invalid,
     color: dark}
-]);
+]));
 /*
 const highlight = HighlightStyle.define([
     {tag: tags.keyword,
