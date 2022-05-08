@@ -44,7 +44,14 @@ Neutralino.events.on("serverOffline", async function(){
     Neutralino.app.restartProcess();
 });
 
-Neutralino.events.on("windowClose", async function() {
+Neutralino.events.on("windowClose", async function(options) {
+
+  const defaultOptions = {
+    shouldClose: true
+  };
+
+  options = {...defaultOptions, ...(options || {})};
+  
   if(settings.settings.file["save-before-close"] === true)
     try{await FileManager.saveAllFiles();}catch(error){
       const errorResponse = await Neutralino.os.showMessageBox("Error: Files could not be saved", `Error message: "${error.message}"`, "ABORT_RETRY_IGNORE", "ERROR");
@@ -52,7 +59,7 @@ Neutralino.events.on("windowClose", async function() {
       if(errorResponse === "ABORT"){
         const savingConfirmResponse = await Neutralino.os.showMessageBox("Confirm close without save", `Are you sure you want to close Fluent Code? Your work and other changes would not be saved."`, "YES_NO", "QUESTION");
 
-        if(savingConfirmResponse === "YES")
+        if(savingConfirmResponse === "YES" && options.shouldClose === true)
           await Neutralino.app.exit();
         else return;
       }
@@ -70,7 +77,7 @@ Neutralino.events.on("windowClose", async function() {
 
   await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
 
-  if(NL_OS !== "Darwin")
+  if(NL_OS !== "Darwin" && options.shouldClose === true)
     await Neutralino.app.exit();
 });
 

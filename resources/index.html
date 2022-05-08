@@ -189,7 +189,7 @@
           </div>
         </div>
         <div>
-          <fluent-button appearance="stealth" onclick='Neutralino.events.dispatch("windowClose"); Neutralino.app.restartProcess();'>
+          <fluent-button appearance="stealth" onclick='Neutralino.events.dispatch("windowClose", {shouldClose: false}); Neutralino.app.restartProcess();'>
             <span class="fluent-icon fluent-icon--Sync"></span>
           </fluent-button>
         </div>
