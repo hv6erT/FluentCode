@@ -3,9 +3,9 @@
 
 # Neutralinojs binaries and builds
 /bin
-dist/fluentcode/fluentcode-linux_x64
-dist/fluentcode/fluentcode-mac_x64
-dist/fluentcode/fluentcode-win_x64.exe
+dist/fluentcode/Fluent Code for Linux
+dist/fluentcode/Fluent Code for Mac OS
+dist/fluentcode/Fluent Code.exe
 dist/fluentcode/WebView2Loader.dll
 
 
