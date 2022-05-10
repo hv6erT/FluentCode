@@ -198,6 +198,7 @@
         <nav class="side-nav">
           <fluent-tabs class="padding-y margin-y margin-x" activeid="settingsTab-container" orientation="vertical">
             <fluent-tab id="settingsThemingTab-container"><a href="#settingsTheming-div" style="all: unset;">Theming</a></fluent-tab>
+            <fluent-tab id="settingsAppTab-container"><a href="#settingsApp-div" style="all: unset;">App</a></fluent-tab>
             <fluent-tab id="settingsEditorTab-container"><a href="#settingsEditors-div" style="all: unset;">Editors</a></fluent-tab>
             <fluent-tab id="settingsFileTab-container"><a href="#settingsFiles-div" style="all: unset;">Files</a></fluent-tab>
             <fluent-tab id="settingsInfoTab-container"><a href="#settingsInfo-div" style="all: unset;">Info</a></fluent-tab>
@@ -295,6 +296,24 @@
                       </div>
                     </fluent-accordion-item>
                   </fluent-accordion>
+                </div>
+              </div>
+            </div>
+            <fluent-divider></fluent-divider>
+            <div id="settingsApp-div" class="padding-x padding-y">
+              <header>App</header>
+              <span>Change update settings, manage permissions</span>
+              <div class="flex flex-col" style="gap: 20px;">
+                <div class="flex" style="gap: 20px; align-items: flex-end;">
+                  <div>
+                    <h2>Auto update</h2>
+                    <span>Enable auto update to use latest features</span>
+                  </div>
+                  <fluent-switch data-settings='["app", "auto-update"]' data-settings-type="checkbox">
+                    <span slot="checked-message">On</span>
+                    <span slot="unchecked-message">Off</span>
+                    <label for="cap-switch"></label>
+                  </fluent-switch>
                 </div>
               </div>
             </div>

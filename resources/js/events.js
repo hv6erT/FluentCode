@@ -23,10 +23,24 @@ Neutralino.events.on("settingsReady", async function(){
     Css.insertCSS(`[data-tooltip="title"]{ display: none !important;}`);
 
   await FileManager.startAutoSave();
+
+  if(settings.settings.app["auto-update"] === true){
+    try {
+      const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
+
+      if(manifest.version !== NL_APPVERSION) {
+        await Neutralino.updater.install();
+        await Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
+      }
+    }
+    catch(error) {
+      await Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
+    }
+  }
 });
 
 window.addEventListener("load", async function() {
-  Keybindings.setListener();    
+  Keybindings.setListener();
 });
 
 Neutralino.events.on("windowFocus", async function (){
@@ -45,7 +59,6 @@ Neutralino.events.on("serverOffline", async function(){
 });
 
 Neutralino.events.on("windowClose", async function(options) {
-
   const defaultOptions = {
     shouldClose: true
   };

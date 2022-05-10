@@ -4,7 +4,7 @@
 window.normalizePath = (filePath) => {
   if (typeof filePath === "string")
     return filePath.replace(/^\\\\\?\\/,"").replace(/\\/g,'\/').replace(/\/\/+/g,'\/');
-  else throw new Error("Invalid argument type, normalizePath requires string");
+  else throw new Error("Invalid argument type, normalizePath requires string as param");
 }
 
 window.File = null;
@@ -14,7 +14,8 @@ window.settings = null;
 window.userPreferences = {
   colorMode: null,
   settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
-  sideNavMinWidth: "220px",
+  updateManifestURL: "https://raw.githubusercontent.com/hv6erT/FluentCode/main/dist/update.json",
+  sideNavMinWidth: "220px"
 };
 
 //other functions
@@ -47,6 +48,9 @@ const setSettings = async () => {
         "scrollbar-color": "#9E9E9E",
         "nav-width": "230px"
       },
+    },
+    "app": {
+      "auto-update": true
     },
     "editor": {
       "font-size": 13,
@@ -130,6 +134,11 @@ const setTheme = async ()=> {
 //global events listeners
 window.addEventListener("contextmenu", async function(event) {
   event.preventDefault(); 
+});
+
+window.addEventListener("keydown", async function(event) {
+   if(event.key === "r" && event.ctrlKey === true)
+     event.preventDefault();
 });
 
 window.addEventListener("drop", async function(event) {
