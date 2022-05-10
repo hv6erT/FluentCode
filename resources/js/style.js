@@ -62,3 +62,18 @@ const hideNode = async nodeOrNodeSelector => {
   if(node && node.style.display !== "none")
     node.style.display = "none";
 }
+
+const showBottomNavNotification = async (message, time) => {
+  const node = document.getElementById("bottomNavShortInfo-span");
+
+  node.textContent = message;
+
+  if(typeof time === "number"){
+    setTimeout(async function(){
+      if(node.textContent === message)
+        node.textContent = "";
+    }, time)
+  }
+  else if(time !== undefined)
+    throw new Error("Invalid value of time param. Param should be a Number");
+}

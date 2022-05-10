@@ -240,6 +240,8 @@ class FileManager {
       await Neutralino.filesystem.writeFile(filePath, FileManager.files[filePath].getDoc());
       FileManager.files[filePath].changed = false;
     }
+
+    showBottomNavNotification("Saved", 3000);
   }
   static async saveAllFiles(){
     if(Object.keys(FileManager.files).length === 0)
@@ -252,6 +254,8 @@ class FileManager {
         FileManager.files[filePath].changed = false;
       }
     }
+
+    showBottomNavNotification("All files saved", 5000);
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){
