@@ -255,7 +255,7 @@ class FileManager {
       }
     }
 
-    showBottomNavNotification("All files saved", 5000);
+    showBottomNavNotification("Files saved", 5000);
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){

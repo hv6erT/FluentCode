@@ -24,17 +24,21 @@ Neutralino.events.on("settingsReady", async function(){
 
   await FileManager.startAutoSave();
 
-  if(settings.settings.app["auto-update"] === true){
+  if(settings.settings.app["auto-update"] === true){   
     try {
       const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
-
+      
       if(manifest.version !== NL_APPVERSION) {
         await Neutralino.updater.install();
-        await Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
+        Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
+        showBottomNavNotification("Updated successfully");
       }
     }
     catch(error) {
-      await Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
+      if(error.code !== "NE_UP_CUPDERR"){
+        Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
+        showBottomNavNotification("Update failed");
+      }
     }
   }
 });
