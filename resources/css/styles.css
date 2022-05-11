@@ -101,7 +101,7 @@ fluent-dialog{
   height: var(--bottom-nav-height);
   background-color: var(--accent-bg-color);
   border-top: 1px solid var(--third-bg-color);
-  font-size: 12px;
+  font-size: 13px;
   display: flex;
   padding: 0 5px;
 }
