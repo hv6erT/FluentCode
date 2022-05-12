@@ -31,13 +31,13 @@ Neutralino.events.on("settingsReady", async function(){
       if(manifest.version !== NL_APPVERSION) {
         await Neutralino.updater.install();
         Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
-        showBottomNavNotification("Updated successfully");
+        showBottomNavNotification("Updated successfully", 5000);
       }
     }
     catch(error) {
       if(error.code !== "NE_UP_CUPDERR"){
         Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
-        showBottomNavNotification("Update failed");
+        showBottomNavNotification("Update failed", 7000);
       }
     }
   }
@@ -64,25 +64,38 @@ Neutralino.events.on("serverOffline", async function(){
 
 Neutralino.events.on("windowClose", async function(options) {
   const defaultOptions = {
-    shouldClose: true
+    shouldCloseApp: true
   };
 
   options = {...defaultOptions, ...(options || {})};
-  
-  if(settings.settings.file["save-before-close"] === true)
+
+  const saveAllFilesBeforeClose = async function(){
     try{await FileManager.saveAllFiles();}catch(error){
-      const errorResponse = await Neutralino.os.showMessageBox("Error: Files could not be saved", `Error message: "${error.message}"`, "ABORT_RETRY_IGNORE", "ERROR");
+      const errorResponse = await Neutralino.os.showMessageBox("Error: Files cannot be saved", `Error message: "${error.message}"`, "ABORT_RETRY_IGNORE", "ERROR");
 
-      if(errorResponse === "ABORT"){
-        const savingConfirmResponse = await Neutralino.os.showMessageBox("Confirm close without save", `Are you sure you want to close Fluent Code? Your work and other changes would not be saved."`, "YES_NO", "QUESTION");
-
-        if(savingConfirmResponse === "YES" && options.shouldClose === true)
-          await Neutralino.app.exit();
-        else return;
+      if(errorResponse === "IGNORE"){
+        const savingConfirmResponse = await Neutralino.os.showMessageBox("Confirm to close without save", `Are you sure you want to close Fluent Code? Your changes would not be saved`, "YES_NO", "QUESTION");
+        
+        if(savingConfirmResponse === "NO")
+          return;
       }
       else if(errorResponse === "RETRY")
-        return Neutralino.events.dispatch("windowClose");
+        return Neutralino.events.dispatch("windowClose", options);
+      else if(errorResponse === "ABORT")
+        return;
     }
+  }
+  
+  if(settings.settings.file["save-before-close"] === true)
+    saveAllFilesBeforeClose();    
+  else{
+    const questionResponse = await Neutralino.os.showMessageBox("Unsaved changes", `Do you want to save your work?`, "YES_NO_CANCEL", "QUESTION");
+
+    if(questionResponse === "YES")
+      saveAllFilesBeforeClose();
+    else if(questionResponse === "CANCEL")
+      return;
+  }
 
   if(settings.hasChanged() === true)
     try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings, "", 4));}catch(error){
@@ -94,7 +107,7 @@ Neutralino.events.on("windowClose", async function(options) {
 
   await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
 
-  if(NL_OS !== "Darwin" && options.shouldClose === true)
+  if(NL_OS !== "Darwin" && options.shouldCloseApp === true)
     await Neutralino.app.exit();
 });
 
