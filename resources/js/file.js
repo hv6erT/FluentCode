@@ -241,7 +241,7 @@ class FileManager {
       FileManager.files[filePath].changed = false;
     }
 
-    showBottomNavNotification("Saved", 3000);
+    showBottomNavNotification("File saved", 3000);
   }
   static async saveAllFiles(){
     if(Object.keys(FileManager.files).length === 0)
