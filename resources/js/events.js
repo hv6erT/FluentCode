@@ -24,11 +24,11 @@ Neutralino.events.on("settingsReady", async function(){
 
   await FileManager.startAutoSave();
 
-  if(settings.settings.app["auto-update"] === true){   
+  if(settings.settings.app["auto-update"] === true){    
     try {
       const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
       
-      if(manifest.version !== NL_APPVERSION) {
+      if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
         await Neutralino.updater.install();
         Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
         showBottomNavNotification("Updated successfully", 5000);
