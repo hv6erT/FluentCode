@@ -2,8 +2,12 @@ class Keybindings{
   static #actions = {
     "createSplitView": async function(){createSplitView();},
     "exitSplitView": async function(){exitSplitView();},
+    "uploadFile": async function(){uploadFile();},
+    "createNewFile": async function(){createNewFile();},
+    "uploadFolder": async function(){uploadFolder();},
     "saveFile": async function(){FileManager.saveFile(FileManager.activeFilePath);},
-    "saveAllFiles": async function(){FileManager.saveAllFiles();}
+    "saveAllFiles": async function(){FileManager.saveAllFiles();},
+    "openSettings": async function(){showSettingsMain();}
   };
   static async executeKeybindingEvent(event){
     if(!event instanceof KeyboardEvent)

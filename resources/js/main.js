@@ -70,9 +70,13 @@ const setSettings = async () => {
       "templates": true
     },
     "keybindings": {
+      "Ctrl-F": "uploadFile",
+      "Ctrl-N": "createNewFile",
+      "Ctrl-D": "uploadFolder",
       "Ctrl-S": "saveAllFiles",
       "Ctrl-\\": "createSplitView",
-      "Ctrl-\/": "exitSplitView" 
+      "Ctrl-\/": "exitSplitView",
+      "Ctrl-I": "openSettings"
     }
   };
   
@@ -137,7 +141,11 @@ window.addEventListener("contextmenu", async function(event) {
 });
 
 window.addEventListener("keydown", async function(event) {
-   if(event.key === "r" && event.ctrlKey === true)
+  if(event.key === "f" && event.ctrlKey === true)
+     event.preventDefault();
+  if(event.key === "r" && event.ctrlKey === true)
+     event.preventDefault();
+  if(event.key === "u" && event.ctrlKey === true)
      event.preventDefault();
 });
 
