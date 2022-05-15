@@ -9,12 +9,7 @@ Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
   showContentMain();
   await openFilesAndEditorsFromStorage();
-
-  if(NL_ARGS.length > 1){
-    const filePath = normalizePath(NL_ARGS[1]);
-    await FileManager.openFile(filePath);
-    EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
-  }
+  await openFilesFromAppArgs();
 
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();

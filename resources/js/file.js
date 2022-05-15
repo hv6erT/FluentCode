@@ -62,6 +62,15 @@ const uploadFolder = async () => {
   EditorManager.showFileInEditor(EditorManager.activeEditorName, fileToShow);
 }
 
+const openFilesFromAppArgs = async () => {
+  if(NL_ARGS.length > 1){
+    const filePath = normalizePath(NL_ARGS[1]);
+    
+    await FileManager.openFile(filePath);
+    EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+  }
+}
+
 const openSettingsFile = async () => {
   await FileManager.openFile(userPreferences.settingsFilePath);
   EditorManager.showFileInEditor(EditorManager.activeEditorName, userPreferences.settingsFilePath);
