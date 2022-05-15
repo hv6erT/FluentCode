@@ -17,7 +17,7 @@ Neutralino.events.on("settingsReady", async function(){
   if(settings.settings.editor["controls-titles"] === false)
     Css.insertCSS(`[data-tooltip="title"]{ display: none !important;}`);
 
-  await FileManager.startAutoSave();
+  FileManager.startAutoSave();
 
   if(settings.settings.app["auto-update"] === true){    
     try {

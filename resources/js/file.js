@@ -286,15 +286,19 @@ class FileManager {
   static #fileAutoSaveInterval = null;
   static async startAutoSave(){
     if(settings.settings.file["auto-save"] === true && settings.settings.file["auto-save-time"] >= 1000)
-      FileManager.#fileAutoSaveInterval = setInterval(async function(){
-        await FileManager.saveAllFiles();
-      }, settings.settings.file["auto-save-time"]);
+
+      if(FileManager.#fileAutoSaveInterval === null)
+        FileManager.#fileAutoSaveInterval = setInterval(async function(){
+          await FileManager.saveAllFiles();
+        }, settings.settings.file["auto-save-time"]);
   }
   static async stopAutoSave(){
     if(settings.settings.file["auto-save"] === true)
       FileManager.saveAllFiles();
       
-    if(FileManager.#fileAutoSaveInterval !== null)
+    if(FileManager.#fileAutoSaveInterval !== null){
       clearInterval(FileManager.#fileAutoSaveInterval);
+      FileManager.#fileAutoSaveInterval = null;
+    }
   }
 }
