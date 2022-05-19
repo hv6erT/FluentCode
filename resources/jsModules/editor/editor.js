@@ -2,6 +2,7 @@ import File from "./file.js";
 
 import {EditorView, EditorState, Annotation} from "./codemirror.js";
 import {SearchQuery, setSearchQuery, getSearchQuery} from "./codemirror.js";
+import {undoDepth, redoDepth} from "./codemirror.js";
 
 const syncAnnotation = Annotation.define();
 
@@ -54,8 +55,14 @@ export default class Editor extends EventTarget {
   async undo(){
     (await import("./codemirror.js")).undoSelection(this.#view);
   }
+  getUndoDepth(){
+    return undoDepth(this.#view.state);
+  }
   async redo(){
     (await import("./codemirror.js")).redoSelection(this.#view);
+  }
+  getRedoDepth(){
+    return redoDepth(this.#view.state);
   }
   async insertText(text, position){
     if(typeof text !== "string")

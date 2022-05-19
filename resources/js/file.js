@@ -270,6 +270,7 @@ class FileManager {
   static async fileInfo(filePath, useTimeout = true){
     if(FileManager.isOpened(filePath) === false)
       return;
+    
     try{clearTimeout(FileManager.#fileInfoTimeout)}catch{}
 
   	const fileInfo = FileManager.files[filePath].fileInfo();

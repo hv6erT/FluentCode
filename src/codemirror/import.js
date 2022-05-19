@@ -2,7 +2,7 @@ export { EditorView, highlightSpecialChars, drawSelection, dropCursor, highlight
 export { EditorState, Annotation, StateField} from "@codemirror/state";
 export { indentOnInput, bracketMatching, foldGutter, foldKeymap, defaultHighlightStyle, HighlightStyle, syntaxHighlighting} from "@codemirror/language";
 export { tags} from "@lezer/highlight";
-export { defaultKeymap, indentWithTab, history, historyKeymap, undoSelection, redoSelection} from "@codemirror/commands";
+export { defaultKeymap, indentWithTab, history, historyKeymap, undoSelection, redoSelection, undoDepth, redoDepth} from "@codemirror/commands";
 export { highlightSelectionMatches, searchKeymap, openSearchPanel, closeSearchPanel, findNext, findPrevious, replaceNext, replaceAll, SearchQuery, setSearchQuery, getSearchQuery, search } from "@codemirror/search";
 export { autocompletion, completionKeymap, completeAnyWord, completeFromList, ifNotIn, closeBrackets, closeBracketsKeymap } from "@codemirror/autocomplete";
 export { lintKeymap } from "@codemirror/lint";

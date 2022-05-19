@@ -165,12 +165,14 @@ class EditorManager {
     EditorManager.editors[editorName].searchInEditor(config);
   }
   static async searchInfo(editorName){
-    const lastSearchQuery = EditorManager.editors[editorName].getCurrentSearchQuery() ?? {};
-
-    document.querySelector('[data-searchInfo="search"]').value = lastSearchQuery.search;
-    document.querySelector('[data-searchInfo="caseSensitive"]').checked = lastSearchQuery.caseSensitive;
-    document.querySelector('[data-searchInfo="regexp"]').checked = lastSearchQuery.regexp;
-    document.querySelector('[data-searchInfo="replace"]').value = lastSearchQuery.replace;
+    if(EditorManager.editors[editorName]){
+      const lastSearchQuery = EditorManager.editors[editorName].getCurrentSearchQuery() ?? {};
+  
+      document.querySelector('[data-searchInfo="search"]').value = lastSearchQuery.search;
+      document.querySelector('[data-searchInfo="caseSensitive"]').checked = lastSearchQuery.caseSensitive;
+      document.querySelector('[data-searchInfo="regexp"]').checked = lastSearchQuery.regexp;
+      document.querySelector('[data-searchInfo="replace"]').value = lastSearchQuery.replace;
+    }
   }
   static findNext(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])
@@ -191,10 +193,18 @@ class EditorManager {
   static undo(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])
       EditorManager.editors[editorName].undo();
+      EditorManager.undoAndRedoInfo(editorName);
   }
   static redo(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])
       EditorManager.editors[editorName].redo();
+    EditorManager.undoAndRedoInfo(editorName);
+  }
+  static async undoAndRedoInfo(editorName){
+    if(EditorManager.editors[editorName]){
+      document.querySelector('[data-undoAndRedoInfo="undo"]').disabled = (EditorManager.editors[editorName].getUndoDepth() === 0);
+      document.querySelector('[data-undoAndRedoInfo="redo"]').disabled = (EditorManager.editors[editorName].getRedoDepth() === 0);
+    }
   }
   static async copy(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName]){

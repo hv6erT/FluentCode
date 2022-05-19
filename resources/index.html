@@ -34,7 +34,7 @@
               <fluent-menu-item onclick="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
-          <form class="padding-y gap" id="searchAndReplace-form" role="search" style="border-right: 1px solid var(--third-bg-color);"></form>
+          <form class="padding-y gap" id="searchAndReplace-form" role="search" style="transition: width 1s ease-in-out; border-right: 1px solid var(--third-bg-color);"></form>
           <div class="flex padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="createSplitView-fluent-button" appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
             <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button> 
@@ -60,12 +60,12 @@
             <fluent-tooltip data-tooltip="title" anchor="pasteText-fluent-button" position="bottom">Paste</fluent-tooltip>   
           </div>
           <div class="padding-y">
-            <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
+            <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu'); EditorManager.undoAndRedoInfo(EditorManager.activeEditorName)" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
-              <fluent-menu-item onclick="EditorManager.undo();"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
-              <fluent-menu-item onclick="EditorManager.redo();"><div class="flex gap"><span class="fluent-icon fluent-icon--Redo"></span><span>Redo</span></div></fluent-menu-item>
+              <fluent-menu-item data-undoAndRedoInfo="undo" onclick="EditorManager.undo();" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
+              <fluent-menu-item data-undoAndRedoInfo="redo" onclick="EditorManager.redo();" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Redo"></span><span>Redo</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
-              <fluent-menu-item onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--ChromeClose"></span><span>Close all files</span></div></fluent-menu-item>
+              <fluent-menu-item onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageRemove"></span><span>Close all files</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
               <fluent-menu-item disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
@@ -200,7 +200,7 @@
       </nav>
       <section class="main-section">
         <nav class="side-nav">
-          <fluent-tabs class="padding-y margin-y margin-x" activeid="settingsTab-container" orientation="vertical">
+          <fluent-tabs class="padding-y margin-y margin-x" orientation="vertical">
             <fluent-tab id="settingsThemingTab-container"><a href="#settingsTheming-div" style="all: unset;">Theming</a></fluent-tab>
             <fluent-tab id="settingsAppTab-container"><a href="#settingsApp-div" style="all: unset;">App</a></fluent-tab>
             <fluent-tab id="settingsEditorTab-container"><a href="#settingsEditors-div" style="all: unset;">Editors</a></fluent-tab>
