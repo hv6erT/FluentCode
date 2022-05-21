@@ -76,6 +76,23 @@ const openSettingsFile = async () => {
   EditorManager.showFileInEditor(EditorManager.activeEditorName, userPreferences.settingsFilePath);
 }
 
+const saveAllFilesBeforeClose = async function(){
+  try{await FileManager.saveAllFiles();}catch(error){
+    const errorResponse = await Neutralino.os.showMessageBox("Error: Files cannot be saved", `Error message: "${error.message}"`, "ABORT_RETRY_IGNORE", "ERROR");
+
+    if(errorResponse === "IGNORE"){
+      const savingConfirmResponse = await Neutralino.os.showMessageBox("Confirm to close without save", `Are you sure you want to close Fluent Code? Your changes would not be saved`, "YES_NO", "QUESTION");
+        
+      if(savingConfirmResponse === "NO")
+        return;
+    }
+    else if(errorResponse === "RETRY")
+      return saveAllFilesBeforeClose();
+    else if(errorResponse === "ABORT")
+       return;
+  }
+}
+
 class FileManager {
   static files = {};
   static activeFilePath = null;

@@ -59,27 +59,10 @@ Neutralino.events.on("serverOffline", async function(){
 
 Neutralino.events.on("windowClose", async function(options) {
   const defaultOptions = {
-    shouldCloseApp: true
+    closeType: "EXIT" // EXIT || RESTART
   };
 
-  options = {...defaultOptions, ...(options || {})};
-
-  const saveAllFilesBeforeClose = async function(){
-    try{await FileManager.saveAllFiles();}catch(error){
-      const errorResponse = await Neutralino.os.showMessageBox("Error: Files cannot be saved", `Error message: "${error.message}"`, "ABORT_RETRY_IGNORE", "ERROR");
-
-      if(errorResponse === "IGNORE"){
-        const savingConfirmResponse = await Neutralino.os.showMessageBox("Confirm to close without save", `Are you sure you want to close Fluent Code? Your changes would not be saved`, "YES_NO", "QUESTION");
-        
-        if(savingConfirmResponse === "NO")
-          return;
-      }
-      else if(errorResponse === "RETRY")
-        return Neutralino.events.dispatch("windowClose", options);
-      else if(errorResponse === "ABORT")
-        return;
-    }
-  }
+  options = {...defaultOptions, ...(options.detail ?? {})};
   
   if(settings.settings.file["save-before-close"] === true)
     saveAllFilesBeforeClose();    
@@ -101,9 +84,16 @@ Neutralino.events.on("windowClose", async function(options) {
     }
 
   await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
-
-  if(NL_OS !== "Darwin" && options.shouldCloseApp === true)
-    await Neutralino.app.exit();
+  
+  if(options.closeType === "EXIT"){
+    if(NL_OS !== "Darwin")
+      await Neutralino.app.exit();
+  }
+  else if(options.closeType === "RESTART"){
+    await Neutralino.app.restartProcess();
+  }
+  else 
+    throw new Error("Unknown closeType option");
 });
 
 window.keyboardEventActions = (event, actionKey, action) => {
