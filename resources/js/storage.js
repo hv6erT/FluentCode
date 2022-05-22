@@ -13,9 +13,10 @@ const openFilesAndEditorsFromStorage = async () => {
       await EditorManager.openEditor(editorKey);
 
     const fileObjectToShow = editorObject[editorKey].active;
+    
     if(fileObjectToShow){
       for(const filePath in FileManager.files){
-        if(FileManager.files[filePath].toJSON() === JSON.stringify(fileObjectToShow)){
+        if(JSON.stringify(fileObject[filePath]) === JSON.stringify(fileObjectToShow)){
           await EditorManager.showFileInEditor(editorKey, filePath);
           return;
         }
@@ -44,6 +45,8 @@ class Storage{
     let fileObject = {};
     for(const fileKey in FileManager.files)
       fileObject[fileKey] = FileManager.files[fileKey].toSerelizedObject();
+
+    console.log(fileObject);
 
     await Neutralino.storage.setData("files", JSON.stringify(fileObject));
   }
