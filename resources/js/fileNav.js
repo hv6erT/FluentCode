@@ -2,15 +2,29 @@ const fileNavIcons = {
   "C": '<i class="devicon-c-plain colored"></i>',
   "C++": '<i class="devicon-cplusplus-plain colored"></i>',
   "C#": '<i class="devicon-csharp-plain colored"></i>',
+  "CoffeeScript": '<i class="devicon-coffeescript-original colored"></i>',
   "CSS": '<i class="devicon-css3-plain colored"></i>',
+  "Clojure": '<i class="devicon-clojure-line colored"></i>',
+  "ClojureScript": '<i class="devicon-clojurescript-plain colored"></i>',
+  "Dart": '<i class="devicon-dart-plain colored"></i>',
+  "Erlang": '<i class="devicon-erlang-plain colored"></i>',
+  "F#": '<i class="devicon-fsharp-plain colored"></i>',
   "HTML": '<i class="devicon-html5-plain colored"></i>',
   "Git files": '<i class="devicon-git-plain colored"></i>',
+  "GO": '<i class="devicon-go-original-wordmark colored"></i>',
   "Java": '<i class="devicon-java-plain colored"></i>',
   "JavaScript": '<i class="devicon-javascript-plain colored"></i>',
+  "Kotlin": ' <i class="devicon-kotlin-plain colored"></i>',
   "Lua": '<i class="devicon-lua-plain colored"></i>',
   "Node JS": '<i class="devicon-nodejs-plain colored"></i>',
+  "Objective-C": '<i class="devicon-objectivec-plain colored"></i>',
   "PHP": '<i class="devicon-php-plain colored"></i>',
   "Python": '<i class="devicon-python-plain colored"></i>',
+  "R": '<i class="devicon-r-original colored"></i>',
+  "Ruby": '<i class="devicon-ruby-plain colored"></i>',
+  "Sass": '<i class="devicon-sass-original colored"></i>',
+  "Scala": '<i class="devicon-scala-plain colored"></i>',
+  "Swift": '<i class="devicon-swift-plain colored"></i>',
   "TypeScript": '<i class="devicon-typescript-plain colored"></i>'
 };
 
@@ -86,6 +100,18 @@ class FileNav {
       FileNav.#fileItems[key].selected = false;
 
     FileNav.#fileItems[fileKey].selected = true;
+  }
+  static async renameItem(fileKey, newFileKey, newFileIconKey){
+    if(FileNav.#fileItems.hasOwnProperty(fileKey) === false || !newFileKey || FileNav.#fileItems.hasOwnProperty(newFileKey) === true || fileKey.slice(0, (fileKey.lastIndexOf("/"))) !== newFileKey.slice(0, (newFileKey.lastIndexOf("/"))))
+      return;
+
+    FileNav.#fileItems[newFileKey] = FileNav.#fileItems[fileKey];
+    delete FileNav.#fileItems[fileKey];
+
+    if(newFileIconKey)
+      FileNav.#fileItems[newFileKey].querySelector(".fileNavItemIcon-span").innerHTML = (fileNavIcons[newFileIconKey] !== undefined) ? fileNavIcons[newFileIconKey] : "";
+
+    FileNav.#fileItems[newFileKey].querySelector(".fileNavItemTitle-span").innerText = newFileKey.slice((newFileKey.lastIndexOf("/")+1));
   }
   static async removeItem(fileKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === false)
