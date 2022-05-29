@@ -53,7 +53,7 @@ export default class File extends EventTarget{
     this.changed = false; 
   }
   #state = null;
-  async init(doc) {
+  async init(doc){
     if(typeof doc !== "string")
       throw new Error("Doc param need to be typeof string");
 
@@ -67,9 +67,9 @@ export default class File extends EventTarget{
     if(didStateExist === true)
       this.dispatchEvent(new Event("file-state-change"));
   }
-  getDoc() {
+  getDoc(){
     if(this.isInitialized() === false)
-      throw new Error("Cannot get doc when file is not initialized");
+      return null;
 
     return this.#state.doc.toString();
   }
@@ -78,25 +78,25 @@ export default class File extends EventTarget{
       throw new Error("Invalid state value");
     this.#state = state;
   }
-  getState() {
+  getState(){
     if(this.isInitialized() === false)
-      throw new Error("Cannot get state when file is not initialized");
+      return null;
     
     return this.#state;
   }
-  isInitialized() {
+  isInitialized(){
     return (this.#state !== null);
   }
-  fileInfo(){
+  fileInfo() {
     return new FileInfo(this);
   }
-  toSerelizedObject() {
+  toSerelizedObject(){
     return {
       state: this.isInitialized() ? this.#state.toJSON() : null,
       language: this.language
     };	
   }
-  toJSON() {
+  toJSON(){
     return JSON.stringify(this.toSerelizedObject());
   }
   static getLanguageNameFromExtension(extName){

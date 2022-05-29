@@ -162,7 +162,7 @@ export default class Editor extends EventTarget {
       self.getView().update([tr]);
       if(!tr.changes.empty && !tr.annotation(syncAnnotation)){
         for(const editor of self.#synchronizedEditors){
-          if(editor.getActive() && self.getActive() && editor.getActive().path === self.getActive().path){
+          if(editor.getActive() && self.getActive() && editor.getActive().getDoc() === self.getActive().getDoc() && JSON.stringify(editor.getActive().options) === JSON.stringify(self.getActive().options)){ 
             editor.getView().dispatch({
               changes: tr.changes,
               annotations: syncAnnotation.of("editor-synchronize-changes")
@@ -186,7 +186,7 @@ export default class Editor extends EventTarget {
       if(!editor instanceof Editor)
         throw new Error("First argument could be only instance of Editor or Editor Array");
       
-      if(!this.#synchronizedEditors.includes(editor) && this.options.parentNode != editor.options.parentNode){
+      if(!this.#synchronizedEditors.includes(editor) && this != editor ){
         this.#synchronizedEditors.push(editor);
         this.dispatchEvent(new Event("editor-synchronize"));
       }
