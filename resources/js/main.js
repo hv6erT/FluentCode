@@ -9,13 +9,12 @@ window.normalizePath = (filePath) => {
 
 window.File = null;
 window.Editor = null;
-window.Css = null;
+window.Css = (await import("../jsModules/css/index.js")).default;
 window.settings = null;
 window.userPreferences = {
   colorMode: null,
   settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
-  updateManifestURL: "https://raw.githubusercontent.com/hv6erT/FluentCode/main/dist/update.json",
-  sideNavMinWidth: "220px"
+  updateManifestURL: "https://raw.githubusercontent.com/hv6erT/FluentCode/main/dist/update.json"
 };
 
 //other functions
@@ -89,8 +88,6 @@ const setSettings = async () => {
   }
 
   window.settings = new Settings(defaultSettings, userSettings);
-  
-  Neutralino.events.dispatch("settingsReady");
 }
 
 const setColorMode = async () => {
@@ -98,12 +95,7 @@ const setColorMode = async () => {
     userPreferences.colorMode = settings.settings.mode;
   else
     userPreferences.colorMode = (window.matchMedia("(prefers-color-scheme: light)").matches === true) ? "light" : "dark";
-
-  Neutralino.events.dispatch("colorReady");
 }
-
-import Css from "../jsModules/css/index.js";
-window.Css = Css;
 
 const setTheme = async ()=> {
   const include = ["accent-bg-color", "first-bg-color", "second-bg-color", "third-bg-color", "basic-color", "scrollbar-color"];
@@ -114,25 +106,30 @@ const setTheme = async ()=> {
     Css.setCSSVariable(property, value);
   }
 
-  Css.setCSSVariable("nav-width", `max(${settings.settings.modes[mode]["nav-width"]}, ${userPreferences.sideNavMinWidth})`);
-
-  Neutralino.events.dispatch("themeReady");
+  Css.setCSSVariable("nav-width", `max(${settings.settings.modes[mode]["nav-width"]}, var(--nav-min-width))`);
   
   Css.changeColorSchame(userPreferences.colorMode);
 }
-
+  
 (async function(){
   try{
     await setSettings();
     NL_LOADED.push("SETTINGS");
+    Neutralino.events.dispatch("settingsReady");
   }catch{
     Neutralino.os.showMessageBox("Settings error", "Try to delete file Documents/FluentCode/settings.json and launch app again. If no result reinstall the program.", "OK", "ERROR");
+    return;
   }
-  
+
   await setColorMode();
   NL_LOADED.push("COLOR");
+  Neutralino.events.dispatch("colorReady");
+  
   await setTheme();
   NL_LOADED.push("THEME");
+  Neutralino.events.dispatch("themeReady");
+
+  Neutralino.events.dispatch("appReady");
 })();
 
 //global events listeners
