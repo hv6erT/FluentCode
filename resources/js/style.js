@@ -37,6 +37,7 @@ const showSettingsMain = async () => {
   document.getElementById("loading-main").style.display = "none";
   document.getElementById("settings-main").style.display = "";
 }
+
 const toggleNodeDisplay = async nodeOrNodeSelector => {
   let node = null;
 
@@ -49,6 +50,18 @@ const toggleNodeDisplay = async nodeOrNodeSelector => {
     node.style.display = "";
   else if(node)
     node.style.display = "none";
+}
+
+const modifyNodeAttribute = async (nodeOrNodeSelector, attributeName, attributeValue) =>{
+  let node = null;
+
+  if(typeof nodeOrNodeSelector === "string")
+    node = document.querySelector(nodeOrNodeSelector);
+  else if(nodeOrNodeSelector instanceof Element)
+    node = nodeOrNodeSelector;
+
+  if(node)
+    node[attributeName] = attributeValue;
 }
 
 const hideNode = async nodeOrNodeSelector => {
