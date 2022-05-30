@@ -1,10 +1,3 @@
-window.addEventListener("DOMContentLoaded", async function() {
-  for(const fluentMenuItem of document.getElementsByTagName("fluent-menu-item"))
-    fluentMenuItem.addEventListener("mousedown", event => event.preventDefault());
-  
-  document.getElementById("settingsInfoAppVersion-div").innerText = NL_APPVERSION;
-});
-
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
   showContentMain();
@@ -40,6 +33,8 @@ Neutralino.events.on("settingsReady", async function(){
 
 window.addEventListener("load", async function() {
   Keybindings.setListener();
+
+  document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
 });
 
 Neutralino.events.on("windowFocus", async function (){
