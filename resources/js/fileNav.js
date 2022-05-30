@@ -70,6 +70,9 @@ class FileNav {
     FileNav.#fileItems[fileKey].addEventListener("click", function(){
       EditorManager.showFileInEditor(EditorManager.activeEditorName ?? 0, fileKey);
     });
+    FileNav.#fileItems[fileKey].addEventListener("dblclick", function(){
+      modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', false);
+    });
     
     if (fileNavIcons[fileIconKey] !== undefined)
       FileNav.#fileItems[fileKey].appendChild(iconNode);

@@ -46,8 +46,6 @@ class Storage{
     for(const fileKey in FileManager.files)
       fileObject[fileKey] = FileManager.files[fileKey].toSerelizedObject();
 
-    console.log(fileObject);
-
     await Neutralino.storage.setData("files", JSON.stringify(fileObject));
   }
   static async saveEditorKeys(){

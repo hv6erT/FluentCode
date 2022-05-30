@@ -1,5 +1,7 @@
 "use-strict";
 
+Neutralino.init();
+
 //global scope functions and vars
 window.normalizePath = (filePath) => {
   if (typeof filePath === "string")

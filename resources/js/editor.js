@@ -25,10 +25,7 @@ class EditorManager {
   static isOpened(editorName){
     return EditorManager.editors.hasOwnProperty(editorName);
   }
-  static async openEditor(editorName){
-    if(editorName === undefined)
-      editorName = Object.keys(EditorManager.editors).length;
-
+  static async openEditor(editorName = Object.keys(EditorManager.editors).length){
     const editorNode = document.createElement("div");
   	editorNode.classList.add("editor-div");
     editorNode.setAttribute("data-editorName", editorName);
