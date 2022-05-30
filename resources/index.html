@@ -14,13 +14,13 @@
     <script async type="module" src="js/main.js"></script>
     <script async type="module" src="js/assets.js"></script>
     
-    <script async src="js/events.js"></script>
     <script async src="js/style.js"></script>
     <script defer src="js/file.js"></script>
     <script defer src="js/editor.js"></script>
     <script defer src="js/fileNav.js"></script>
     <script defer src="js/storage.js"></script>
     <script async src="js/keybindings.js"></script>
+    <script async src="js/events.js"></script>
   </head>
   <body style="overflow: hidden;">
     <main id="content-main" style="display: none;">
@@ -29,9 +29,9 @@
           <div class="padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex gap"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
             <fluent-menu id="addFiles-fluent-menu" style="display: none;">
-              <fluent-menu-item onclick="uploadFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
-              <fluent-menu-item onclick="createNewFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
-              <fluent-menu-item onclick="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="uploadFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--OpenFile"></span><span>Open files</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="createNewFile();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageAdd"></span><span>New file</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
           <form class="padding-y gap" id="searchAndReplace-form" role="search" style="transition: width 1s ease-in-out; border-right: 1px solid var(--third-bg-color);"></form>
@@ -62,16 +62,16 @@
           <div class="padding-y">
             <fluent-button id="moreOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu'); EditorManager.undoAndRedoInfo(EditorManager.activeEditorName)" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
             <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
-              <fluent-menu-item data-undoAndRedoInfo="undo" onclick="EditorManager.undo();" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
-              <fluent-menu-item data-undoAndRedoInfo="redo" onclick="EditorManager.redo();" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Redo"></span><span>Redo</span></div></fluent-menu-item>
+              <fluent-menu-item data-undoAndRedoInfo="undo" onmousedown="EditorManager.undo()" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Undo"></span><span>Undo</span></div></fluent-menu-item>
+              <fluent-menu-item data-undoAndRedoInfo="redo" onmousedown="EditorManager.redo()" disabled="true"><div class="flex gap"><span class="fluent-icon fluent-icon--Redo"></span><span>Redo</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
-              <fluent-menu-item onclick="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageRemove"></span><span>Close all files</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageRemove"></span><span>Close all files</span></div></fluent-menu-item>
               <fluent-divider></fluent-divider>
-              <fluent-menu-item disabled><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
+              <fluent-menu-item onmousedown="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', false)"><div class="flex gap"><span class="fluent-icon fluent-icon--FileComment"></span><span>File properties</span></div></fluent-menu-item>
             </fluent-menu>
           </div>
           <div>
-            <fluent-tooltip data-tooltip="title" anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>   
+            <fluent-tooltip data-tooltip="title" anchor="moreOptions-fluent-button" position="bottom">More options</fluent-tooltip>
           </div>
         </div>
         <div class="flex">
@@ -132,44 +132,86 @@
       </section>
       <nav class="bottom-nav">
         <div id="bottomInfo-div" class="flex" style="width: inherit; display: none;">
-          <div class="flex justify-start gap" style="width: 40%; overflow: hidden; text-overflow: ellipsis;">
-            <span data-fileInfo="path"></span>
+          <div style="width: 40%; display: var(--bottom-nav-info-display); overflow: hidden; text-overflow: ellipsis;">
+            <div class="flex justify-start gap">
+              <span data-fileInfo="path"></span>
+            </div>
           </div>
-          <div class="flex justify-center gap" style="width: 20%; overflow: hidden; text-overflow: ellipsis; text-align: center;">
+          <div class="flex justify-center gap" style="width: var(--bottom-nav-short-info-width); overflow: hidden; text-overflow: ellipsis; text-align: center;">
             <span id="bottomNavShortInfo-span"></span>
           </div>
-          <div class="flex justify-end gap" style="min-width: fit-content; width: 40%; overflow: hidden; text-overflow: ellipsis;">
-            <span>Ln: </span><span data-editorInfo="currentLine"></span>
-            <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
-            <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
-            <span data-fileInfo="language"></span>
+          <div style="min-width: fit-content; width: 40%; display: var(--bottom-nav-info-display); overflow: hidden; text-overflow: ellipsis;">
+            <div class="flex justify-end gap">
+              <span>Ln: </span><span data-editorInfo="currentLine"></span>
+              <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
+              <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
+              <span data-fileInfo="language"></span>
+            </div>
           </div>
         </div>
       </nav>
-      <fluent-dialog id="searchOptions-fluent-dialog" style="display: none;">
+      <!-- Fluentcode dialogs -->
+      <fluent-dialog id="searchOptions-fluent-dialog" hidden="true">
         <div style="width: 100%; height: 100%; padding: 10px;">
           <div class="flex" style="width: 100%; height: 15%;">
             <div class="flex justify-start" style="width: 50%;">
               <span class="text-2xl">Edit search query</span>
             </div>
             <div class="flex justify-end" style="width: 50%;">
-              <fluent-button class="relative" appearance="stealth" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')" style="left: 5px; top: -5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span></fluent-button>
+              <fluent-button class="relative" appearance="stealth" onclick="modifyNodeAttribute('#searchOptions-fluent-dialog', 'hidden', true)" style="left: 5px; top: -5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span></fluent-button>
             </div>
           </div>
           <div class="flex flex-col margin-y" style="width: 100%; height: 75%; gap: 15px;">
-            <div class="flex gap">
+            <div class="flex gap" style="align-items: center;">
               <span class="text-lg">Search phrase: </span><fluent-text-field data-searchInfo="search"></fluent-text-field>
             </div>
             <fluent-checkbox data-searchInfo="caseSensitive">Case sensitivity</fluent-checkbox>
             <fluent-checkbox data-searchInfo="regexp">Using regexp in search query</fluent-checkbox>
             <fluent-divider></fluent-divider>
-            <div class="flex gap">
+            <div class="flex gap" style="align-items: center;">
               <span class="text-lg">Replace with: </span><fluent-text-field data-searchInfo="replace"></fluent-text-field>
             </div>
+            <fluent-divider></fluent-divider>
           </div>
           <div class="flex gap justify-end" style="width: 100%; height: 10%;">
-            <fluent-button appearance="accent" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog'); EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName);">Search new query</fluent-button>
-            <fluent-button appearance="outline" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')">Discard changes</fluent-button>
+            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#searchOptions-fluent-dialog', 'hidden', true); EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName);">Search new query</fluent-button>
+            <fluent-button appearance="outline" onclick="modifyNodeAttribute('#searchOptions-fluent-dialog', 'hidden', true)">Discard changes</fluent-button>
+          </div>
+        </div>
+      </fluent-dialog>
+      <fluent-dialog id="fileProperties-fluent-dialog" hidden="true">
+        <div style="width: 100%; height: 100%; padding: 10px;">
+          <div class="flex" style="width: 100%; height: 15%;">
+            <div class="flex justify-start" style="width: 50%;">
+              <span class="text-2xl">Edit file properties</span>
+            </div>
+            <div class="flex justify-end" style="width: 50%;">
+              <fluent-button class="relative" appearance="stealth" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)" style="left: 5px; top: -5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span></fluent-button>
+            </div>
+          </div>
+          <div class="flex flex-col margin-y" style="width: 100%; height: 75%; gap: 15px;">
+            <div class="flex gap" style="align-items: center;">
+              <span class="text-lg">Size:</span><fluent-badge data-filePropertiesInfo="size"></fluent-badge>
+            </div>
+            <div class="flex gap" style="align-items: center;">
+              <span class="text-lg">Creation date: </span><fluent-badge data-filePropertiesInfo="creationDate"></fluent-badge>
+            </div>
+            <div class="flex gap" style="align-items: center;">
+              <span class="text-lg">Modify date: </span><fluent-badge data-filePropertiesInfo="modifyDate"></fluent-badge>
+            </div>
+            <fluent-divider></fluent-divider>
+            <span class="text-xl">Rename file </span>
+            <div class="flex gap">
+              <div class="flex gap" style="align-items: center;">
+                <span class="text-lg">New file name: </span>
+                <fluent-text-field></fluent-text-field>
+              </div>
+              <fluent-button appearance="accent" class="margin-y">Confirm</fluent-button>
+            </div>
+            <fluent-divider></fluent-divider>
+          </div>
+          <div class="flex gap justify-end" style="width: 100%; height: 10%;">
+            <fluent-button appearance="outline" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)">Close</fluent-button>
           </div>
         </div>
       </fluent-dialog>
@@ -453,12 +495,13 @@
               <header>Info</header>
               <span>Check current version and read more about Fluent Code</span>
               <div class="flex flex-col" style="gap: 20px;">
-                <div class="flex" style="gap: 20px; align-items: flex-end;">
-                  <div>
-                    <h2>Fluent Code version</h2>
-                    <span>Your Fluent Code app version</span>
-                  </div>
-                  <fluent-badge id="settingsInfoAppVersion-div"></fluent-badge>
+                <div>
+                  <h2>Fluent Code version</h2>
+                  <span>Check version of your compilation</span>
+                </div>
+                <div class="flex gap">
+                  <span>Fluent Code version: </span>
+                  <fluent-badge data-appInfo="version"></fluent-badge>
                 </div>
               </div>
               <div class="flex flex-col" style="gap: 20px;">
@@ -467,24 +510,19 @@
                   <span>Licenses, third part packages and others</span>
                 </div>
                 <div class="flex flex-col" style="gap: 20px;">
-                  <div>
-                    <h3>Fluent Code license</h3>
-                    <span>License of Fluent Code</span>
-                  </div>
                   <div>Fluent Code elements, code and packages are licensed under <span class="font-bold">MIT</span> license.</div>
                   <div>Fluent Code installers and other distribution forms are licensed under <span class="font-bold">Creative Commons License Attribution-ShareAlike 4.0</span></div>
                 </div>
                 <div class="flex flex-col" style="gap: 20px;">
                   <div>
                     <h3>Fluent Code third part packages</h3>
-                    <span>License of third part packages</span>
                   </div>
                   <fluent-accordion>
                     <fluent-accordion-item>
                       <span slot="heading">Third part packages</span>
-                      <div class="flex flex-col" style="max-width: 500px; gap: 10px;">
-                        <ul style="list-style-type: '► '; ">
-                          <span>Fluent Code depends on this packages:</span>
+                      <div class="flex flex-col margin-x margin-y" style="max-width: 500px;">
+                        <span>Fluent Code depends on this packages:</span>
+                        <ul style="list-style-type: '> '; border-left: 1px solid var(--scrollbar-color);">
                           <li>Neutralino JS</li>
                           <li>Codemirror 6</li>
                           <li>Fluent WebComponents</li>

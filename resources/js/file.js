@@ -160,7 +160,7 @@ class FileManager {
           <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
-          <fluent-button id="searchOptions-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#searchOptions-fluent-dialog')"><span class="fluent-icon fluent-icon--DocumentSearch"></span></fluent-button>
+          <fluent-button id="searchOptions-fluent-button" appearance="stealth" onclick="modifyNodeAttribute('#searchOptions-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--DocumentSearch"></span></fluent-button>
           <fluent-text-field name="replace" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
           <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
@@ -212,6 +212,7 @@ class FileManager {
     
     FileManager.activeFile = filePath;
     FileManager.fileInfo(filePath, false);
+    FileManager.filePropertiesInfo(filePath);
   }
   static async closeFile(filePath){
     if (FileManager.isOpened(filePath) === false)
@@ -256,6 +257,20 @@ class FileManager {
     }
     
   }
+  static async renameFile(filePath, newFilePath){
+    if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))))
+      return;
+
+    try{await Neutralino.filesystem.moveFile(filePath, newFilePath);}catch{
+      Neutralino.os.showMessageBox("Error: Cannot rename file", `Unable to rename file, error message: ${error.message}`, "OK", "ERROR");
+      return;
+    }
+
+    FileManager.files[newFilePath] = FileManager.files[filePath];
+    delete FileManager.files[filePath];
+
+    await FileNav.renameItem(filePath, newFilePath);
+  }
   static async saveFile(filePath){
     if(FileManager.isOpened(filePath) === false || FileManager.isInitialized(filePath) === false)
       return;
@@ -282,6 +297,18 @@ class FileManager {
     }
 
     showBottomNavNotification("Files saved", 5000);
+  }
+  static async filePropertiesInfo(filePath){
+    if(FileManager.isOpened(filePath) === false)
+      return;
+    
+    const fileStats = await Neutralino.filesystem.getStats(filePath);
+
+    const fileSizeUnits = ["B", "KB", "MB", "GB", "TB", "PB"];
+    
+    document.querySelector('[data-filePropertiesInfo="size"]').textContent = (fileStats.size/Math.pow(1024, Math.floor(Math.log2(fileStats.size)/10))).toFixed(1) + " " +fileSizeUnits[ Math.floor(Math.log2(fileStats.size)/10)];;
+    document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = fileStats.createdAt ?? "?";
+    document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = fileStats.modifiedAt ?? "?";
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){
