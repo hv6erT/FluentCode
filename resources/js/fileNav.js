@@ -67,10 +67,13 @@ class FileNav {
     FileNav.#fileItems[fileKey] = document.createElement("fluent-tree-item");
     FileNav.#fileItems[fileKey].className = "fileNavItem margin-y  margin-top";
     FileNav.#fileItems[fileKey].setAttribute("data-fileNavItem", fileKey);
-    FileNav.#fileItems[fileKey].addEventListener("click", function(){
-      EditorManager.showFileInEditor(EditorManager.activeEditorName ?? 0, fileKey);
+    FileNav.#fileItems[fileKey].addEventListener("click", async function(){
+      if(FileManager.activeFilePath !== fileKey)
+        EditorManager.showFileInEditor(EditorManager.activeEditorName ?? 0, fileKey);
+      else
+        this.selected = true;
     });
-    FileNav.#fileItems[fileKey].addEventListener("dblclick", function(){
+    FileNav.#fileItems[fileKey].addEventListener("dblclick", async function(){
       modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', false);
     });
     
@@ -87,11 +90,26 @@ class FileNav {
   static async #addGroupItem(folderKey){
     if(FileNav.#groupItems.hasOwnProperty(folderKey) === true)
       return;
+
+    const titleNode = document.createElement("span");
+    titleNode.innerText = folderKey;
+    titleNode.addEventListener("click", async function(){
+      FileNav.#groupItems[folderKey].expanded = !FileNav.#groupItems[folderKey].expanded;
+    });
     
     FileNav.#groupItems[folderKey] = document.createElement("fluent-tree-item");
     FileNav.#groupItems[folderKey].className = "margin-y margin-top";
     FileNav.#groupItems[folderKey].setAttribute("data-fileNavGroupItem", folderKey);
-    FileNav.#groupItems[folderKey].innerText = folderKey;
+    FileNav.#groupItems[folderKey].addEventListener("click", async function(event){
+      if(this.expanded === false && FileManager.activeFilePath.includes(folderKey))
+        this.selected = true;
+      else{
+        this.selected = false;
+        FileNav.changeActive(FileManager.activeFilePath);
+      }
+    });
+
+    FileNav.#groupItems[folderKey].appendChild(titleNode);
     
     FileNav.#fileNavNode.prepend(FileNav.#groupItems[folderKey]);
   }
