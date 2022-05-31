@@ -205,12 +205,12 @@ class FileManager {
     if (FileManager.isOpened(filePath) === false)
       return;
     
-    if (FileManager.activeFile === filePath)
+    if (FileManager.activeFilePath === filePath)
       return;
 
     await FileNav.changeActive(filePath);
     
-    FileManager.activeFile = filePath;
+    FileManager.activeFilePath = filePath;
     FileManager.fileInfo(filePath, false);
     FileManager.filePropertiesInfo(filePath);
   }
@@ -247,7 +247,7 @@ class FileManager {
     showEditorStartPageArticle();
     
     FileManager.files = [];
-    FileManager.activeFile = null;
+    FileManager.activeFilePath = null;
 
     await FileNav.removeAllItems();
 
