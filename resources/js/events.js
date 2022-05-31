@@ -20,6 +20,10 @@ Neutralino.events.on("settingsReady", async function(){
         await Neutralino.updater.install();
         Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
         showBottomNavNotification("Updated successfully", 5000);
+
+        Neutralino.events.on("windowBlur", async function () {
+          await Neutralino.events.dispatch("windowClose", {closeType: "RESTART"});
+        });
       }
     }
     catch(error) {
