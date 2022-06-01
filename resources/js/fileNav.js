@@ -74,7 +74,7 @@ class FileNav {
         this.selected = true;
     });
     FileNav.#fileItems[fileKey].addEventListener("dblclick", async function(){
-      modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', false);
+      document.getElementById('fileProperties-fluent-dialog').hidden = false;
     });
     
     if (fileNavIcons[fileIconKey] !== undefined)
@@ -178,8 +178,12 @@ class FileNav {
   static async searchInFileItems(searchQuery){
     FileNav.#searchNavNode.innerHTML = "";
     
-    if(searchQuery === "")
+    if(searchQuery === ""){
+      document.getElementById("sideNav-fluent-tabs").activeid = "fileNavTab-container";
       return;
+    }
+    else
+      document.getElementById("sideNav-fluent-tabs").activeid = "searchNavTab-container";
     
     for(const key in FileNav.#fileItems){
       if(key.includes(searchQuery) === true){

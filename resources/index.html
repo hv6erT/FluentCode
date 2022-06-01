@@ -84,9 +84,9 @@
       <section class="main-section">
         <nav id="fileSide-nav" class="side-nav">
           <div class="margin-x padding-x margin-y flex justify-center">
-            <fluent-search style="width: 100%;" appearance="outline" placeholder="Search in files" oninput="FileNav.searchInFileItems(this.value)"></fluent-search>
+            <fluent-search style="width: 100%;" appearance="outline" placeholder="Search in files" oninput='FileNav.searchInFileItems(this.value)'></fluent-search>
           </div>
-          <fluent-tabs activeid="fileNavTab-container">
+          <fluent-tabs id="sideNav-fluent-tabs" activeid="fileNavTab-container">
             <fluent-tab id="fileNavTab-container" style="padding: 0px calc(calc(var(--nav-width) - 80px) / 4);">Files</fluent-tab>
             <fluent-tab id="searchNavTab-container" style="padding: 0px calc(calc(var(--nav-width) - 80px) / 4);">Search</fluent-tab>
             <fluent-tab-panel>
