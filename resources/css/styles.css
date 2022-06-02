@@ -1,12 +1,23 @@
 /*default styles*/
 :root{
+  /*css variables*/
   --top-nav-height: 43px;
   --bottom-nav-height: 22px;
+  --bottom-nav-info-display: block;
+  --bottom-nav-short-info-width: 20%;
+  --nav-min-width: 220px;
+  /*otehr styles*/
   -webkit-user-select: none;
   user-select: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
   color: var(--basic-color);
+}
+@media (max-width: 500px){
+  :root{
+    --bottom-nav-info-display: none;
+    --bottom-nav-short-info-width: 100%;
+  }
 }
 html, body{
   padding: 0;
@@ -76,6 +87,12 @@ h1, h2, h3, h4, h5, h6{
   gap: 5px;
 }
 /*fluent components*/
+fluent-menu, fluent-menu-item,
+fluent-button, fluent-checkbox, fluent-select, fluent-tooltip, fluent-radio-group, fluent-tree-view,
+fluent-textfield, fluent-text-area, fluent-number-field, fluent-search,
+fluent-breadcrumb, fluent-tabs, fluent-badge, fluent-anchor, fluent-accordion, fluent-card{
+  -webkit-app-region: no-drag;
+}
 fluent-menu{
   position: absolute;
   z-index: 999;
