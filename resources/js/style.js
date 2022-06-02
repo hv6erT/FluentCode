@@ -90,3 +90,37 @@ const showBottomNavNotification = async (message, time) => {
   else if(time !== undefined)
     throw new Error("Invalid value of time param. Param should be a Number");
 }
+
+const enableTopNavButtons = async () => {
+  const nodeIdList = [
+    "createSplitView-fluent-button",
+    "exitSplitView-fluent-button",
+    "saveAllFiles-fluent-button",
+    "cutText-fluent-button",
+    "copyText-fluent-button",
+    "pasteText-fluent-button",
+    "closeAllFiles-fluent-menu-item",
+    "fileProperties-fluent-menu-item"
+  ];
+
+  for(const nodeId of nodeIdList)
+    document.getElementById(nodeId).disabled = false;
+}
+
+const disableTopNavButtons = async () => {
+  const nodeIdList = [
+    "createSplitView-fluent-button",
+    "exitSplitView-fluent-button",
+    "saveAllFiles-fluent-button",
+    "cutText-fluent-button",
+    "copyText-fluent-button",
+    "pasteText-fluent-button",
+    "editorUndo-fluent-menu-item",
+    "editorRedo-fluent-menu-item",
+    "closeAllFiles-fluent-menu-item",
+    "fileProperties-fluent-menu-item"
+  ];
+
+  for(const nodeId of nodeIdList)
+    document.getElementById(nodeId).disabled = true;
+}

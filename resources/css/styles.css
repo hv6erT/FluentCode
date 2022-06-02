@@ -43,6 +43,7 @@ h1, h2, h3, h4, h5, h6{
 *{
   box-sizing: border-box;
   scroll-behavior: smooth;
+  cursor: auto !important;
 }
 ::-webkit-scrollbar
 {
@@ -109,14 +110,13 @@ fluent-dialog{
   width: 100vw;
   height: var(--top-nav-height);
   background-color: var(--second-bg-color);
-  border-bottom: 1px solid var(--third-bg-color);
   display: flex;
   padding: 5px;
 }
 .bottom-nav{
   width: 100vw;
   height: var(--bottom-nav-height);
-  background-color: var(--accent-bg-color);
+  background-color: var(--first-bg-color);
   border-top: 1px solid var(--third-bg-color);
   font-size: 13px;
   display: flex;

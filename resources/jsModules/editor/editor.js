@@ -134,6 +134,12 @@ export default class Editor extends EventTarget {
     this.#view.dispatch({effects: EditorView.scrollIntoView(EditorInfo.getCurrentPosition(this).currentPosition || 0)})
     this.#view.focus();
   }
+  async changeToDefaultState(){
+    await this.compareEditorChanges();
+    this.#active = null;
+
+    this.#view.setState(this.options.defaultState);
+  }
   async searchInEditor(config){
     if(!config)
       throw new Error("Wrong value of config param");

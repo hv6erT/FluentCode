@@ -4,6 +4,9 @@ Neutralino.events.on("settingsReady", async function(){
   await openFilesAndEditorsFromStorage();
   await openFilesFromAppArgs();
 
+  if(Object.keys(FileManager.files).length === 0)
+    disableTopNavButtons();
+
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();
 

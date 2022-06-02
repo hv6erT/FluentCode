@@ -66,6 +66,9 @@ class EditorManager {
 
     EditorManager.editorInfo(editorName, false);
   }
+  static async showDefaultPage(editorName){
+    EditorManager.editors[editorName].changeToDefaultState();
+  }
   static async showFileInEditor(editorName, filePath){
     if (FileManager.isOpened(filePath) === false || EditorManager.isOpened(editorName) === false)
       return;

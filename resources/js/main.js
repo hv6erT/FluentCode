@@ -44,7 +44,7 @@ const setSettings = async () => {
         "accent-bg-color": "#201f1e",
         "first-bg-color": "#191919",
         "second-bg-color": "#272727",
-        "third-bg-color": "#373737",
+        "third-bg-color": "#393939",
         "basic-color": "#ffffff",
         "scrollbar-color": "#9E9E9E",
         "nav-width": "230px"

@@ -156,7 +156,7 @@ class FileManager {
       colorPreview: settings.settings.editor["color-preview"],
       customSelectionTooltip: false,
       customSearchPanel: 
-        `<div class="flex gap">
+        `<div class="flex gap margin-y" style="border-right: 1px solid var(--third-bg-color);">
           <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
@@ -193,6 +193,7 @@ class FileManager {
     });
 
     await FileNav.addItem(filePath, FileManager.files[filePath].language);
+    enableTopNavButtons();
     
   }
   static async initializeFile(filePath){
@@ -231,9 +232,12 @@ class FileManager {
       showEditorStartPageArticle();
       FileManager.activeFilePath = null;
       if(Object.keys(EditorManager.editors).length > 1){
-        for(let i = (Object.keys(EditorManager.editors).length - 1); i>1; i--)
+        for(let i = (Object.keys(EditorManager.editors).length - 1); i > 1; i--)
           EditorManager.closeEditor(Object.keys(EditorManager.editors)[i]);
       }
+
+      EditorManager.showDefaultPage(0);
+      disableTopNavButtons();
     }
   	
 	delete FileManager.files[filePath];
@@ -255,7 +259,9 @@ class FileManager {
       for(let i = (Object.keys(EditorManager.editors).length - 1); i>1; i--)
         EditorManager.closeEditor(Object.keys(EditorManager.editors)[i]);
     }
-    
+
+    EditorManager.showDefaultPage(0);
+    disableTopNavButtons();
   }
   static async renameFile(filePath, newFilePath){
     if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))))
