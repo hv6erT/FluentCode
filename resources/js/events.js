@@ -10,9 +10,6 @@ Neutralino.events.on("settingsReady", async function(){
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();
 
-  if(settings.settings.editor["controls-titles"] === false)
-    Css.insertCSS(`[data-tooltip="title"]{ display: none !important;}`);
-
   FileManager.startAutoSave();
 
   if(settings.settings.app["auto-update"] === true){    

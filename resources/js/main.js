@@ -59,7 +59,6 @@ const setSettings = async () => {
       "tab-size": 4,
       "color-preview": true,
       "progress-bar": false,
-      "controls-titles": true,
       "selection-tooltip": false,
       "language-autocompletion": true,
       "any-word-autocompletion": true

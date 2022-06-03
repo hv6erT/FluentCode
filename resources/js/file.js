@@ -165,13 +165,6 @@ class FileManager {
           <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
         </div>
-        <div>
-          <fluent-tooltip data-tooltip="title" anchor="findPrevious-fluent-button" position="bottom">Find previous</fluent-tooltip>   
-          <fluent-tooltip data-tooltip="title" anchor="findNext-fluent-button" position="bottom">Find next</fluent-tooltip>   
-          <fluent-tooltip data-tooltip="title" anchor="searchOptions-fluent-button" position="bottom">Search options</fluent-tooltip>  
-          <fluent-tooltip data-tooltip="title" anchor="replaceNext-fluent-button" position="bottom">Replace next</fluent-tooltip>   
-          <fluent-tooltip data-tooltip="title" anchor="replaceAll-fluent-button" position="bottom">Replace all</fluent-tooltip>   
-        </div>
         `,
       languageAutocomplete: settings.settings.editor["language-autocompletion"],
       anyWordAutocomplete: settings.settings.editor["any-word-autocompletion"]
