@@ -1,8 +1,8 @@
 /*default styles*/
 :root{
   /*css variables*/
-  --top-nav-height: 43px;
-  --bottom-nav-height: 22px;
+  --top-nav-height: 45px;
+  --bottom-nav-height: 30px;
   --bottom-nav-info-display: block;
   --bottom-nav-short-info-width: 20%;
   --nav-min-width: 220px;
@@ -111,7 +111,7 @@ fluent-dialog{
   height: var(--top-nav-height);
   background-color: var(--second-bg-color);
   display: flex;
-  padding: 5px;
+  padding: 7px 5px;
 }
 .bottom-nav{
   width: 100vw;
@@ -120,7 +120,7 @@ fluent-dialog{
   border-top: 1px solid var(--third-bg-color);
   font-size: 13px;
   display: flex;
-  padding: 0 5px;
+  padding: 5px;
 }
 .side-nav{
   width: var(--nav-width);

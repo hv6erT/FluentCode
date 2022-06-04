@@ -24,7 +24,7 @@
   </head>
   <body style="overflow: hidden;">
     <main id="content-main" style="display: none;">
-      <nav class="top-nav justify-between">
+      <nav id="topEditorPanel-nav" class="top-nav justify-between">
         <div class="flex">
           <div class="padding-y gap" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#addFiles-fluent-menu')" onblur="hideNode('#addFiles-fluent-menu')"><div class="flex gap"><span class="fluent-icon fluent-icon--AddTo"></span><span>Add files</span></div></fluent-button>
@@ -197,7 +197,7 @@
       </fluent-dialog>
     </main>
     <main id="settings-main" style="display: none;">
-      <nav class="top-nav justify-between">
+      <nav id="topSettingsPanel-nav" class="top-nav justify-between">
         <div class="flex">
           <div class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
             <fluent-button id="backFromSettings-fluent-button" appearance="stealth" onclick="showContentMain();"><span class="fluent-icon fluent-icon--Back"></span></fluent-button>
