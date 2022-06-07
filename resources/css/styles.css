@@ -5,13 +5,19 @@
   --bottom-nav-height: 30px;
   --bottom-nav-info-display: block;
   --bottom-nav-short-info-width: 20%;
-  --nav-min-width: 220px;
+  --nav-width: 230px;
+  --panel-height: 70vh;
   /*otehr styles*/
   -webkit-user-select: none;
   user-select: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
   color: var(--basic-color);
+}
+@media (max-width: 1050px){
+  :root{
+    --top-nav-height: 90px;
+  }
 }
 @media (max-width: 500px){
   :root{
@@ -25,11 +31,11 @@ html, body{
   position: fixed;
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 main{
   width: 100vw;
   height: 100vh;
-  background-color: var(--first-bg-color);
   position: fixed;
   top: 0;
   left: 0;
@@ -88,36 +94,51 @@ h1, h2, h3, h4, h5, h6{
   gap: 5px;
 }
 /*fluent components*/
-fluent-menu, fluent-menu-item,
-fluent-button, fluent-checkbox, fluent-select, fluent-tooltip, fluent-radio-group, fluent-tree-view,
-fluent-textfield, fluent-text-area, fluent-number-field, fluent-search,
-fluent-breadcrumb, fluent-tabs, fluent-badge, fluent-anchor, fluent-accordion, fluent-card{
-  -webkit-app-region: no-drag;
-}
 fluent-menu{
   position: absolute;
   z-index: 999;
   margin-top: 10px;
 }
+fluent-button{
+  margin-left: 2px;
+  margin-right: 2px;
+}
 fluent-tab-panel{
   padding: 0;
 }
 fluent-dialog{
-  --dialog-height: 380px
+  --dialog-width: 600px;
+  --dialog-height: var(--panel-height);
+}
+fluent-dialog fluent-tab-panel{
+  height: calc(var(--panel-height) - 140px);
+}
+fluent-tab-panel{
+  overflow: auto;
+}
+fluent-tree-item{
+  --tree-item-nested-width: 0px;
+}
+fluent-card{
+  background-color: var(--first-bg-color);
+}
+fluent-accordion{
+  overflow: auto;
 }
 /*default classes*/
-.top-nav{
-  width: 100vw;
+.main{
+  background-color: var(--first-bg-color);
+}
+.topNav-fluent-toolbar{
+  width: 100%;
   height: var(--top-nav-height);
-  background-color: var(--second-bg-color);
-  display: flex;
-  padding: 7px 5px;
+  padding: 5px;
 }
 .bottom-nav{
   width: 100vw;
   height: var(--bottom-nav-height);
-  background-color: var(--first-bg-color);
   border-top: 1px solid var(--third-bg-color);
+  background-color: var(--first-bg-color);
   font-size: 13px;
   display: flex;
   padding: 5px;
@@ -125,7 +146,6 @@ fluent-dialog{
 .side-nav{
   width: var(--nav-width);
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
-  background-color: var(--first-bg-color);
 }
 .side-nav *{
   max-width: calc(var(--nav-width) - 10px);
@@ -162,9 +182,6 @@ fluent-dialog{
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
   background-color: var(--first-bg-color);
   border-left: 1px solid var(--third-bg-color);
-  border-right: 1px solid var(--third-bg-color);
-  display: flex;
-  overflow: auto;
 }
 .main-section{
   width: 100vw;
@@ -173,7 +190,12 @@ fluent-dialog{
   display: flex;
   overflow: hidden;
 }
+.editorContainer-div{
+  overflow: auto;
+  width: calc(100vw - var(--nav-width));
+  display: flex;
+}
 .editor-div{
   overflow: auto;
-  height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+  height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
 }

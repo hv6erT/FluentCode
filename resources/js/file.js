@@ -156,12 +156,18 @@ class FileManager {
       colorPreview: settings.settings.editor["color-preview"],
       customSelectionTooltip: false,
       customSearchPanel: 
-        `<div class="flex gap margin-y" style="border-right: 1px solid var(--third-bg-color);">
-          <fluent-text-field name="search" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
+        `<div class="flex">
+          <fluent-text-field name="search" class="margin-y" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
-          <fluent-button id="searchOptions-fluent-button" appearance="stealth" onclick="modifyNodeAttribute('#searchOptions-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--DocumentSearch"></span></fluent-button>
-          <fluent-text-field name="replace" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
+          <div>
+            <fluent-button id="searchOptions-fluent-button" appearance="stealth" onclick='toggleNodeDisplay("#searchOptions-fluent-menu"); EditorManager.searchInfo(EditorManager.activeEditorName);'><span class="fluent-icon fluent-icon--FilterSettings"></span></fluent-button>
+            <fluent-menu id="searchOptions-fluent-menu" class="flex flex-col padding-x padding-y gap" style="display: none;">
+              <fluent-checkbox onchange="EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName)" data-searchInfo="caseSensitive" class="padding-x">Case sensitivity</fluent-checkbox>
+              <fluent-checkbox onchange="EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName)" data-searchInfo="regexp" class="padding-x">Using regexp in search query</fluent-checkbox>
+            </fluent-menu>
+          </div>
+          <fluent-text-field name="replace" class="margin-y" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
           <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
         </div>
@@ -185,9 +191,7 @@ class FileManager {
       EditorManager.editorInfo(EditorManager.activeEditorName);	
     });
 
-    await FileNav.addItem(filePath, FileManager.files[filePath].language);
-    enableTopNavButtons();
-    
+    await FileNav.addItem(filePath, FileManager.files[filePath].language);   
   }
   static async initializeFile(filePath){
     if(FileManager.isOpened(filePath) === false)
@@ -230,7 +234,6 @@ class FileManager {
       }
 
       EditorManager.showDefaultPage(0);
-      disableTopNavButtons();
     }
   	
 	delete FileManager.files[filePath];
@@ -254,7 +257,6 @@ class FileManager {
     }
 
     EditorManager.showDefaultPage(0);
-    disableTopNavButtons();
   }
   static async renameFile(filePath, newFilePath){
     if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))))

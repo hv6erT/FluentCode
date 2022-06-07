@@ -32,8 +32,7 @@ class FileNav {
   static #fileItems = {};
   static #searchItems = {};
   static #groupItems = {};
-  static #fileNavNode = document.getElementById("fileNav-container");
-  static #searchNavNode = document.getElementById("searchNav-container");
+  static #fileNavNode = document.getElementById("fileNavContainer-div");
   static async addItem(fileKey, fileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === true)
       return;
@@ -72,9 +71,6 @@ class FileNav {
         EditorManager.showFileInEditor(EditorManager.activeEditorName ?? 0, fileKey);
       else
         this.selected = true;
-    });
-    FileNav.#fileItems[fileKey].addEventListener("dblclick", async function(){
-      document.getElementById('fileProperties-fluent-dialog').hidden = false;
     });
     
     if (fileNavIcons[fileIconKey] !== undefined)
@@ -175,7 +171,7 @@ class FileNav {
     FileNav.#groupItems[folderKey].remove();
     delete FileNav.#groupItems[folderKey];
   }
-  static async searchInFileItems(searchQuery){
+  /*static async searchInFileItems(searchQuery){
     FileNav.#searchNavNode.innerHTML = "";
     
     if(searchQuery === ""){
@@ -191,5 +187,5 @@ class FileNav {
         FileNav.#searchNavNode.appendChild(FileNav.#searchItems[key]);
       }
     }
-  }
+  }*/
 }

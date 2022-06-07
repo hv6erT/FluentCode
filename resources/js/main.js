@@ -35,8 +35,7 @@ const setSettings = async () => {
         "second-bg-color": "#ffffff",
         "third-bg-color": "#e6e6e6",
         "basic-color": "#191919",
-        "scrollbar-color": "#898989",
-        "nav-width": "230px"
+        "scrollbar-color": "#898989"
       },
       "dark-mode": {
         "theme": "../jsModules/theme/webidea-dark.js",
@@ -46,8 +45,7 @@ const setSettings = async () => {
         "second-bg-color": "#333333",
         "third-bg-color": "#393939",
         "basic-color": "#e1e1e1",
-        "scrollbar-color": "#9E9E9E",
-        "nav-width": "230px"
+        "scrollbar-color": "#9E9E9E"
       },
     },
     "app": {
@@ -106,8 +104,6 @@ const setTheme = async ()=> {
     const value = settings.settings.modes[mode][property];
     Css.setCSSVariable(property, value);
   }
-
-  Css.setCSSVariable("nav-width", `max(${settings.settings.modes[mode]["nav-width"]}, var(--nav-min-width))`);
   
   Css.changeColorSchame(userPreferences.colorMode);
 }

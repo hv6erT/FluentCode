@@ -41,6 +41,8 @@
 .flex-row-reverse{ flex-direction: row-reverse;}
 .flex-col{ flex-direction: column;}
 .flex-col-reverse{ flex-direction: column-reverse;}
+/*flex-wrap*/
+.flex-nowrap{flex-wrap: nowrap;}
 /*justify-content*/
 .justify-start { justify-content: flex-start; }
 .justify-center { justify-content: center; }

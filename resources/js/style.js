@@ -6,6 +6,17 @@ const showEditorArticle = async () => {
   document.getElementById("editor-article").style.display = "";
   //other nodes
   document.getElementById("bottomInfo-div").style.display = "";
+
+  const nodeIdList = [
+    "createSplitView-fluent-button",
+    "exitSplitView-fluent-button",
+    "saveAllFiles-fluent-button",
+    "closeAllFiles-fluent-button",
+    "fileProperties-fluent-button"
+  ];
+
+  for(const nodeId of nodeIdList)
+    document.getElementById(nodeId).disabled = false;
 }
 
 const showEditorStartPageArticle = async () => {
@@ -13,6 +24,17 @@ const showEditorStartPageArticle = async () => {
   document.getElementById("editorStartPage-article").style.display = "";
   //other nodes
   document.getElementById("bottomInfo-div").style.display = "none";
+
+  const nodeIdList = [
+    "createSplitView-fluent-button",
+    "exitSplitView-fluent-button",
+    "saveAllFiles-fluent-button",
+    "closeAllFiles-fluent-button",
+    "fileProperties-fluent-button"
+  ];
+
+  for(const nodeId of nodeIdList)
+    document.getElementById(nodeId).disabled = true;
 }
 
 const getActiveArticle = () => {
@@ -27,15 +49,8 @@ const getActiveArticle = () => {
 }
 
 const showContentMain = async () => {
-  document.getElementById("settings-main").style.display = "none";
   document.getElementById("loading-main").style.display = "none";
   document.getElementById("content-main").style.display = "";
-}
-
-const showSettingsMain = async () => {
-  document.getElementById("content-main").style.display = "none";
-  document.getElementById("loading-main").style.display = "none";
-  document.getElementById("settings-main").style.display = "";
 }
 
 const toggleNodeDisplay = async nodeOrNodeSelector => {
@@ -76,7 +91,7 @@ const hideNode = async nodeOrNodeSelector => {
     node.style.display = "none";
 }
 
-const showBottomNavNotification = async (message, time) => {
+const showBottomNavNotification = async (message, time = 5000) => {
   const node = document.getElementById("bottomNavShortInfo-span");
 
   node.textContent = message;
@@ -89,38 +104,4 @@ const showBottomNavNotification = async (message, time) => {
   }
   else if(time !== undefined)
     throw new Error("Invalid value of time param. Param should be a Number");
-}
-
-const enableTopNavButtons = async () => {
-  const nodeIdList = [
-    "createSplitView-fluent-button",
-    "exitSplitView-fluent-button",
-    "saveAllFiles-fluent-button",
-    "cutText-fluent-button",
-    "copyText-fluent-button",
-    "pasteText-fluent-button",
-    "closeAllFiles-fluent-menu-item",
-    "fileProperties-fluent-menu-item"
-  ];
-
-  for(const nodeId of nodeIdList)
-    document.getElementById(nodeId).disabled = false;
-}
-
-const disableTopNavButtons = async () => {
-  const nodeIdList = [
-    "createSplitView-fluent-button",
-    "exitSplitView-fluent-button",
-    "saveAllFiles-fluent-button",
-    "cutText-fluent-button",
-    "copyText-fluent-button",
-    "pasteText-fluent-button",
-    "editorUndo-fluent-menu-item",
-    "editorRedo-fluent-menu-item",
-    "closeAllFiles-fluent-menu-item",
-    "fileProperties-fluent-menu-item"
-  ];
-
-  for(const nodeId of nodeIdList)
-    document.getElementById(nodeId).disabled = true;
 }

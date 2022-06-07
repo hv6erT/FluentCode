@@ -29,10 +29,10 @@ class EditorManager {
     const editorNode = document.createElement("div");
   	editorNode.classList.add("editor-div");
     editorNode.setAttribute("data-editorName", editorName);
-    document.getElementById("editor-article").appendChild(editorNode);
+    document.getElementById("editorContainer-div").appendChild(editorNode);
     
     const nodeWidth = 100 / (Object.keys(EditorManager.editors).length + 1) + "%";
-    for(const node of Array.from(document.getElementById("editor-article").childNodes))
+    for(const node of Array.from(document.getElementById("editorContainer-div").childNodes))
       node.style.width = nodeWidth;
 
     await EditorManager.compareEditorsChanges();
@@ -156,10 +156,8 @@ class EditorManager {
       return;
     
     const config = {
-      search: document.querySelector(`[data-searchInfo='search']`).value,
       caseSensitive: document.querySelector(`[data-searchInfo='caseSensitive']`).checked,
       regexp: document.querySelector(`[data-searchInfo='regexp']`).checked,
-      replace: document.querySelector(`[data-searchInfo='replace']`).value
     };
 
     EditorManager.editors[editorName].searchInEditor(config);
@@ -168,10 +166,8 @@ class EditorManager {
     if(EditorManager.editors[editorName]){
       const lastSearchQuery = EditorManager.editors[editorName].getCurrentSearchQuery() ?? {};
   
-      document.querySelector('[data-searchInfo="search"]').value = lastSearchQuery.search;
       document.querySelector('[data-searchInfo="caseSensitive"]').checked = lastSearchQuery.caseSensitive;
       document.querySelector('[data-searchInfo="regexp"]').checked = lastSearchQuery.regexp;
-      document.querySelector('[data-searchInfo="replace"]').value = lastSearchQuery.replace;
     }
   }
   static findNext(editorName = EditorManager.activeEditorName){
@@ -193,18 +189,10 @@ class EditorManager {
   static undo(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])
       EditorManager.editors[editorName].undo();
-      EditorManager.undoAndRedoInfo(editorName);
   }
   static redo(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName])
       EditorManager.editors[editorName].redo();
-    EditorManager.undoAndRedoInfo(editorName);
-  }
-  static async undoAndRedoInfo(editorName){
-    if(EditorManager.editors[editorName]){
-      document.querySelector('[data-undoAndRedoInfo="undo"]').disabled = (EditorManager.editors[editorName].getUndoDepth() === 0);
-      document.querySelector('[data-undoAndRedoInfo="redo"]').disabled = (EditorManager.editors[editorName].getRedoDepth() === 0);
-    }
   }
   static async copy(editorName = EditorManager.activeEditorName){
     if(EditorManager.editors[editorName]){
