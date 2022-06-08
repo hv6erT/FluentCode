@@ -35,7 +35,10 @@
         </div>
         <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
         <fluent-button id="closeAllFiles-fluent-button" appearance="stealth" onclick="FileManager.closeAllFiles();"><span class="fluent-icon fluent-icon--PageRemove"></span></fluent-button>
-        <fluent-search class="margin-y" slot="end" appearance="outline" placeholder="Search in files" style="max-width: 200px;" oninput='FileNav.searchInFileItems(this.value)'></fluent-search>
+        <div slot="end" class="margin-y">
+          <fluent-search id="fileSearch-fluent-search" appearance="outline" placeholder="Search in files" style="width: 200px;" onblur="hideNode('#fileSearch-fluent-menu')" oninput='FileNav.searchInFileItems(this.value)'></fluent-search>
+          <fluent-menu id="fileSearch-fluent-menu" style="display: none; width: 200px;"></fluent-menu>
+        </div>
         <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
           <fluent-button id="createSplitView-fluent-button" appearance="stealth" onclick="createSplitView();"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
           <fluent-button id="exitSplitView-fluent-button" appearance="stealth" onclick="exitSplitView();" style="display: none;"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button> 

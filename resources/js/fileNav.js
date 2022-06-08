@@ -33,6 +33,7 @@ class FileNav {
   static #searchItems = {};
   static #groupItems = {};
   static #fileNavNode = document.getElementById("fileNavContainer-div");
+  static #searchNavNode = document.getElementById("fileSearch-fluent-menu");
   static async addItem(fileKey, fileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === true)
       return;
@@ -171,21 +172,35 @@ class FileNav {
     FileNav.#groupItems[folderKey].remove();
     delete FileNav.#groupItems[folderKey];
   }
-  /*static async searchInFileItems(searchQuery){
+  static async searchInFileItems(searchFilePath){
     FileNav.#searchNavNode.innerHTML = "";
     
-    if(searchQuery === ""){
-      document.getElementById("sideNav-fluent-tabs").activeid = "fileNavTab-container";
+    if(searchFilePath === ""){
+      FileNav.#searchNavNode.style.display = "none";
       return;
     }
-    else
-      document.getElementById("sideNav-fluent-tabs").activeid = "searchNavTab-container";
     
     for(const key in FileNav.#fileItems){
-      if(key.includes(searchQuery) === true){
-        FileNav.#searchItems[key] = FileNav.#fileItems[key].cloneNode(true);
-        FileNav.#searchNavNode.appendChild(FileNav.#searchItems[key]);
+      if(key.includes(searchFilePath) === true){        
+        const node = document.createElement("fluent-menu-item");
+        node.innerHTML = `
+        <div class="flex gap">
+          <div>${FileNav.#fileItems[key].querySelector(".fileNavItemIcon-span").innerHTML}</div>
+          <div>${FileNav.#fileItems[key].querySelector(".fileNavItemTitle-span").innerHTML}</div>
+        </div>
+        `;
+
+        node.addEventListener('mousedown', async function(){
+          EditorManager.showFileInEditor(EditorManager.activeEditorName, key);
+        });
+        
+        FileNav.#searchNavNode.appendChild(node);
       }
     }
-  }*/
+
+    if(FileNav.#searchNavNode.childNodes.length > 0)
+      FileNav.#searchNavNode.style.display = "";
+    else 
+      FileNav.#searchNavNode.style.display = "none";
+  }
 }
