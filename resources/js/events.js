@@ -1,5 +1,6 @@
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
+  showEditorStartPageArticle();
   showContentMain();
   await openFilesAndEditorsFromStorage();
   await openFilesFromAppArgs();

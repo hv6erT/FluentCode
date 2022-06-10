@@ -67,7 +67,7 @@
           </fluent-toolbar>
           <div id="editorContainer-div" class="editorContainer-div"></div>
         </article>
-        <article id="editorStartPage-article" class="editor-article">
+        <article id="editorStartPage-article" class="editor-article" style="display: none;">
           <div class="flex" style="flex-wrap: wrap; width: 100%; height: 100%; padding: 40px 60px; gap: 40px; overflow: auto;">
             <div class="flex flex-col" style="flex: 300px; gap: 10px; width: calc(50% - 20px); height: 220px;">
               <header>Files</header>
@@ -96,24 +96,18 @@
           </div>
         </article>
       </section>
-      <nav class="bottom-nav">
-        <div id="bottomInfo-div" class="flex" style="width: inherit; display: none;">
-          <div style="min-width: fit-content; width: 40%; display: var(--bottom-nav-info-display); overflow: hidden; text-overflow: ellipsis;">
-            <div class="flex justify-start gap">
-              <span data-fileInfo="path"></span>
-            </div>
-          </div>
-          <div class="flex justify-center" style="width: var(--bottom-nav-short-info-width); overflow: hidden; text-overflow: ellipsis; text-align: center;">
-            <span id="bottomNavShortInfo-span"></span>
-          </div>
-          <div style="min-width: fit-content; width: 40%; display: var(--bottom-nav-info-display); overflow: hidden; text-overflow: ellipsis;">
-            <div class="flex justify-end gap">
-              <span>Ln: </span><span data-editorInfo="currentLine"></span>
-              <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
-              <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
-              <span data-fileInfo="language"></span>
-            </div>
-          </div>
+      <nav class="bottom-nav flex">
+        <div id="bottomFileInfo-div" class="flex justify-start gap" style="overflow: hidden; width: calc(50% - calc(var(--bottom-short-info-width) / 2));">
+          <span data-fileInfo="path"></span>
+        </div>
+        <div id="bottomShortInfo-div" class="flex justify-center" style="overflow: hidden; width: var(--bottom-short-info-width);">
+          <span id="bottomShortInfo-span"></span>
+        </div>
+        <div id="bottomEditrInfo-div" class="flex justify-end gap" style="overflow: hidden; width: calc(50% - calc(var(--bottom-short-info-width) / 2))">
+          <span>Ln: </span><span data-editorInfo="currentLine"></span>
+          <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
+          <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
+          <span data-fileInfo="language"></span>
         </div>
       </nav>
       <!-- Fluentcode dialogs -->
