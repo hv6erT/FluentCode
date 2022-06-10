@@ -31,7 +31,7 @@ class EditorManager {
     editorNode.setAttribute("data-editorName", editorName);
     document.getElementById("editorContainer-div").appendChild(editorNode);
     
-    const nodeWidth = 100 / (Object.keys(EditorManager.editors).length + 1) + "%";
+    const nodeWidth = `calc(${100 / (Object.keys(EditorManager.editors).length + 1)}% - 1px) `;
     for(const node of Array.from(document.getElementById("editorContainer-div").childNodes))
       node.style.width = nodeWidth;
 
