@@ -1,7 +1,7 @@
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
-  showEditorStartPageArticle();
-  showContentMain();
+  App.showStartPage();
+  App.showContent();
   await openFilesAndEditorsFromStorage();
   await openFilesFromAppArgs();
 
@@ -17,7 +17,7 @@ Neutralino.events.on("settingsReady", async function(){
       if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
         await Neutralino.updater.install();
         Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
-        showBottomNavNotification("Updated successfully", 5000);
+        App.showBottomNotification("Updated successfully", 5000);
 
         Neutralino.events.on("windowBlur", async function () {
           await Neutralino.events.dispatch("windowClose", {closeType: "RESTART"});
@@ -27,7 +27,7 @@ Neutralino.events.on("settingsReady", async function(){
     catch(error) {
       if(error.code !== "NE_UP_CUPDERR"){
         Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
-        showBottomNavNotification("Update failed", 7000);
+        App.showBottomNotification("Update failed", 7000);
       }
     }
   }

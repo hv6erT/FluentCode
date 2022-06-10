@@ -19,7 +19,7 @@
     <script defer src="js/editor.js"></script>
     <script defer src="js/fileNav.js"></script>
     <script defer src="js/storage.js"></script>
-    <script async src="js/keybindings.js"></script>
+    <script async src="js/app.js"></script>
     <script async src="js/events.js"></script>
   </head>
   <body>
@@ -103,7 +103,7 @@
         <div id="bottomShortInfo-div" class="flex justify-center" style="overflow: hidden; width: var(--bottom-short-info-width);">
           <span id="bottomShortInfo-span"></span>
         </div>
-        <div id="bottomEditrInfo-div" class="flex justify-end gap" style="overflow: hidden; width: calc(50% - calc(var(--bottom-short-info-width) / 2))">
+        <div id="bottomEditorInfo-div" class="flex justify-end gap" style="overflow: hidden; width: calc(50% - calc(var(--bottom-short-info-width) / 2))">
           <span>Ln: </span><span data-editorInfo="currentLine"></span>
           <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
           <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--scrollbar-color);">|</span>
@@ -197,7 +197,7 @@
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <div class="flex justify-between">
                     <div>Change settings to default</div>
-                    <fluent-button appearance="stealth" onclick="settings.changeSettingsToDefault(); showBottomNavNotification('Settings has been changed to default', 5000);">
+                    <fluent-button appearance="stealth" onclick="App.changeSettingsToDefault();">
                       <div class="flex gap"><span class="fluent-icon fluent-icon--DefaultSettings"></span><span>Change to default</span></div>
                     </fluent-button>
                   </div>

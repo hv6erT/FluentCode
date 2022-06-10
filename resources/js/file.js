@@ -226,7 +226,7 @@ class FileManager {
       }
     }
     else{
-      showEditorStartPageArticle();
+      App.showStartPage();
       FileManager.activeFilePath = null;
       if(Object.keys(EditorManager.editors).length > 1){
         for(let i = (Object.keys(EditorManager.editors).length - 1); i > 1; i--)
@@ -244,7 +244,7 @@ class FileManager {
     if(settings.settings.file["save-before-close"] === true)
       await FileManager.saveAllFiles();
 
-    showEditorStartPageArticle();
+    App.showStartPage();
     
     FileManager.files = [];
     FileManager.activeFilePath = null;
@@ -283,7 +283,7 @@ class FileManager {
       FileManager.files[filePath].changed = false;
     }
 
-    showBottomNavNotification("File saved", 3000);
+    App.showBottomNotification("File saved", 3000);
   }
   static async saveAllFiles(){
     if(Object.keys(FileManager.files).length === 0)
@@ -297,7 +297,7 @@ class FileManager {
       }
     }
 
-    showBottomNavNotification("Files saved", 5000);
+    App.showBottomNotification("Files saved", 5000);
   }
   static async filePropertiesInfo(filePath){
     if(FileManager.isOpened(filePath) === false)

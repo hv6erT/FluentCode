@@ -3,8 +3,7 @@
   /*css variables*/
   --top-nav-height: 45px;
   --bottom-nav-height: 30px;
-  --bottom-nav-info-display: block;
-  --bottom-nav-short-info-width: 20%;
+  --bottom-short-info-width: 20%;
   --nav-width: 230px;
   --panel-height: 70vh;
   /*otehr styles*/
@@ -21,8 +20,7 @@
 }
 @media (max-width: 500px){
   :root{
-    --bottom-nav-info-display: none;
-    --bottom-nav-short-info-width: 100%;
+    --bottom-short-info-width: 100%;
   }
 }
 html, body{

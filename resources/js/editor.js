@@ -81,8 +81,8 @@ class EditorManager {
     await EditorManager.editors[editorName].changeActiveFile(FileManager.files[filePath]);
   
   	//show editor element
-    showContentMain();
-    showEditorArticle();
+    App.showContent();
+    App.showEditorPage();
 
     await EditorManager.changeActive(editorName)
   	await FileManager.changeActive(filePath);
@@ -115,7 +115,7 @@ class EditorManager {
       return;
 
     if(Object.keys(EditorManager.editors).length === 1)
-      showEditorStartPageArticle();
+      App.showStartPage();
 
     EditorManager.editors[editorName].remove();
     delete EditorManager.editors[editorName];
