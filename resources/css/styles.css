@@ -5,8 +5,7 @@
   --bottom-nav-height: 30px;
   --bottom-short-info-width: 20%;
   --nav-width: 230px;
-  --panel-height: 70vh;
-  /*otehr styles*/
+  /*other styles*/
   -webkit-user-select: none;
   user-select: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -105,11 +104,8 @@ fluent-tab-panel{
   padding: 0;
 }
 fluent-dialog{
-  --dialog-width: 600px;
-  --dialog-height: var(--panel-height);
-}
-fluent-dialog fluent-tab-panel{
-  height: calc(var(--panel-height) - 140px);
+  --dialog-width: 400px;
+  --dialog-height: max(70vh, 350px);
 }
 fluent-tab-panel{
   overflow: auto;
@@ -122,6 +118,14 @@ fluent-card{
 }
 fluent-accordion{
   overflow: auto;
+}
+/*fluent components extra classes*/
+.settings-fluent-dialog{
+  --dialog-width: 600px;
+  --dialog-height: max(70vh, 350px);
+}
+.settings-fluent-dialog fluent-tab-panel{
+  height: calc(var(--dialog-height) - 140px);
 }
 /*default classes*/
 .main{
