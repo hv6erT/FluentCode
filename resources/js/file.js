@@ -305,11 +305,29 @@ class FileManager {
     
     const fileStats = await Neutralino.filesystem.getStats(filePath);
 
-    const fileSizeUnits = ["B", "KB", "MB", "GB", "TB", "PB"];
+    function formatSize(size) {
+      if(typeof size !== "number")
+        return size;
+
+      const fileSizeUnits = ["B", "KB", "MB", "GB", "TB", "PB"];
+
+      return (size/Math.pow(1024, Math.floor(Math.log2(size)/10))).toFixed(1) + " " + fileSizeUnits[ Math.floor(Math.log2(size)/10)];
+    }
+
+    function formatDate(date){
+      if(typeof date === "number")
+        date = new Date(date);
+      else if(!date instanceof Date)
+        return date;
+
+      const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+      return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
+    }
     
-    document.querySelector('[data-filePropertiesInfo="size"]').textContent = (fileStats.size/Math.pow(1024, Math.floor(Math.log2(fileStats.size)/10))).toFixed(1) + " " +fileSizeUnits[ Math.floor(Math.log2(fileStats.size)/10)];;
-    document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = fileStats.createdAt ?? "?";
-    document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = fileStats.modifiedAt ?? "?";
+    document.querySelector('[data-filePropertiesInfo="size"]').textContent = formatSize(fileStats.size);
+    document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = formatDate(fileStats.createdAt);
+    document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = formatDate(fileStats.modifiedAt);
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){
