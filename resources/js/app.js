@@ -62,6 +62,58 @@ class App{
     else if(time !== undefined)
       throw new Error("Invalid value of time param. Param should be a Number");
   }
+  static async close(closeType = "EXIT"){    
+    if(settings.settings.file["save-before-close"] === true)
+      saveAllFilesBeforeClose();    
+    else{
+      const questionResponse = await Neutralino.os.showMessageBox("Unsaved changes", `Do you want to save your work?`, "YES_NO_CANCEL", "QUESTION");
+  
+      if(questionResponse === "YES")
+        saveAllFilesBeforeClose();
+      else if(questionResponse === "CANCEL")
+        return;
+    }
+  
+    if(settings.hasChanged() === true)
+      try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings, "", 4));}catch(error){
+        const settingsSaveConfirmResponse = await Neutralino.os.showMessageBox("Error: Settings could not be saved", `Settings could not be saved, do you want to close anyway? \n Error message: "${error.message}"`, "YES_NO", "ERROR");
+  
+        if(settingsSaveConfirmResponse === "NO")
+          return;
+      }
+  
+    await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
+  
+    if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){    
+      try {
+        const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
+        
+        if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
+          await Neutralino.updater.install();
+          Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
+          App.showBottomNotification("Updated successfully", 5000);
+  
+          await Neutralino.app.restartProcess({ args: '--closeImmediately'});
+        }
+      }
+      catch(error) {
+        if(error.code !== "NE_UP_CUPDERR"){
+          Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
+          App.showBottomNotification("Update failed", 7000);
+        }
+      }
+    }
+    
+    if(closeType === "EXIT"){
+      if(NL_OS !== "Darwin")
+        await Neutralino.app.exit();
+    }
+    else if(closeType === "RESTART"){
+      await Neutralino.app.restartProcess();
+    }
+    else 
+      throw new Error("Unknown closeType option");
+  }
 }
 
 class Keybindings{

@@ -1,97 +1,52 @@
-Neutralino.events.on("settingsReady", async function(){
-  await EditorManager.openEditor();
-  App.showStartPage();
-  App.showContent();
-  await openFilesAndEditorsFromStorage();
-  await openFilesFromAppArgs();
-
-  settings.applySettingsToDOM();
-  settings.applySettingsDOMListeners();
-
-  FileManager.startAutoSave();
-
-  if(settings.settings.app["auto-update"] === true){    
-    try {
-      const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
-      
-      if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
-        await Neutralino.updater.install();
-        Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
-        App.showBottomNotification("Updated successfully", 5000);
-
-        Neutralino.events.on("windowBlur", async function () {
-          await Neutralino.events.dispatch("windowClose", {closeType: "RESTART"});
-        });
-      }
-    }
-    catch(error) {
-      if(error.code !== "NE_UP_CUPDERR"){
-        Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
-        App.showBottomNotification("Update failed", 7000);
-      }
-    }
-  }
-});
-
-window.addEventListener("load", async function() {
-  Keybindings.setListener();
-
-  document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
-});
-
-Neutralino.events.on("windowFocus", async function (){
-  try{await FileManager.startAutoSave();}catch{}
-});
-
-Neutralino.events.on("windowBlur", async function () {
-  try{await FileManager.stopAutoSave();}catch{}
-});
-
-Neutralino.events.on("serverOffline", async function(){
-  const errorResponse = await Neutralino.os.showMessageBox("Error: App is not responding", "Try to restart app", "RETRY_CANCEL", "ERROR");
-
-  if(errorResponse === "RETRY")
-    Neutralino.app.restartProcess();
-});
-
-Neutralino.events.on("windowClose", async function(options) {
-  const defaultOptions = {
-    closeType: "EXIT" // EXIT || RESTART
-  };
-
-  options = {...defaultOptions, ...(options.detail ?? {})};
+(async function () {
+  if(NL_ARGS.includes("closeImmediately"))
+    App.close();
   
-  if(settings.settings.file["save-before-close"] === true)
-    saveAllFilesBeforeClose();    
-  else{
-    const questionResponse = await Neutralino.os.showMessageBox("Unsaved changes", `Do you want to save your work?`, "YES_NO_CANCEL", "QUESTION");
-
-    if(questionResponse === "YES")
-      saveAllFilesBeforeClose();
-    else if(questionResponse === "CANCEL")
-      return;
-  }
-
-  if(settings.hasChanged() === true)
-    try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings, "", 4));}catch(error){
-      const settingsSaveConfirmResponse = await Neutralino.os.showMessageBox("Error: Settings could not be saved", `Settings could not be saved, do you want to close anyway? \n Error message: "${error.message}"`, "YES_NO", "ERROR");
-
-      if(settingsSaveConfirmResponse === "NO")
-        return;
-    }
-
-  await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
+  const openEditorPromise = EditorManager.openEditor();
   
-  if(options.closeType === "EXIT"){
-    if(NL_OS !== "Darwin")
-      await Neutralino.app.exit();
-  }
-  else if(options.closeType === "RESTART"){
-    await Neutralino.app.restartProcess();
-  }
-  else 
-    throw new Error("Unknown closeType option");
-});
+  window.addEventListener("DOMContentLoaded", async function() {
+    App.showStartPage();
+  
+    document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
+  });
+  
+  Neutralino.events.on("themeReady", async function(){
+    App.showContent();
+  });
+  
+  Neutralino.events.on("settingsReady", async function(){
+    await openEditorPromise;
+    await Promise.all([openFilesAndEditorsFromStorage(), openFilesFromAppArgs()]);
+  
+    settings.applySettingsToDOM();
+    settings.applySettingsDOMListeners();
+  
+    FileManager.startAutoSave();
+  });
+  
+  window.addEventListener("load", async function() {
+    Keybindings.setListener();
+  });
+  
+  Neutralino.events.on("windowFocus", async function (){
+    try{await FileManager.startAutoSave();}catch{}
+  });
+  
+  Neutralino.events.on("windowBlur", async function () {
+    try{await FileManager.stopAutoSave();}catch{}
+  });
+  
+  Neutralino.events.on("serverOffline", async function(){
+    const errorResponse = await Neutralino.os.showMessageBox("Error: App is not responding", "Try to restart app", "RETRY_CANCEL", "ERROR");
+  
+    if(errorResponse === "RETRY")
+      Neutralino.app.restartProcess();
+  });
+  
+  Neutralino.events.on("windowClose", async function() {
+    App.close("EXIT");
+  });
+})();
 
 window.keyboardEventActions = (event, actionKey, action) => {
   if(!event || !actionKey || !action)
