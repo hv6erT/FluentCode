@@ -93,7 +93,6 @@ class App{
         if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
           await Neutralino.updater.install();
           Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
-          App.showBottomNotification("Updated successfully", 5000);
   
           await Neutralino.app.restartProcess({ args: '--closeImmediately'});
         }
@@ -101,7 +100,6 @@ class App{
       catch(error) {
         if(error.code !== "NE_UP_CUPDERR"){
           Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
-          App.showBottomNotification("Update failed", 7000);
         }
       }
     }
