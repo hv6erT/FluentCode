@@ -24,7 +24,7 @@ const openFilesAndEditorsFromStorage = async () => {
       }
     }
     
-    await EditorManager.showFileInEditor(editorKey, Object.keys(FileManager.files)[0]);
+    EditorManager.showFileInEditor(editorKey, Object.keys(FileManager.files)[0]);
   }
 }
 

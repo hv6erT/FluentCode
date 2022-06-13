@@ -52,7 +52,7 @@ class EditorManager {
     if(Object.keys(EditorManager.editors).length === 1)
       await EditorManager.changeActive(editorName);
     else if(Object.keys(EditorManager.editors).length > 1)
-      document.getElementById("exitSplitView-fluent-button").style.display="";
+      document.getElementById("exitSplitView-fluent-button").style.display = "";
   }
   static async changeActive(editorName){
     if(!EditorManager.isOpened(editorName))
