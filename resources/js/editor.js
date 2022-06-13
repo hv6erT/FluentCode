@@ -1,3 +1,5 @@
+"use strict";
+
 const createSplitView = async () =>{
   if(Object.keys(FileManager.files).length === 0)
     return;

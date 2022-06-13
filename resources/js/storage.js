@@ -1,12 +1,12 @@
+"use strict";
+
 const openFilesAndEditorsFromStorage = async () => {
   const fileObject = await Storage.getFileKeys();
   const editorObject = await Storage.getEditorKeys();
 
-  const openFilePromises = [];
-  for(const fileKey in fileObject)
-    openFilePromises.push(FileManager.openFile(fileKey));
-
-  await Promise.allSettled(openFilePromises);
+  const openFilePromises = {};
+  for(const filePath in fileObject)
+    openFilePromises[filePath] = FileManager.openFile(filePath);
   
   for(const editorKey in editorObject){
     if(editorKey != 0)
@@ -15,10 +15,11 @@ const openFilesAndEditorsFromStorage = async () => {
     const fileObjectToShow = editorObject[editorKey].active;
     
     if(fileObjectToShow){
-      for(const filePath in FileManager.files){
+      for(const filePath in fileObject){
         if(JSON.stringify(fileObject[filePath]) === JSON.stringify(fileObjectToShow)){
-          await EditorManager.showFileInEditor(editorKey, filePath);
-          return;
+          await openFilePromises[filePath];
+          EditorManager.showFileInEditor(editorKey, filePath);
+          continue;
         }
       }
     }

@@ -1,3 +1,5 @@
+"use strict";
+
 const uploadFile = async () => {
   await Neutralino.window.hide();
   const data = await Neutralino.os.showOpenDialog("Upload file", {multiSelections: true});
@@ -191,7 +193,7 @@ class FileManager {
       EditorManager.editorInfo(EditorManager.activeEditorName);	
     });
 
-    await FileNav.addItem(filePath, FileManager.files[filePath].language);   
+    FileNav.addItem(filePath, FileManager.files[filePath].language);   
   }
   static async initializeFile(filePath){
     if(FileManager.isOpened(filePath) === false)

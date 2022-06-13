@@ -11,16 +11,19 @@
     <!-- Neutralino.js client. -->
     <script src="js/neutralino.js"></script>
     <!-- Fluecode app's source files -->
-    <script async type="module" src="js/main.js"></script>
     <script async type="module" src="js/assets.js"></script>
     
     <script async src="js/style.js"></script>
+    <script async src="js/keybindings.js"></script>
+
+    <script type="module" src="js/main.js"></script>
+    
     <script defer src="js/file.js"></script>
     <script defer src="js/editor.js"></script>
     <script defer src="js/fileNav.js"></script>
     <script defer src="js/storage.js"></script>
-    <script async src="js/app.js"></script>
-    <script async src="js/events.js"></script>
+    <script defer src="js/app.js"></script>
+    <script defer src="js/events.js"></script>
   </head>
   <body>
     <main id="content-main" class="main" style="display: none;">
@@ -341,7 +344,7 @@
             </fluent-tabs>
           </div>
           <div class="flex gap justify-end" style="width: 100%; height: 40px; align-items: center;">
-            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true); Neutralino.events.dispatch('windowClose', {closeType: 'RESTART'});">Apply</fluent-button>
+            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true); App.close('RESTART')">Apply</fluent-button>
             <fluent-button appearance="outline" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true)">Close</fluent-button>
           </div>
         </div>

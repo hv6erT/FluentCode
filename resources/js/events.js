@@ -1,3 +1,5 @@
+"use strict";
+
 (async function () {
   if(NL_ARGS.includes("closeImmediately"))
     App.close();
@@ -9,7 +11,7 @@
   
     document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
   });
-  
+
   Neutralino.events.on("themeReady", async function(){
     App.showContent();
   });
@@ -17,7 +19,7 @@
   Neutralino.events.on("settingsReady", async function(){
     await openEditorPromise;
     await Promise.all([openFilesAndEditorsFromStorage(), openFilesFromAppArgs()]);
-  
+    
     settings.applySettingsToDOM();
     settings.applySettingsDOMListeners();
   
