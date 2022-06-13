@@ -39,6 +39,12 @@
         </div>
         <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
         <fluent-button id="closeAllFiles-fluent-button" appearance="stealth" onclick="FileManager.closeAllFiles();"><span class="fluent-icon fluent-icon--PageRemove"></span></fluent-button>
+        <div>
+          <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
+          <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
+            <fluent-menu-item onmousedown="openLastFilesFromStorage();"><div class="flex gap"><span class="fluent-icon fluent-icon--CalendarReply"></span><span>Open latest files</span></div></fluent-menu-item>
+          </fluent-menu>
+        </div>
         <div slot="end" class="margin-y">
           <fluent-search id="fileSearch-fluent-search" appearance="outline" placeholder="Search in files" style="width: 200px;" onblur="hideNode('#fileSearch-fluent-menu')" oninput='FileNav.searchInFileItems(this.value)'></fluent-search>
           <fluent-menu id="fileSearch-fluent-menu" style="display: none; width: 200px;"></fluent-menu>
