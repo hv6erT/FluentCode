@@ -91,6 +91,9 @@ h1, h2, h3, h4, h5, h6{
   gap: 5px;
 }
 /*fluent components*/
+fluent-badge{
+  word-wrap: normal;
+}
 fluent-menu{
   position: absolute;
   z-index: 999;
@@ -119,13 +122,13 @@ fluent-card{
 fluent-accordion{
   overflow: auto;
 }
+fluent-dialog fluent-tab-panel{
+  height: calc(var(--dialog-height) - 140px);
+}
 /*fluent components extra classes*/
 .settings-fluent-dialog{
   --dialog-width: 600px;
   --dialog-height: max(70vh, 350px);
-}
-.settings-fluent-dialog fluent-tab-panel{
-  height: calc(var(--dialog-height) - 140px);
 }
 /*default classes*/
 .main{
@@ -167,7 +170,7 @@ fluent-accordion{
 }
 .fileNavItem .fileNavItemCloseButton-span{
   position: absolute;
-  margin-left: calc(100% - 30px);
+  margin-left: calc(100% - 40px);
   max-width: 20px;
   display: flex;
   justify-content: center;

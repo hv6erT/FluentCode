@@ -326,7 +326,9 @@ class FileManager {
 
       return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
     }
-    
+
+    document.querySelector('[data-filePropertiesInfo="filename"]').textContent = filePath.slice((filePath.lastIndexOf("/")+1));
+    document.querySelector('[data-filePropertiesInfo="filePath"]').textContent = filePath;
     document.querySelector('[data-filePropertiesInfo="size"]').textContent = formatSize(fileStats.size);
     document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = formatDate(fileStats.createdAt);
     document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = formatDate(fileStats.modifiedAt);

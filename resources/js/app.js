@@ -16,7 +16,7 @@ class App{
       "createSplitView-fluent-button",
       "exitSplitView-fluent-button",
       "saveAllFiles-fluent-button",
-      "closeAllFiles-fluent-button",
+      "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
     ];
   
@@ -34,7 +34,7 @@ class App{
       "createSplitView-fluent-button",
       "exitSplitView-fluent-button",
       "saveAllFiles-fluent-button",
-      "closeAllFiles-fluent-button",
+      "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
     ];
   

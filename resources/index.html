@@ -38,11 +38,11 @@
           </fluent-menu>
         </div>
         <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
-        <fluent-button id="closeAllFiles-fluent-button" appearance="stealth" onclick="FileManager.closeAllFiles();"><span class="fluent-icon fluent-icon--PageRemove"></span></fluent-button>
         <div>
           <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
           <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
             <fluent-menu-item onmousedown="openLastFilesFromStorage();"><div class="flex gap"><span class="fluent-icon fluent-icon--CalendarReply"></span><span>Open latest files</span></div></fluent-menu-item>
+            <fluent-menu-item id="closeAllFiles-fluent-menu-item" onmousedown="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageRemove"></span><span>Close all files</span></div></fluent-menu-item>
           </fluent-menu>
         </div>
         <div slot="end" class="margin-y">
@@ -131,26 +131,41 @@
               <fluent-button class="relative" appearance="stealth" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)" style="left: 5px; top: -5px;"><span class="fluent-icon fluent-icon--ChromeClose"></span></fluent-button>
             </div>
           </div>
-          <div class="flex flex-col margin-y" style="width: 100%; height: calc(100% - 80px); gap: 15px;">
-            <div class="flex gap" style="align-items: center;">
-              <span class="text-lg">Size:</span><fluent-badge data-filePropertiesInfo="size"></fluent-badge>
-            </div>
-            <div class="flex gap" style="align-items: center;">
-              <span class="text-lg">Creation date: </span><fluent-badge data-filePropertiesInfo="creationDate"></fluent-badge>
-            </div>
-            <div class="flex gap" style="align-items: center;">
-              <span class="text-lg">Modify date: </span><fluent-badge data-filePropertiesInfo="modifyDate"></fluent-badge>
-            </div>
-            <fluent-divider></fluent-divider>
-            <span class="text-xl">Rename file</span>
-            <div class="flex gap">
-              <div class="flex gap" style="align-items: center;">
-                <span class="text-lg">New file name: </span>
-                <fluent-text-field></fluent-text-field>
-              </div>
-              <fluent-button appearance="accent" class="margin-y">Confirm</fluent-button>
-            </div>
-            <fluent-divider></fluent-divider>
+          <div style="width: 100%; height: calc(100% - 80px);">
+            <fluent-tabs>
+              <fluent-tab class="margin-y">Info</fluent-tab>
+              <fluent-tab class="margin-y">Rename</fluent-tab>
+              <fluent-tab-panel class="padding-x padding-y">
+                <div class="flex flex-col margin-x" style="gap: 20px;">
+                  <div class="flex gap" style="align-items: center;">
+                    <span class="text-lg">Filename:</span><fluent-badge data-filePropertiesInfo="filename"></fluent-badge>
+                  </div>
+                  <div class="flex flex-col gap">
+                    <span class="text-lg">Full file path:</span><fluent-badge data-filePropertiesInfo="filePath"></fluent-badge>
+                  </div>
+                  <fluent-divider></fluent-divider>
+                  <div class="flex gap" style="align-items: center;">
+                    <span class="text-lg">Size:</span><fluent-badge data-filePropertiesInfo="size"></fluent-badge>
+                  </div>
+                  <fluent-divider></fluent-divider>
+                  <div class="flex gap" style="align-items: center;">
+                    <span class="text-lg">Creation date: </span><fluent-badge data-filePropertiesInfo="creationDate"></fluent-badge>
+                  </div>
+                  <div class="flex gap" style="align-items: center;">
+                    <span class="text-lg">Modify date: </span><fluent-badge data-filePropertiesInfo="modifyDate"></fluent-badge>
+                  </div>
+                </div>
+              </fluent-tab-panel>
+              <fluent-tab-panel class="padding-x padding-y">
+                <div class="flex flex-col margin-x" style="gap: 20px;">
+                  <span class="text-lg">New file name: </span>
+                  <div class="flex gap">
+                    <fluent-text-field></fluent-text-field>
+                    <fluent-button appearance="accent" class="margin-y">Confirm</fluent-button>
+                  </div>
+                </div>
+              </fluent-tab-panel>
+            </fluent-tabs>
           </div>
           <div class="flex gap justify-end" style="width: 100%; height: 40px;">
             <fluent-button appearance="outline" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)">Close</fluent-button>
