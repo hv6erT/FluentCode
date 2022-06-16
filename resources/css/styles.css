@@ -170,7 +170,7 @@ fluent-dialog fluent-tab-panel{
 }
 .fileNavItem .fileNavItemCloseButton-span{
   position: absolute;
-  margin-left: calc(100% - 40px);
+  margin-left: calc(100% - 30px);
   max-width: 20px;
   display: flex;
   justify-content: center;
