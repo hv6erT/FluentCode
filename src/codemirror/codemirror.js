@@ -685,9 +685,6 @@ class ChangeDesc {
     // unaffected sections, and the length of the replacement content
     // otherwise. So an insertion would be (0, n>0), a deletion (n>0,
     // 0), and a replacement two positive numbers.
-    /**
-    @internal
-    */
     constructor(
     /**
     @internal
@@ -842,6 +839,10 @@ class ChangeDesc {
             throw new RangeError("Invalid JSON representation of ChangeDesc");
         return new ChangeDesc(json);
     }
+    /**
+    @internal
+    */
+    static create(sections) { return new ChangeDesc(sections); }
 }
 /**
 A change set represents a group of modifications to a document. It
@@ -849,9 +850,6 @@ stores the document length, and can only be applied to documents
 with exactly that length.
 */
 class ChangeSet extends ChangeDesc {
-    /**
-    @internal
-    */
     constructor(sections, 
     /**
     @internal
@@ -930,7 +928,7 @@ class ChangeSet extends ChangeDesc {
     Get a [change description](https://codemirror.net/6/docs/ref/#state.ChangeDesc) for this change
     set.
     */
-    get desc() { return new ChangeDesc(this.sections); }
+    get desc() { return ChangeDesc.create(this.sections); }
     /**
     @internal
     */
@@ -963,7 +961,7 @@ class ChangeSet extends ChangeDesc {
             }
         }
         return { changes: new ChangeSet(resultSections, resultInserted),
-            filtered: new ChangeDesc(filteredSections) };
+            filtered: ChangeDesc.create(filteredSections) };
     }
     /**
     Serialize this change set to a JSON-representable value.
@@ -1063,6 +1061,12 @@ class ChangeSet extends ChangeDesc {
                 sections.push(part[0], inserted[i].length);
             }
         }
+        return new ChangeSet(sections, inserted);
+    }
+    /**
+    @internal
+    */
+    static createSet(sections, inserted) {
         return new ChangeSet(sections, inserted);
     }
 }
@@ -1168,7 +1172,7 @@ function mapSet(setA, setB, before, mkSet = false) {
             a.next();
         }
         else if (a.done && b.done) {
-            return insert ? new ChangeSet(sections, insert) : new ChangeDesc(sections);
+            return insert ? ChangeSet.createSet(sections, insert) : ChangeDesc.create(sections);
         }
         else {
             throw new Error("Mismatched change set lengths");
@@ -1181,7 +1185,7 @@ function composeSets(setA, setB, mkSet = false) {
     let a = new SectionIter(setA), b = new SectionIter(setB);
     for (let open = false;;) {
         if (a.done && b.done) {
-            return insert ? new ChangeSet(sections, insert) : new ChangeDesc(sections);
+            return insert ? ChangeSet.createSet(sections, insert) : ChangeDesc.create(sections);
         }
         else if (a.ins == 0) { // Deletion in A
             addSection(sections, a.len, 0, open);
@@ -1276,9 +1280,6 @@ is enabled, a [selection](https://codemirror.net/6/docs/ref/#state.EditorSelecti
 multiple ranges. By default, selections hold exactly one range.
 */
 class SelectionRange {
-    /**
-    @internal
-    */
     constructor(
     /**
     The lower boundary of the range.
@@ -1374,14 +1375,17 @@ class SelectionRange {
             throw new RangeError("Invalid JSON representation for SelectionRange");
         return EditorSelection.range(json.anchor, json.head);
     }
+    /**
+    @internal
+    */
+    static create(from, to, flags) {
+        return new SelectionRange(from, to, flags);
+    }
 }
 /**
 An editor selection holds one or more selection ranges.
 */
 class EditorSelection {
-    /**
-    @internal
-    */
     constructor(
     /**
     The ranges in the selection, sorted by position. Ranges cannot
@@ -1392,7 +1396,7 @@ class EditorSelection {
     The index of the _main_ range in the selection (which is
     usually the range that was added last).
     */
-    mainIndex = 0) {
+    mainIndex) {
         this.ranges = ranges;
         this.mainIndex = mainIndex;
     }
@@ -1428,7 +1432,7 @@ class EditorSelection {
     holding only the main range from this selection.
     */
     asSingle() {
-        return this.ranges.length == 1 ? this : new EditorSelection([this.main]);
+        return this.ranges.length == 1 ? this : new EditorSelection([this.main], 0);
     }
     /**
     Extend this selection with an extra range.
@@ -1476,7 +1480,7 @@ class EditorSelection {
         for (let pos = 0, i = 0; i < ranges.length; i++) {
             let range = ranges[i];
             if (range.empty ? range.from <= pos : range.from < pos)
-                return normalized(ranges.slice(), mainIndex);
+                return EditorSelection.normalized(ranges.slice(), mainIndex);
             pos = range.to;
         }
         return new EditorSelection(ranges, mainIndex);
@@ -1486,7 +1490,7 @@ class EditorSelection {
     safely ignore the optional arguments in most situations.
     */
     static cursor(pos, assoc = 0, bidiLevel, goalColumn) {
-        return new SelectionRange(pos, pos, (assoc == 0 ? 0 : assoc < 0 ? 4 /* AssocBefore */ : 8 /* AssocAfter */) |
+        return SelectionRange.create(pos, pos, (assoc == 0 ? 0 : assoc < 0 ? 4 /* AssocBefore */ : 8 /* AssocAfter */) |
             (bidiLevel == null ? 3 : Math.min(2, bidiLevel)) |
             ((goalColumn !== null && goalColumn !== void 0 ? goalColumn : 33554431 /* NoGoalColumn */) << 5 /* GoalColumnOffset */));
     }
@@ -1495,24 +1499,27 @@ class EditorSelection {
     */
     static range(anchor, head, goalColumn) {
         let goal = (goalColumn !== null && goalColumn !== void 0 ? goalColumn : 33554431 /* NoGoalColumn */) << 5 /* GoalColumnOffset */;
-        return head < anchor ? new SelectionRange(head, anchor, 16 /* Inverted */ | goal | 8 /* AssocAfter */)
-            : new SelectionRange(anchor, head, goal | (head > anchor ? 4 /* AssocBefore */ : 0));
+        return head < anchor ? SelectionRange.create(head, anchor, 16 /* Inverted */ | goal | 8 /* AssocAfter */)
+            : SelectionRange.create(anchor, head, goal | (head > anchor ? 4 /* AssocBefore */ : 0));
     }
-}
-function normalized(ranges, mainIndex = 0) {
-    let main = ranges[mainIndex];
-    ranges.sort((a, b) => a.from - b.from);
-    mainIndex = ranges.indexOf(main);
-    for (let i = 1; i < ranges.length; i++) {
-        let range = ranges[i], prev = ranges[i - 1];
-        if (range.empty ? range.from <= prev.to : range.from < prev.to) {
-            let from = prev.from, to = Math.max(range.to, prev.to);
-            if (i <= mainIndex)
-                mainIndex--;
-            ranges.splice(--i, 2, range.anchor > range.head ? EditorSelection.range(to, from) : EditorSelection.range(from, to));
+    /**
+    @internal
+    */
+    static normalized(ranges, mainIndex = 0) {
+        let main = ranges[mainIndex];
+        ranges.sort((a, b) => a.from - b.from);
+        mainIndex = ranges.indexOf(main);
+        for (let i = 1; i < ranges.length; i++) {
+            let range = ranges[i], prev = ranges[i - 1];
+            if (range.empty ? range.from <= prev.to : range.from < prev.to) {
+                let from = prev.from, to = Math.max(range.to, prev.to);
+                if (i <= mainIndex)
+                    mainIndex--;
+                ranges.splice(--i, 2, range.anchor > range.head ? EditorSelection.range(to, from) : EditorSelection.range(from, to));
+            }
         }
+        return new EditorSelection(ranges, mainIndex);
     }
-    return new EditorSelection(ranges, mainIndex);
 }
 function checkSelection(selection, docLength) {
     for (let range of selection.ranges)
@@ -2178,9 +2185,6 @@ dispatch one by calling
 [`EditorView.dispatch`](https://codemirror.net/6/docs/ref/#view.EditorView.dispatch).
 */
 class Transaction {
-    /**
-    @internal
-    */
     constructor(
     /**
     The state from which the transaction starts.
@@ -2226,6 +2230,12 @@ class Transaction {
             checkSelection(selection, changes.newLength);
         if (!annotations.some((a) => a.type == Transaction.time))
             this.annotations = annotations.concat(Transaction.time.of(Date.now()));
+    }
+    /**
+    @internal
+    */
+    static create(startState, changes, selection, effects, annotations, scrollIntoView) {
+        return new Transaction(startState, changes, selection, effects, annotations, scrollIntoView);
     }
     /**
     The new document produced by the transaction. Contrary to
@@ -2398,7 +2408,7 @@ function resolveTransaction(state, specs, filter) {
         let seq = !!specs[i].sequential;
         s = mergeTransaction(s, resolveTransactionInner(state, specs[i], seq ? s.changes.newLength : state.doc.length), seq);
     }
-    let tr = new Transaction(state, s.changes, s.selection, s.effects, s.annotations, s.scrollIntoView);
+    let tr = Transaction.create(state, s.changes, s.selection, s.effects, s.annotations, s.scrollIntoView);
     return extendTransaction(filter ? filterTransaction(tr) : tr);
 }
 // Finish a transaction by applying filters if necessary.
@@ -2426,7 +2436,7 @@ function filterTransaction(tr) {
             changes = filtered.changes;
             back = filtered.filtered.invertedDesc;
         }
-        tr = new Transaction(state, changes, tr.selection && tr.selection.map(back), StateEffect.mapEffects(tr.effects, back), tr.annotations, tr.scrollIntoView);
+        tr = Transaction.create(state, changes, tr.selection && tr.selection.map(back), StateEffect.mapEffects(tr.effects, back), tr.annotations, tr.scrollIntoView);
     }
     // Transaction filters
     let filters = state.facet(transactionFilter);
@@ -2448,7 +2458,7 @@ function extendTransaction(tr) {
         if (extension && Object.keys(extension).length)
             spec = mergeTransaction(tr, resolveTransactionInner(state, extension, tr.changes.newLength), true);
     }
-    return spec == tr ? tr : new Transaction(state, tr.changes, tr.selection, spec.effects, spec.annotations, spec.scrollIntoView);
+    return spec == tr ? tr : Transaction.create(state, tr.changes, tr.selection, spec.effects, spec.annotations, spec.scrollIntoView);
 }
 const none$2 = [];
 function asArray$1(value) {
@@ -2513,9 +2523,6 @@ As such, _never_ mutate properties of a state directly. That'll
 just break things.
 */
 class EditorState {
-    /**
-    @internal
-    */
     constructor(
     /**
     @internal
@@ -2761,11 +2768,25 @@ class EditorState {
     Look up a translation for the given phrase (via the
     [`phrases`](https://codemirror.net/6/docs/ref/#state.EditorState^phrases) facet), or return the
     original string if no translation is found.
+    
+    If additional arguments are passed, they will be inserted in
+    place of markers like `$1` (for the first value) and `$2`, etc.
+    A single `$` is equivalent to `$1`, and `$$` will produce a
+    literal dollar sign.
     */
-    phrase(phrase) {
+    phrase(phrase, ...insert) {
         for (let map of this.facet(EditorState.phrases))
-            if (Object.prototype.hasOwnProperty.call(map, phrase))
-                return map[phrase];
+            if (Object.prototype.hasOwnProperty.call(map, phrase)) {
+                phrase = map[phrase];
+                break;
+            }
+        if (insert.length)
+            phrase = phrase.replace(/\$(\$|\d*)/g, (m, i) => {
+                if (i == "$")
+                    return "$";
+                let n = +(i || 1);
+                return n > insert.length ? m : insert[n - 1];
+            });
         return phrase;
     }
     /**
@@ -2975,7 +2996,7 @@ class RangeValue {
     /**
     Create a [range](https://codemirror.net/6/docs/ref/#state.Range) with this value.
     */
-    range(from, to = from) { return new Range$1(from, to, this); }
+    range(from, to = from) { return Range$1.create(from, to, this); }
 }
 RangeValue.prototype.startSide = RangeValue.prototype.endSide = 0;
 RangeValue.prototype.point = false;
@@ -2984,9 +3005,6 @@ RangeValue.prototype.mapMode = MapMode.TrackDel;
 A range associates a value with a range of positions.
 */
 class Range$1 {
-    /**
-    @internal
-    */
     constructor(
     /**
     The range's start position.
@@ -3003,6 +3021,12 @@ class Range$1 {
         this.from = from;
         this.to = to;
         this.value = value;
+    }
+    /**
+    @internal
+    */
+    static create(from, to, value) {
+        return new Range$1(from, to, value);
     }
 }
 function cmpRange(a, b) {
@@ -3084,9 +3108,6 @@ way that makes them efficient to [map](https://codemirror.net/6/docs/ref/#state.
 structure.
 */
 class RangeSet {
-    /**
-    @internal
-    */
     constructor(
     /**
     @internal
@@ -3099,7 +3120,7 @@ class RangeSet {
     /**
     @internal
     */
-    nextLayer = RangeSet.empty, 
+    nextLayer, 
     /**
     @internal
     */
@@ -3108,6 +3129,12 @@ class RangeSet {
         this.chunk = chunk;
         this.nextLayer = nextLayer;
         this.maxPoint = maxPoint;
+    }
+    /**
+    @internal
+    */
+    static create(chunkPos, chunk, nextLayer, maxPoint) {
+        return new RangeSet(chunkPos, chunk, nextLayer, maxPoint);
     }
     /**
     @internal
@@ -3168,7 +3195,7 @@ class RangeSet {
             else {
                 if (!filter || filterFrom > cur.to || filterTo < cur.from || filter(cur.from, cur.to, cur.value)) {
                     if (!builder.addInner(cur.from, cur.to, cur.value))
-                        spill.push(new Range$1(cur.from, cur.to, cur.value));
+                        spill.push(Range$1.create(cur.from, cur.to, cur.value));
                 }
                 cur.next();
             }
@@ -3201,7 +3228,7 @@ class RangeSet {
             }
         }
         let next = this.nextLayer.map(changes);
-        return chunks.length == 0 ? next : new RangeSet(chunkPos, chunks, next, maxPoint);
+        return chunks.length == 0 ? next : new RangeSet(chunkPos, chunks, next || RangeSet.empty, maxPoint);
     }
     /**
     Iterate over the ranges that touch the region `from` to `to`,
@@ -3446,7 +3473,7 @@ class RangeSetBuilder {
             this.finishChunk(false);
         if (this.chunks.length == 0)
             return next;
-        let result = new RangeSet(this.chunkPos, this.chunks, this.nextLayer ? this.nextLayer.finishInner(next) : next, this.setMaxPoint);
+        let result = RangeSet.create(this.chunkPos, this.chunks, this.nextLayer ? this.nextLayer.finishInner(next) : next, this.setMaxPoint);
         this.from = null; // Make sure further `add` calls produce errors
         return result;
     }
@@ -4858,7 +4885,7 @@ function textCoords(text, pos, side) {
                 from--;
                 flatten = 1;
             } // FIXME this is wrong in RTL text
-            else {
+            else if (to < length) {
                 to++;
                 flatten = -1;
             }
@@ -4867,7 +4894,7 @@ function textCoords(text, pos, side) {
     else {
         if (side < 0)
             from--;
-        else
+        else if (to < length)
             to++;
     }
     let rects = textRange(text, from, to).getClientRects();
@@ -5167,14 +5194,16 @@ function attrsEq(a, b) {
     return true;
 }
 function updateAttrs(dom, prev, attrs) {
+    let changed = null;
     if (prev)
         for (let name in prev)
             if (!(attrs && name in attrs))
-                dom.removeAttribute(name);
+                dom.removeAttribute(changed = name);
     if (attrs)
         for (let name in attrs)
             if (!(prev && prev[name] == attrs[name]))
-                dom.setAttribute(name, attrs[name]);
+                dom.setAttribute(changed = name, attrs[name]);
+    return !!changed;
 }
 
 /**
@@ -5480,6 +5509,7 @@ class LineView extends ContentView {
     transferDOM(other) {
         if (!this.dom)
             return;
+        this.markDirty();
         other.setDOM(this.dom);
         other.prevAttrs = this.prevAttrs === undefined ? this.attrs : this.prevAttrs;
         this.prevAttrs = undefined;
@@ -6610,7 +6640,7 @@ class DocView extends ContentView {
             // no relayout is triggered and I cannot imagine how it can
             // recompute the scroll position without a layout)
             this.dom.style.height = this.view.viewState.contentHeight + "px";
-            this.dom.style.minWidth = this.minWidth ? this.minWidth + "px" : "";
+            this.dom.style.flexBasis = this.minWidth ? this.minWidth + "px" : "";
             // Chrome will sometimes, when DOM mutations occur directly
             // around the selection, get confused and report a different
             // selection from the one it displays (issue #218). This tries
@@ -7368,6 +7398,7 @@ class InputState {
     constructor(view) {
         this.lastKeyCode = 0;
         this.lastKeyTime = 0;
+        this.chromeScrollHack = -1;
         // On iOS, some keys need to have their default behavior happen
         // (after which we retroactively handle them and reset the DOM) to
         // avoid messing up the virtual keyboard state.
@@ -7408,6 +7439,21 @@ class InputState {
             });
             this.registeredEvents.push(type);
         }
+        if (browser.chrome && browser.chrome_version >= 102) {
+            // On Chrome 102, viewport updates somehow stop wheel-based
+            // scrolling. Turning off pointer events during the scroll seems
+            // to avoid the issue.
+            view.scrollDOM.addEventListener("wheel", () => {
+                if (this.chromeScrollHack < 0)
+                    view.contentDOM.style.pointerEvents = "none";
+                else
+                    window.clearTimeout(this.chromeScrollHack);
+                this.chromeScrollHack = setTimeout(() => {
+                    this.chromeScrollHack = -1;
+                    view.contentDOM.style.pointerEvents = "";
+                }, 100);
+            }, { passive: true });
+        }
         this.notifiedFocused = view.hasFocus;
         // On Safari adding an input event handler somehow prevents an
         // issue where the composition vanishes when you press enter.
@@ -7421,6 +7467,7 @@ class InputState {
     ensureHandlers(view, plugins) {
         var _a;
         let handlers;
+        this.customHandlers = [];
         for (let plugin of plugins)
             if (handlers = (_a = plugin.update(view).spec) === null || _a === void 0 ? void 0 : _a.domEventHandlers) {
                 this.customHandlers.push({ plugin: plugin.value, handlers });
@@ -8847,23 +8894,21 @@ class ViewState {
         this.defaultTextDirection = style.direction == "rtl" ? Direction.RTL : Direction.LTR;
         let refresh = this.heightOracle.mustRefreshForWrapping(whiteSpace);
         let measureContent = refresh || this.mustMeasureContent || this.contentDOMHeight != dom.clientHeight;
+        this.contentDOMHeight = dom.clientHeight;
+        this.mustMeasureContent = false;
         let result = 0, bias = 0;
+        // Vertical padding
+        let paddingTop = parseInt(style.paddingTop) || 0, paddingBottom = parseInt(style.paddingBottom) || 0;
+        if (this.paddingTop != paddingTop || this.paddingBottom != paddingBottom) {
+            this.paddingTop = paddingTop;
+            this.paddingBottom = paddingBottom;
+            result |= 8 /* Geometry */ | 2 /* Height */;
+        }
         if (this.editorWidth != view.scrollDOM.clientWidth) {
             if (oracle.lineWrapping)
                 measureContent = true;
             this.editorWidth = view.scrollDOM.clientWidth;
             result |= 8 /* Geometry */;
-        }
-        if (measureContent) {
-            this.mustMeasureContent = false;
-            this.contentDOMHeight = dom.clientHeight;
-            // Vertical padding
-            let paddingTop = parseInt(style.paddingTop) || 0, paddingBottom = parseInt(style.paddingBottom) || 0;
-            if (this.paddingTop != paddingTop || this.paddingBottom != paddingBottom) {
-                result |= 8 /* Geometry */;
-                this.paddingTop = paddingTop;
-                this.paddingBottom = paddingBottom;
-            }
         }
         // Pixel viewport
         let pixelViewport = (this.printing ? fullPixelRange : visiblePixelRange)(dom, this.paddingTop);
@@ -9664,21 +9709,16 @@ class DOMObserver {
     // composition events that, when interrupted, cause text duplication
     // or other kinds of corruption. This hack makes the editor back off
     // from handling DOM changes for a moment when such a key is
-    // detected (via beforeinput or keydown), and then dispatches the
-    // key event, throwing away the DOM changes if it gets handled.
+    // detected (via beforeinput or keydown), and then tries to flush
+    // them or, if that has no effect, dispatches the given key.
     delayAndroidKey(key, keyCode) {
         if (!this.delayedAndroidKey)
             requestAnimationFrame(() => {
                 let key = this.delayedAndroidKey;
                 this.delayedAndroidKey = null;
-                let startState = this.view.state;
-                this.readSelectionRange();
-                if (dispatchKey(this.view.contentDOM, key.key, key.keyCode))
-                    this.processRecords();
-                else
-                    this.flush();
-                if (this.view.state == startState)
-                    this.view.update([]);
+                this.delayedFlush = -1;
+                if (!this.flush())
+                    dispatchKey(this.view.contentDOM, key.key, key.keyCode);
             });
         // Since backspace beforeinput is sometimes signalled spuriously,
         // Enter always takes precedence.
@@ -9734,10 +9774,11 @@ class DOMObserver {
             return;
         this.selectionChanged = false;
         let startState = this.view.state;
-        this.onChange(from, to, typeOver);
+        let handled = this.onChange(from, to, typeOver);
         // The view wasn't updated
         if (this.view.state == startState)
             this.view.update([]);
+        return handled;
     }
     readMutation(rec) {
         let cView = this.view.docView.nearest(rec.target);
@@ -9820,7 +9861,7 @@ function applyDOMChange(view, start, end, typeOver) {
     if (start > -1) {
         let bounds = view.docView.domBoundsAround(start, end, 0);
         if (!bounds || view.state.readOnly)
-            return;
+            return false;
         let { from, to } = bounds;
         let selPoints = view.docView.impreciseHead || view.docView.impreciseAnchor ? [] : selectionPoints(view);
         let reader = new DOMReader(selPoints, view.state);
@@ -9860,7 +9901,7 @@ function applyDOMChange(view, start, end, typeOver) {
             newSel = EditorSelection.single(anchor, head);
     }
     if (!change && !newSel)
-        return;
+        return false;
     // Heuristic to notice typing over a selected character
     if (!change && typeOver && !sel.empty && newSel && newSel.main.empty)
         change = { from: sel.from, to: sel.to, insert: view.state.doc.slice(sel.from, sel.to) };
@@ -9876,13 +9917,13 @@ function applyDOMChange(view, start, end, typeOver) {
         };
     // Detect insert-period-on-double-space Mac behavior, and transform
     // it into a regular space insert.
-    else if (browser.mac && change && change.from == change.to && change.from == sel.head - 1 &&
+    else if ((browser.mac || browser.android) && change && change.from == change.to && change.from == sel.head - 1 &&
         change.insert.toString() == ".")
         change = { from: sel.from, to: sel.to, insert: Text.of([" "]) };
     if (change) {
         let startState = view.state;
         if (browser.ios && view.inputState.flushIOSKey(view))
-            return;
+            return true;
         // Android browsers don't fire reasonable key events for enter,
         // backspace, or delete. So this detects changes that look like
         // they're caused by those keys, and reinterprets them as key
@@ -9897,10 +9938,10 @@ function applyDOMChange(view, start, end, typeOver) {
                     dispatchKey(view.contentDOM, "Backspace", 8)) ||
                 (change.from == sel.from && change.to == sel.to + 1 && change.insert.length == 0 &&
                     dispatchKey(view.contentDOM, "Delete", 46))))
-            return;
+            return true;
         let text = change.insert.toString();
         if (view.state.facet(inputHandler$1).some(h => h(view, change.from, change.to, text)))
-            return;
+            return true;
         if (view.inputState.composing >= 0)
             view.inputState.composing++;
         let tr;
@@ -9956,6 +9997,7 @@ function applyDOMChange(view, start, end, typeOver) {
             }
         }
         view.dispatch(tr, { scrollIntoView: true, userEvent });
+        return true;
     }
     else if (newSel && !newSel.main.eq(sel)) {
         let scrollIntoView = false, userEvent = "select";
@@ -9965,6 +10007,10 @@ function applyDOMChange(view, start, end, typeOver) {
             userEvent = view.inputState.lastSelectionOrigin;
         }
         view.dispatch({ selection: newSel, scrollIntoView, userEvent });
+        return true;
+    }
+    else {
+        return false;
     }
 }
 function findDiff(a, b, preferredPos, preferredSide) {
@@ -10083,7 +10129,7 @@ class EditorView {
         for (let plugin of this.plugins)
             plugin.update(this);
         this.observer = new DOMObserver(this, (from, to, typeOver) => {
-            applyDOMChange(this, from, to, typeOver);
+            return applyDOMChange(this, from, to, typeOver);
         }, event => {
             this.inputState.runScrollHandlers(this, event);
             if (this.observer.intersecting)
@@ -10153,7 +10199,7 @@ class EditorView {
     update(transactions) {
         if (this.updateState != 0 /* Idle */)
             throw new Error("Calls to EditorView.update are not allowed while an update is in progress");
-        let redrawn = false, update;
+        let redrawn = false, attrsChanged = false, update;
         let state = this.state;
         for (let tr of transactions) {
             if (tr.startState != state)
@@ -10164,6 +10210,7 @@ class EditorView {
             this.viewState.state = state;
             return;
         }
+        this.observer.clear();
         // When the phrases change, redraw the editor
         if (state.facet(EditorState.phrases) != this.state.facet(EditorState.phrases))
             return this.setState(state);
@@ -10191,7 +10238,7 @@ class EditorView {
             redrawn = this.docView.update(update);
             if (this.state.facet(styleModule) != this.styleModules)
                 this.mountStyles();
-            this.updateAttrs();
+            attrsChanged = this.updateAttrs();
             this.showAnnouncements(transactions);
             this.docView.updateSelection(redrawn, transactions.some(tr => tr.isUserEvent("select.pointer")));
         }
@@ -10200,7 +10247,7 @@ class EditorView {
         }
         if (update.startState.facet(theme) != update.state.facet(theme))
             this.viewState.mustMeasureContent = true;
-        if (redrawn || scrollTarget || this.viewState.mustEnforceCursorAssoc || this.viewState.mustMeasureContent)
+        if (redrawn || attrsChanged || scrollTarget || this.viewState.mustEnforceCursorAssoc || this.viewState.mustMeasureContent)
             this.requestMeasure();
         if (!update.empty)
             for (let listener of this.state.facet(updateListener))
@@ -10380,12 +10427,14 @@ class EditorView {
         if (this.state.readOnly)
             contentAttrs["aria-readonly"] = "true";
         attrsFromFacet(this, contentAttributes, contentAttrs);
-        this.observer.ignore(() => {
-            updateAttrs(this.contentDOM, this.contentAttrs, contentAttrs);
-            updateAttrs(this.dom, this.editorAttrs, editorAttrs);
+        let changed = this.observer.ignore(() => {
+            let changedContent = updateAttrs(this.contentDOM, this.contentAttrs, contentAttrs);
+            let changedEditor = updateAttrs(this.dom, this.editorAttrs, editorAttrs);
+            return changedContent || changedEditor;
         });
         this.editorAttrs = editorAttrs;
         this.contentAttrs = contentAttrs;
+        return changed;
     }
     showAnnouncements(trs) {
         let first = true;
@@ -12282,7 +12331,6 @@ class HoverPlugin {
             this.startHover();
     }
     startHover() {
-        var _a;
         clearTimeout(this.restartTimeout);
         let { lastMove } = this;
         let pos = this.view.contentDOM.contains(lastMove.target) ? this.view.posAtCoords(lastMove) : null;
@@ -12296,7 +12344,7 @@ class HoverPlugin {
         let bidi = this.view.bidiSpans(this.view.state.doc.lineAt(pos)).find(s => s.from <= pos && s.to >= pos);
         let rtl = bidi && bidi.dir == Direction.RTL ? -1 : 1;
         let open = this.source(this.view, pos, (lastMove.x < posCoords.left ? -rtl : rtl));
-        if ((_a = open) === null || _a === void 0 ? void 0 : _a.then) {
+        if (open === null || open === void 0 ? void 0 : open.then) {
             let pending = this.pending = { pos };
             open.then(result => {
                 if (this.pending == pending) {
@@ -12896,6 +12944,7 @@ class GutterElement {
         this.above = 0;
         this.markers = [];
         this.dom = document.createElement("div");
+        this.dom.className = "cm-gutterElement";
         this.update(view, height, above, markers);
     }
     update(view, height, above, markers) {
@@ -15755,9 +15804,6 @@ let currentContext = null;
 A parse context provided to parsers working on the editor content.
 */
 class ParseContext {
-    /**
-    @internal
-    */
     constructor(parser, 
     /**
     The current editor state.
@@ -15807,6 +15853,12 @@ class ParseContext {
         @internal
         */
         this.tempSkipped = [];
+    }
+    /**
+    @internal
+    */
+    static create(parser, state, viewport) {
+        return new ParseContext(parser, state, [], Tree.empty, 0, viewport, [], null);
     }
     startParse() {
         return this.parser.startParse(new DocInput(this.state.doc), this.fragments);
@@ -16013,7 +16065,7 @@ class LanguageState {
     }
     static init(state) {
         let vpTo = Math.min(3000 /* InitViewport */, state.doc.length);
-        let parseState = new ParseContext(state.facet(language).parser, state, [], Tree.empty, 0, { from: 0, to: vpTo }, [], null);
+        let parseState = ParseContext.create(state.facet(language).parser, state, { from: 0, to: vpTo });
         if (!parseState.work(20 /* Apply */, vpTo))
             parseState.takeTree();
         return new LanguageState(parseState);
@@ -16441,7 +16493,7 @@ function indentFrom(node, pos, base) {
     for (; node; node = node.parent) {
         let strategy = indentStrategy(node);
         if (strategy)
-            return strategy(new TreeIndentContext(base, pos, node));
+            return strategy(TreeIndentContext.create(base, pos, node));
     }
     return null;
 }
@@ -16451,9 +16503,6 @@ Objects of this type provide context information and helper
 methods to indentation functions registered on syntax nodes.
 */
 class TreeIndentContext extends IndentContext {
-    /**
-    @internal
-    */
     constructor(base, 
     /**
     The position at which indentation is being computed.
@@ -16468,6 +16517,12 @@ class TreeIndentContext extends IndentContext {
         this.base = base;
         this.pos = pos;
         this.node = node;
+    }
+    /**
+    @internal
+    */
+    static create(base, pos, node) {
+        return new TreeIndentContext(base, pos, node);
     }
     /**
     Get the text directly after `this.pos`, either the entire line
@@ -16985,6 +17040,7 @@ class HighlightStyle {
             (modSpec || (modSpec = Object.create(null)))["." + cls] = spec;
             return cls;
         }
+        const all = typeof options.all == "string" ? options.all : options.all ? def(options.all) : undefined;
         const scopeOpt = options.scope;
         this.scope = scopeOpt instanceof Language ? (type) => type.prop(languageDataProp) == scopeOpt.data
             : scopeOpt ? (type) => type == scopeOpt : undefined;
@@ -16992,7 +17048,7 @@ class HighlightStyle {
             tag: style.tag,
             class: style.class || def(Object.assign({}, style, { tag: null }))
         })), {
-            all: typeof options.all == "string" ? options.all : options.all ? def(options.all) : undefined,
+            all,
         }).style;
         this.module = modSpec ? new StyleModule(modSpec) : null;
         this.themeType = options.themeType;
@@ -17311,7 +17367,7 @@ which uses it to tokenize the content.
 */
 class StringStream {
     /**
-    @internal
+    Create a stream.
     */
     constructor(
     /**
@@ -20625,32 +20681,35 @@ This annotation is added to transactions that are produced by
 picking a completion.
 */
 const pickedCompletion = /*@__PURE__*/Annotation.define();
+/**
+Helper function that returns a transaction spec which inserts a
+completion's text in the main selection range, and any other
+selection range that has the same text in front of it.
+*/
+function insertCompletionText(state, text, from, to) {
+    return Object.assign(Object.assign({}, state.changeByRange(range => {
+        if (range == state.selection.main)
+            return {
+                changes: { from: from, to: to, insert: text },
+                range: EditorSelection.cursor(from + text.length)
+            };
+        let len = to - from;
+        if (!range.empty ||
+            len && state.sliceDoc(range.from - len, range.from) != state.sliceDoc(from, to))
+            return { range };
+        return {
+            changes: { from: range.from - len, to: range.from, insert: text },
+            range: EditorSelection.cursor(range.from - len + text.length)
+        };
+    })), { userEvent: "input.complete" });
+}
 function applyCompletion(view, option) {
     const apply = option.completion.apply || option.completion.label;
     let result = option.source;
-    if (typeof apply == "string") {
-        view.dispatch(view.state.changeByRange(range => {
-            if (range == view.state.selection.main)
-                return {
-                    changes: { from: result.from, to: result.to, insert: apply },
-                    range: EditorSelection.cursor(result.from + apply.length)
-                };
-            let len = result.to - result.from;
-            if (!range.empty ||
-                len && view.state.sliceDoc(range.from - len, range.from) != view.state.sliceDoc(result.from, result.to))
-                return { range };
-            return {
-                changes: { from: range.from - len, to: range.from, insert: apply },
-                range: EditorSelection.cursor(range.from - len + apply.length)
-            };
-        }), {
-            userEvent: "input.complete",
-            annotations: pickedCompletion.of(option.completion)
-        });
-    }
-    else {
+    if (typeof apply == "string")
+        view.dispatch(insertCompletionText(view.state, apply, result.from, result.to));
+    else
         apply(view, option.completion, result.from, result.to);
-    }
 }
 const SourceCache = /*@__PURE__*/new WeakMap();
 function asSource(source) {
@@ -20792,6 +20851,7 @@ const completionConfig = /*@__PURE__*/Facet.define({
         return combineConfig(configs, {
             activateOnTyping: true,
             override: null,
+            closeOnBlur: true,
             maxRenderedOptions: 100,
             defaultKeymap: true,
             optionClass: () => "",
@@ -20800,6 +20860,7 @@ const completionConfig = /*@__PURE__*/Facet.define({
             addToOptions: []
         }, {
             defaultKeymap: (a, b) => a && b,
+            closeOnBlur: (a, b) => a && b,
             icons: (a, b) => a && b,
             optionClass: (a, b) => c => joinClass(a(c), b(c)),
             addToOptions: (a, b) => a.concat(b)
@@ -20999,6 +21060,7 @@ class CompletionTooltip {
         ul.id = id;
         ul.setAttribute("role", "listbox");
         ul.setAttribute("aria-expanded", "true");
+        ul.setAttribute("aria-label", this.view.state.phrase("Completions"));
         for (let i = range.from; i < range.to; i++) {
             let { completion, match } = options[i];
             const li = ul.appendChild(document.createElement("li"));
@@ -21045,8 +21107,14 @@ function sortOptions(active, state) {
     for (let a of active)
         if (a.hasResult()) {
             if (a.result.filter === false) {
-                for (let option of a.result.options)
-                    options.push(new Option(option, a, [1e9 - i++]));
+                let getMatch = a.result.getMatch;
+                for (let option of a.result.options) {
+                    let match = [1e9 - i++];
+                    if (getMatch)
+                        for (let n of getMatch(option))
+                            match.push(n);
+                    options.push(new Option(option, a, match));
+                }
             }
             else {
                 let matcher = new FuzzyMatcher(state.sliceDoc(a.from, a.to)), match;
@@ -21454,6 +21522,11 @@ const completionPlugin = /*@__PURE__*/ViewPlugin.fromClass(class {
     }
 }, {
     eventHandlers: {
+        blur() {
+            let state = this.view.state.field(completionState, false);
+            if (state && state.tooltip && this.view.state.facet(completionConfig).closeOnBlur)
+                this.view.dispatch({ effects: closeCompletionEffect.of(null) });
+        },
         compositionstart() {
             this.composing = 1 /* Started */;
         },
@@ -22476,7 +22549,7 @@ function assignKeys(actions) {
 function renderDiagnostic(view, diagnostic, inPanel) {
     var _a;
     let keys = inPanel ? assignKeys(diagnostic.actions) : [];
-    return crelt("li", { class: "cm-diagnostic cm-diagnostic-" + diagnostic.severity }, crelt("span", { class: "cm-diagnosticText" }, diagnostic.message), (_a = diagnostic.actions) === null || _a === void 0 ? void 0 : _a.map((action, i) => {
+    return crelt("li", { class: "cm-diagnostic cm-diagnostic-" + diagnostic.severity }, crelt("span", { class: "cm-diagnosticText" }, diagnostic.renderMessage ? diagnostic.renderMessage() : diagnostic.message), (_a = diagnostic.actions) === null || _a === void 0 ? void 0 : _a.map((action, i) => {
         let click = (e) => {
             e.preventDefault();
             let found = findDiagnostic(view.state.field(lintState).diagnostics, diagnostic);
@@ -23231,6 +23304,7 @@ class Stack {
             this.storeNode(0 /* Err */, this.reducePos, this.reducePos, 4, true);
             this.score -= 100 /* Reduce */;
         }
+        this.reducePos = this.pos;
         this.reduce(reduce);
         return true;
     }
@@ -23723,7 +23797,7 @@ function decodeArray(input, Type = Uint16Array) {
 }
 
 // Environment variable used to control console output
-const verbose = typeof process != "undefined" && /\bparse\b/.test(process.env.LOG);
+const verbose = typeof process != "undefined" && process.env && /\bparse\b/.test(process.env.LOG);
 let stackIDs = null;
 var Safety;
 (function (Safety) {
@@ -24597,7 +24671,7 @@ function tagNameAfter$1(input, offset) {
   return cachedName$1 = name ? name.toLowerCase() : next == question || next == bang ? undefined : null
 }
 
-const lessThan = 60, greaterThan = 62, slash$1 = 47, question = 63, bang = 33;
+const lessThan = 60, greaterThan = 62, slash$1 = 47, question = 63, bang = 33, dash$1 = 45;
 
 function ElementContext$1(name, parent) {
   this.name = name;
@@ -24656,19 +24730,18 @@ const tagStart = new ExternalTokenizer((input, stack) => {
 }, {contextual: true});
 
 const commentContent$2 = new ExternalTokenizer(input => {
-  for (let endPos = 0, i = 0;; i++) {
+  for (let dashes = 0, i = 0;; i++) {
     if (input.next < 0) {
       if (i) input.acceptToken(commentContent$1$1);
       break
     }
-    if (input.next == "-->".charCodeAt(endPos)) {
-      endPos++;
-      if (endPos == 3) {
-        if (i > 3) input.acceptToken(commentContent$1$1, -2);
-        break
-      }
+    if (input.next == dash$1) {
+      dashes++;
+    } else if (input.next == greaterThan && dashes >= 2) {
+      if (i > 3) input.acceptToken(commentContent$1$1, -2);
+      break
     } else {
-      endPos = 0;
+      dashes = 0;
     }
     input.advance();
   }
@@ -25303,6 +25376,86 @@ const snippets = [
     })
 ];
 
+const cache = /*@__PURE__*/new NodeWeakMap();
+const ScopeNodes = /*@__PURE__*/new Set([
+    "Script", "Block",
+    "FunctionExpression", "FunctionDeclaration", "ArrowFunction", "MethodDeclaration",
+    "ForStatement"
+]);
+function defID(type) {
+    return (node, def) => {
+        let id = node.node.getChild("VariableDefinition");
+        if (id)
+            def(id, type);
+        return true;
+    };
+}
+const functionContext = ["FunctionDeclaration"];
+const gatherCompletions = {
+    FunctionDeclaration: /*@__PURE__*/defID("function"),
+    ClassDeclaration: /*@__PURE__*/defID("class"),
+    ClassExpression: () => true,
+    EnumDeclaration: /*@__PURE__*/defID("constant"),
+    TypeAliasDeclaration: /*@__PURE__*/defID("type"),
+    NamespaceDeclaration: /*@__PURE__*/defID("namespace"),
+    VariableDefinition(node, def) { if (!node.matchContext(functionContext))
+        def(node, "variable"); },
+    TypeDefinition(node, def) { def(node, "type"); },
+    __proto__: null
+};
+function getScope(doc, node) {
+    let cached = cache.get(node);
+    if (cached)
+        return cached;
+    let completions = [], top = true;
+    function def(node, type) {
+        let name = doc.sliceString(node.from, node.to);
+        completions.push({ label: name, type });
+    }
+    node.cursor(IterMode.IncludeAnonymous).iterate(node => {
+        if (top) {
+            top = false;
+        }
+        else if (node.name) {
+            let gather = gatherCompletions[node.name];
+            if (gather && gather(node, def) || ScopeNodes.has(node.name))
+                return false;
+        }
+        else if (node.to - node.from > 8192) {
+            // Allow caching for bigger internal nodes
+            for (let c of getScope(doc, node.node))
+                completions.push(c);
+            return false;
+        }
+    });
+    cache.set(node, completions);
+    return completions;
+}
+const Identifier$1 = /^[\w$\xa1-\uffff][\w$\d\xa1-\uffff]*$/;
+/**
+Completion source that looks up locally defined names in
+JavaScript code.
+*/
+function localCompletionSource(context) {
+    let inner = syntaxTree(context.state).resolve(context.pos, -1);
+    if (inner.name == "TemplateString" || inner.name == "String" ||
+        inner.name == "LineComment" || inner.name == "BlockComment")
+        return null;
+    let isWord = inner.to - inner.from < 20 && Identifier$1.test(context.state.sliceDoc(inner.from, inner.to));
+    if (!isWord && !context.explicit)
+        return null;
+    let options = [];
+    for (let pos = inner; pos; pos = pos.parent) {
+        if (ScopeNodes.has(pos.name))
+            options = options.concat(getScope(context.state.doc, pos));
+    }
+    return {
+        options,
+        from: isWord ? inner.from : context.pos,
+        validFor: Identifier$1
+    };
+}
+
 /**
 A language provider based on the [Lezer JavaScript
 parser](https://github.com/lezer-parser/javascript), extended with
@@ -25370,6 +25523,9 @@ function javascript(config = {}) {
     return new LanguageSupport(lang, [
         javascriptLanguage.data.of({
             autocomplete: ifNotIn(["LineComment", "BlockComment", "String"], completeFromList(snippets))
+        }),
+        javascriptLanguage.data.of({
+            autocomplete: localCompletionSource
         }),
         config.jsx ? autoCloseTags$1 : [],
     ]);
@@ -26237,6 +26393,7 @@ const javaLanguage = /*@__PURE__*/LRLanguage.define({
                     let after = context.textAfter, closed = /^\s*\}/.test(after), isCase = /^\s*(case|default)\b/.test(after);
                     return context.baseIndent + (closed ? 0 : isCase ? 1 : 2) * context.unit;
                 },
+                Block: /*@__PURE__*/delimitedIndent({ closing: "}" }),
                 BlockComment: () => -1,
                 Statement: /*@__PURE__*/continuedIndent({ except: /^{/ })
             }),
