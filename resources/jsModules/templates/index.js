@@ -20,9 +20,9 @@ export default class Templates {
   }
   static css(){
     return `html, body{
-padding: 0px;
-margin: 0px;
-    }`;
+  padding: 0px;
+  margin: 0px;
+}`;
   }
   static supportedLanguages = ["html", "css"];
 }

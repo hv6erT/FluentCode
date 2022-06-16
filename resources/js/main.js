@@ -11,8 +11,10 @@ window.normalizePath = (filePath) => {
 
 window.File = null;
 window.Editor = null;
+window.Templates = null;
 window.Css = (await import("../jsModules/css/index.js")).default;
 window.settings = null;
+
 window.userPreferences = {
   colorMode: null,
   settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",

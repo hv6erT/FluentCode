@@ -29,9 +29,10 @@ const createNewFile = async () => {
     return;
   await Neutralino.filesystem.writeFile(filePath, "");
   await FileManager.openFile(filePath);
-  EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+  await EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
   if(settings.settings.file.templates === true){
-    const Templates = (await import("../jsModules/templates/index.js")).default;
+    if(window.Templates === null)
+      window.Templates = (await import("../jsModules/templates/index.js")).default;
 
     const fileLanguage = File.getLanguageNameFromFilename(filePath).toLowerCase();
     if(Templates.supportedLanguages.includes(fileLanguage))
