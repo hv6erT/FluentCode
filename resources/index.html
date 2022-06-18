@@ -10,13 +10,15 @@
     <link rel="stylesheet" href="css/languageIconFont.css">
     <!-- Neutralino.js client. -->
     <script src="js/neutralino.js"></script>
+    <script>Neutralino.init();</script>
+    
     <!-- Fluecode app's source files -->
     <script async type="module" src="js/assets.js"></script>
     
     <script async src="js/style.js"></script>
     <script async src="js/keybindings.js"></script>
 
-    <script type="module" src="js/main.js"></script>
+    <script defer type="module" src="js/main.js"></script>
     
     <script defer src="js/app.js"></script>
     <script defer src="js/file.js"></script>
@@ -167,7 +169,7 @@
               </fluent-tab-panel>
             </fluent-tabs>
           </div>
-          <div class="flex gap justify-end" style="width: 100%; height: 40px;">
+          <div class="flex gap justify-end" style="width: 100%; height: 40px; align-items: center;">
             <fluent-button appearance="outline" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)">Close</fluent-button>
           </div>
         </div>

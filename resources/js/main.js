@@ -1,7 +1,5 @@
 "use-strict";
 
-Neutralino.init();
-
 //global scope functions and vars
 window.normalizePath = (filePath) => {
   if (typeof filePath === "string")
@@ -109,7 +107,7 @@ const setTheme = async ()=> {
   
   Css.changeColorSchame(userPreferences.colorMode);
 }
-  
+
 (async function(){
   try{
     await setSettings();
