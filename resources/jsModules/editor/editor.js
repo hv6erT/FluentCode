@@ -120,7 +120,7 @@ export default class Editor extends EventTarget {
 
     const self = this;
     const updateEditorStateFunction = function(){
-      self.compareFileChanges();
+      self.compareWithFileChanges();
     };
 
     if (this.#active){
@@ -168,7 +168,7 @@ export default class Editor extends EventTarget {
       self.getView().update([tr]);
       if(!tr.changes.empty && !tr.annotation(syncAnnotation)){
         for(const editor of self.#synchronizedEditors){
-          if(editor.getActive() && self.getActive() && editor.getActive().getDoc() === self.getActive().getDoc() && JSON.stringify(editor.getActive().options) === JSON.stringify(self.getActive().options)){ 
+          if(editor.getActive() && self.getActive() && editor.getActive().getDoc() === self.getActive().getDoc()){ 
             editor.getView().dispatch({
               changes: tr.changes,
               annotations: syncAnnotation.of("editor-synchronize-changes")
