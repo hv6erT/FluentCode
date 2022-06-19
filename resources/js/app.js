@@ -60,6 +60,28 @@ class App{
     else if(time !== undefined)
       throw new Error("Invalid value of time param. Param should be a Number");
   }
+  static async update(restartType = "RESTART"){
+    try {
+      const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
+        
+      if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
+        await Neutralino.updater.install();
+        Neutralino.os.showNotification("Updated successfully", "Open app to see what is new!", "INFO");
+
+        if(restartType === "EXIT")
+          await Neutralino.app.restartProcess({ args: '--closeImmediately'});
+        else if(restartType === "RESTART")
+          await Neutralino.app.restartProcess();
+        else 
+          throw new Error("Unknown restartType option");
+      }
+    }
+    catch(error) {
+      if(error.code !== "NE_UP_CUPDERR"){
+        Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
+      }
+    }
+  }
   static async close(closeType = "EXIT"){    
     Neutralino.window.hide();
     
@@ -84,22 +106,8 @@ class App{
   
     await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys(), Storage.saveSplitViewType()]);
   
-    if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){    
-      try {
-        const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
-        
-        if(parseInt(manifest.version.replaceAll(".", "")) > parseInt(NL_APPVERSION.replaceAll(".", ""))) {
-          await Neutralino.updater.install();
-          Neutralino.os.showNotification("Updated successfully", "Restart app to see what is new!", "INFO");
-  
-          await Neutralino.app.restartProcess({ args: '--closeImmediately'});
-        }
-      }
-      catch(error) {
-        if(error.code !== "NE_UP_CUPDERR"){
-          Neutralino.os.showNotification("Update failed", "Cannot update to newer version", "ERROR");
-        }
-      }
+    if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){
+      await App.update("EXIT");
     }
     
     if(closeType === "EXIT"){
