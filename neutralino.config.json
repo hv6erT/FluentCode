@@ -1,6 +1,6 @@
 {
   "applicationId": "fluentcode",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "defaultMode": "window",
   "port": 0,
   "documentRoot": "/resources/",
