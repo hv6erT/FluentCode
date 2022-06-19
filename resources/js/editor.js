@@ -1,29 +1,35 @@
 "use strict";
 
-const createSplitView = async () =>{
-  if(Object.keys(FileManager.files).length === 0)
+const openSplitView = async(numberOfEditors, gridValue) =>{
+  if(typeof numberOfEditors !== "number" || numberOfEditors < 1 || numberOfEditors > 6 || typeof gridValue !== "string")
     return;
-  
-  await EditorManager.openEditor();
 
-  const editorName = Object.keys(EditorManager.editors).pop();
-  const filePath = Object.keys(FileManager.files).pop();
+  if(numberOfEditors > Object.keys(EditorManager.editors).length){
+    for(let i = Object.keys(EditorManager.editors).length; i < numberOfEditors; i++){
+      await EditorManager.openEditor();
 
-  EditorManager.showFileInEditor(editorName, filePath);
-}
+      const editorName = Object.keys(EditorManager.editors).pop();
+      const filePath = Object.keys(FileManager.files).pop();
+    
+      EditorManager.showFileInEditor(editorName, filePath);
+    }
+  }
+  else if (numberOfEditors < Object.keys(EditorManager.editors).length){
+    for(let i = Object.keys(EditorManager.editors).length; i > numberOfEditors; i--){
+      const editorName = Object.keys(EditorManager.editors).pop();
 
-const exitSplitView = async () =>{
-  if(Object.keys(FileManager.files).length === 0 || Object.keys(EditorManager.editors).length <= 1)
-    return;
-  
-  const editorName = Object.keys(EditorManager.editors).pop();
+      await EditorManager.closeEditor(editorName);
+    }
+  }
 
-  await EditorManager.closeEditor(editorName);
+  EditorManager.editorParentNode.setAttribute("data-editorContainerGrid", gridValue);
+  userPreferences.splitViewType = gridValue;
 }
 
 class EditorManager {
   static editors = {};
   static activeEditorName = null;
+  static editorParentNode = document.getElementById("editorContainer-div");
   static isOpened(editorName){
     return EditorManager.editors.hasOwnProperty(editorName);
   }
@@ -31,11 +37,7 @@ class EditorManager {
     const editorNode = document.createElement("div");
   	editorNode.classList.add("editor-div");
     editorNode.setAttribute("data-editorName", editorName);
-    document.getElementById("editorContainer-div").appendChild(editorNode);
-    
-    const nodeWidth = `calc(${100 / (Object.keys(EditorManager.editors).length + 1)}% - 1px) `;
-    for(const node of Array.from(document.getElementById("editorContainer-div").childNodes))
-      node.style.width = nodeWidth;
+    EditorManager.editorParentNode.appendChild(editorNode);
 
     await EditorManager.compareEditorsChanges();
 
@@ -51,8 +53,6 @@ class EditorManager {
 
     if(Object.keys(EditorManager.editors).length === 1)
       await EditorManager.changeActive(editorName);
-    else if(Object.keys(EditorManager.editors).length > 1)
-      document.getElementById("exitSplitView-fluent-button").style.display = "";
   }
   static async changeActive(editorName){
     if(!EditorManager.isOpened(editorName))
@@ -123,13 +123,6 @@ class EditorManager {
     delete EditorManager.editors[editorName];
 
     EditorManager.changeActive(Object.keys(EditorManager.editors).pop());
-
-    if(Object.keys(EditorManager.editors).length === 1)
-      document.getElementById("exitSplitView-fluent-button").style.display="none";
-
-    const nodeWidth = 100 / (Object.keys(EditorManager.editors).length)+ "%";
-    for(const node of Array.from(document.querySelectorAll("[data-editorName]")))
-      node.style.width = nodeWidth;
   }
   static async compareEditorsChanges(){
     for(const editorName in EditorManager.editors)
@@ -162,7 +155,7 @@ class EditorManager {
       regexp: document.querySelector(`[data-searchInfo='regexp']`).checked,
     };
 
-    EditorManager.editors[editorName].searchInEditor(config);
+     EditorManager.searchAndReplace(editorName, config);
   }
   static async searchInfo(editorName){
     if(EditorManager.editors[editorName]){

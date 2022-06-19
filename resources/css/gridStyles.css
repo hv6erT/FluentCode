@@ -1,0 +1,78 @@
+[data-editorName="0"]{ grid-area: editor-0; }
+[data-editorName="1"]{ grid-area: editor-1; }
+[data-editorName="2"]{ grid-area: editor-2; }
+[data-editorName="3"]{ grid-area: editor-3; }
+[data-editorName="4"]{ grid-area: editor-4; }
+[data-editorName="5"]{ grid-area: editor-5; }
+
+[data-editorContainerGrid] > *{
+  width: 100%;
+  height: 100%;
+  border-top: 1px solid var(--third-bg-color);
+  border-right: 1px solid var(--third-bg-color);
+}
+
+[data-editorContainerGrid="1"]{
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+}
+
+[data-editorContainerGrid="1"] > *{
+  width: inherit;
+}
+
+[data-editorContainerGrid="2-vertical"], [data-editorContainerGrid="2-all-vertical"], [data-editorContainerGrid="2"]{
+  grid-template-columns: 1fr 1fr ; 
+  grid-template-rows: 1fr 1fr ;  
+  grid-template-areas: 
+    "editor-0 editor-1 ."
+    "editor-0 editor-1 ."
+    ". . ."; 
+}
+
+[data-editorContainerGrid="2-horizontal"]{
+  grid-template-columns: 1fr 1fr ; 
+  grid-template-rows: 1fr 1fr ; 
+  grid-template-areas: 
+    "editor-0 editor-0 ."
+    "editor-1 editor-1 .";
+}
+
+[data-editorContainerGrid="3-vertical"]{
+  grid-template-columns: 1fr 1fr ; 
+  grid-template-rows: 1fr 1fr ; 
+  grid-template-areas: 
+    "editor-0 editor-1 ."
+    "editor-0 editor-2 .";
+}
+
+[data-editorContainerGrid="3-all-vertical"], [data-editorContainerGrid="3"]{
+  grid-template-columns: 1fr 1fr 1fr; 
+  grid-template-rows: 1fr; 
+  grid-template-areas: 
+    "editor-0 editor-1 editor-2";
+}
+
+[data-editorContainerGrid="3-horizontal"]{
+  grid-template-columns: 1fr 1fr ; 
+  grid-template-rows: 1fr 1fr ; 
+  grid-template-areas: 
+    "editor-0 editor-0 ."
+    "editor-1 editor-2 .";
+}
+
+[data-editorContainerGrid="4"]{
+  grid-template-columns: 1fr 1fr ; 
+  grid-template-rows: 1fr 1fr ; 
+  grid-template-areas: 
+    "editor-0 editor-1 ."
+    "editor-2 editor-3 .";
+}
+
+[data-editorContainerGrid="6"]{
+  grid-template-columns: 1fr 1fr 1fr; 
+  grid-template-rows: 1fr 1fr; 
+  grid-template-areas: 
+    "editor-0 editor-1 editor-2"
+    "editor-3 editor-4 editor-5";
+}

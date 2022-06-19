@@ -98,6 +98,7 @@ fluent-menu{
   position: absolute;
   z-index: 999;
   margin-top: 10px;
+  margin-left: -10px;
 }
 fluent-button{
   margin-left: 2px;
@@ -196,11 +197,15 @@ fluent-dialog fluent-tab-panel{
   overflow: hidden;
 }
 .editorContainer-div{
-  overflow: auto;
-  width: calc(100vw - var(--nav-width));
-  display: flex;
+  --max-editor-width: calc(100vw - var(--nav-width));
+  --max-editor-height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
+  
+  overflow: hidden;
+  width: var(--max-editor-width);
+  height: var(--max-editor-height);
+
+  display: grid;
 }
 .editor-div{
   overflow: auto;
-  height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
 }

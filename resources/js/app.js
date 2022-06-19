@@ -13,8 +13,7 @@ class App{
     document.getElementById("bottomEditorInfo-div").style.visibility = "hidden";
   
     const nodeIdList = [
-      "createSplitView-fluent-button",
-      "exitSplitView-fluent-button",
+      "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
@@ -31,8 +30,7 @@ class App{
     document.getElementById("bottomEditorInfo-div").style.visibility = "";
   
     const nodeIdList = [
-      "createSplitView-fluent-button",
-      "exitSplitView-fluent-button",
+      "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
@@ -84,7 +82,7 @@ class App{
           return;
       }
   
-    await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys()]);
+    await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys(), Storage.saveSplitViewType()]);
   
     if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){    
       try {

@@ -15,6 +15,7 @@ window.settings = null;
 
 window.userPreferences = {
   colorMode: null,
+  splitViewType: null,
   settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
   updateManifestURL: "https://raw.githubusercontent.com/hv6erT/FluentCode/main/dist/update.json"
 };

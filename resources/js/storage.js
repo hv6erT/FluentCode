@@ -23,9 +23,16 @@ const openFilesAndEditorsFromStorage = async () => {
         }
       }
     }
-    
-    EditorManager.showFileInEditor(editorKey, Object.keys(FileManager.files)[0]);
+
+    if(openFilePromises.length > 0){
+      const filePath = Object.keys(openFilePromises)[0];
+      
+      await openFilePromises[filePath];
+      EditorManager.showFileInEditor(editorKey, filePath);
+    }
   }
+
+  openSplitView(Object.keys(EditorManager.editors).length, ( (await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString()));
 }
 
 const openLastFilesFromStorage = async () => {
@@ -55,6 +62,15 @@ class Storage{
       editorObject[editorKey] = EditorManager.editors[editorKey].toSerelizedObject();
 
     await Neutralino.storage.setData("editors", JSON.stringify(editorObject));
+  }
+  static async saveSplitViewType(){
+    await Neutralino.storage.setData("splitViewType", userPreferences.splitViewType);
+  }
+  static async getSplitViewType(){
+    try{
+      return await Neutralino.storage.getData("splitViewType")
+    }
+    catch{}
   }
   static async getFileKeys(){
     try{
