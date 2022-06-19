@@ -19,6 +19,7 @@
 
 [data-editorContainerGrid="1"] > *{
   width: inherit;
+  height: inherit;
 }
 
 [data-editorContainerGrid="2-vertical"], [data-editorContainerGrid="2-all-vertical"], [data-editorContainerGrid="2"]{
