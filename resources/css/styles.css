@@ -197,7 +197,7 @@ fluent-dialog fluent-tab-panel{
   overflow: hidden;
 }
 .editorContainer-div{
-  --max-editor-width: calc(100vw - var(--nav-width));
+  --max-editor-width: calc(100vw - var(--nav-width) - 1px);
   --max-editor-height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
   
   overflow: hidden;
