@@ -55,14 +55,14 @@
         <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
           <fluent-button id="openSplitView-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#openSplitView-fluent-menu')"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
           <fluent-menu id="openSplitView-fluent-menu" class="grid padding-x padding-y gap" style="grid-template-columns: 1fr 1fr; display: none;">
-            <fluent-button appearance="stealth" onclick="openSplitView(1, '1')"><span class="fluent-icon fluent-icon--GridViewLarge"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(2, '2-vertical')"><span class="fluent-icon fluent-icon--DoubleColumn"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(2, '2-horizontal')"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(3, '3-all-vertical')"><span class="fluent-icon fluent-icon--TripleColumn"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(3, '3-vertical')"><span class="fluent-icon fluent-icon--LargeGrid" style="transform: rotate(-90deg);"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(3, '3-horizontal')"><span class="fluent-icon fluent-icon--LargeGrid"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(4, '4')"><span class="fluent-icon fluent-icon--GridViewMedium"></span></fluent-button>
-            <fluent-button appearance="stealth" onclick="openSplitView(6, '6')"><span class="fluent-icon fluent-icon--TableFirstColumn"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(1, '1')"><span class="fluent-icon fluent-icon--GridViewLarge"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-vertical')"><span class="fluent-icon fluent-icon--DoubleColumn"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-horizontal')"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(3, '3-all-vertical')"><span class="fluent-icon fluent-icon--TripleColumn"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(3, '3-vertical')"><span class="fluent-icon fluent-icon--LargeGrid" style="transform: rotate(-90deg);"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(3, '3-horizontal')"><span class="fluent-icon fluent-icon--LargeGrid"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(4, '4')"><span class="fluent-icon fluent-icon--GridViewMedium"></span></fluent-button>
+            <fluent-button appearance="stealth" onmousedown="openSplitView(6, '6')"><span class="fluent-icon fluent-icon--TableFirstColumn"></span></fluent-button>
           </fluent-menu>
         </div>
         <fluent-button id="settings-fluent-button" slot="end" appearance="stealth" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>

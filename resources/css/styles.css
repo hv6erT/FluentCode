@@ -203,7 +203,6 @@ fluent-dialog fluent-tab-panel{
   overflow: hidden;
   width: var(--max-editor-width);
   height: var(--max-editor-height);
-
   display: grid;
 }
 .editor-div{

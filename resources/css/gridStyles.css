@@ -20,6 +20,7 @@
 [data-editorContainerGrid="1"] > *{
   width: inherit;
   height: inherit;
+  border: none;
 }
 
 [data-editorContainerGrid="2-vertical"], [data-editorContainerGrid="2-all-vertical"], [data-editorContainerGrid="2"]{
