@@ -3,12 +3,8 @@
 const openFilesAndEditorsFromStorage = async () => {
   const fileObject = await Storage.getFileKeys();
   const editorObject = await Storage.getEditorKeys();
-
-  const openFilePromises = {};
-  for(const filePath in fileObject)
-    openFilePromises[filePath] = FileManager.openFile(filePath);
   
-  for(const editorKey in editorObject){
+  editorKeyFor: for(const editorKey in editorObject){
     if(editorKey != 0)
       await EditorManager.openEditor(editorKey);
 
@@ -17,19 +13,31 @@ const openFilesAndEditorsFromStorage = async () => {
     if(fileObjectToShow){
       for(const filePath in fileObject){
         if(JSON.stringify(fileObject[filePath]) === JSON.stringify(fileObjectToShow)){
-          await openFilePromises[filePath];
-          EditorManager.showFileInEditor(editorKey, filePath);
-          continue;
+          await FileManager.openFile(filePath);
+          if(FileManager.isOpened(filePath) === true){
+            EditorManager.showFileInEditor(editorKey, filePath);
+            continue editorKeyFor;
+          }
+          else
+            delete fileObject[filePath];
         }
       }
     }
-    else{
-      await Promise.allSettled(Object.values(openFilePromises));
-      if(FileManager.files.length > 0)
-        EditorManager.showFileInEditor(editorKey, Object.keys(FileManager.files)[0]);
-    }
   }
+
   setSplitView((await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString());
+  
+  const openFilePromises = [];
+  
+  for(const filePath in fileObject){
+    if(FileManager.isOpened(filePath) === false)
+      openFilePromises.push(FileManager.openFile(filePath));
+  }
+
+  await Promise.allSettled(openFilePromises);
+
+  if(Object.keys(FileManager.files).length > 0)
+    EditorManager.showFileInEmptyEditors(Object.keys(FileManager.files)[0]);
 }
 
 const openLastFilesFromStorage = async () => {

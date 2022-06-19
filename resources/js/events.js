@@ -10,7 +10,7 @@
   });
     
   Neutralino.events.on("settingsReady", async function(){
-    try{await openEditorPromise}catch{};
+    await openEditorPromise;
     await Promise.all([openFilesAndEditorsFromStorage(), openFilesFromAppArgs()]);
       
     settings.applySettingsToDOM();
