@@ -17,5 +17,5 @@ const setColorOnAssets = async () => {
 
 if(NL_LOADED.includes("COLOR") === true)
   setColorOnAssets();
-else
-  Neutralino.events.on("colorReady", setColorOnAssets);
+
+Neutralino.events.on("colorReady", setColorOnAssets);

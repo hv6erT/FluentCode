@@ -149,5 +149,7 @@ window.addEventListener("drop", async function(event) {
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", async function () {
   await setColorMode();
+  Neutralino.events.dispatch("colorReady");
   await setTheme();
+  Neutralino.events.dispatch("themeReady");
 });
