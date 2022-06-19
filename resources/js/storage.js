@@ -23,16 +23,13 @@ const openFilesAndEditorsFromStorage = async () => {
         }
       }
     }
-
-    if(openFilePromises.length > 0){
-      const filePath = Object.keys(openFilePromises)[0];
-      
-      await openFilePromises[filePath];
-      EditorManager.showFileInEditor(editorKey, filePath);
+    else{
+      await Promise.allSettled(Object.values(openFilePromises));
+      if(FileManager.files.length > 0)
+        EditorManager.showFileInEditor(editorKey, Object.keys(FileManager.files)[0]);
     }
   }
-
-  openSplitView(Object.keys(EditorManager.editors).length, ( (await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString()));
+  setSplitView((await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString());
 }
 
 const openLastFilesFromStorage = async () => {

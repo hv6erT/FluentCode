@@ -26,6 +26,11 @@ const openSplitView = async(numberOfEditors, gridValue) =>{
   userPreferences.splitViewType = gridValue;
 }
 
+const setSplitView = async (gridValue) =>{
+  EditorManager.editorParentNode.setAttribute("data-editorContainerGrid", gridValue);
+  userPreferences.splitViewType = gridValue;
+}
+
 class EditorManager {
   static editors = {};
   static activeEditorName = null;
@@ -51,7 +56,7 @@ class EditorManager {
     for(const editorName of Object.keys(EditorManager.editors))
       EditorManager.editors[editorName].synchronizeEditor(Object.values(EditorManager.editors));
 
-    if(Object.keys(EditorManager.editors).length === 1)
+    if(EditorManager.activeEditorName === null)
       await EditorManager.changeActive(editorName);
   }
   static async changeActive(editorName){
@@ -88,6 +93,28 @@ class EditorManager {
 
     await EditorManager.changeActive(editorName)
   	await FileManager.changeActive(filePath);
+  }
+  static async showFileInEmptyEditors(filePath){
+    if(!FileManager.isOpened(filePath))
+      return;
+
+    if(FileManager.isInitialized(filePath) === false)
+      await FileManager.initializeFile(filePath);
+
+    for(const editorName in EditorManager.editors){
+      if(EditorManager.editors[editorName].getActive() === null){
+        EditorManager.editors[editorName].changeActiveFile(FileManager.files[filePath]);
+
+        if(EditorManager.activeEditorName === null){
+          await EditorManager.changeActive(editorName)
+          await FileManager.changeActive(filePath);
+        }
+      }
+    }
+
+    //show editor element
+    App.showContent();
+    App.showEditorPage(); 
   }
   static async showNextFileInEditor(editorName, filePath){
     if(!EditorManager.isOpened(editorName) || !FileManager.isOpened(filePath))

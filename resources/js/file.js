@@ -18,6 +18,7 @@ const uploadFile = async () => {
     else fileToShow = filePath;
   }
   EditorManager.showFileInEditor(EditorManager.activeEditorName, fileToShow);
+  EditorManager.showFileInEmptyEditors(fileToShow);
 }
 
 const createNewFile = async () => {
@@ -38,6 +39,7 @@ const createNewFile = async () => {
     if(Templates.supportedLanguages.includes(fileLanguage))
       EditorManager.insertText(EditorManager.activeEditorName, Templates.languageTemplateFromLangName(fileLanguage));
   }
+  EditorManager.showFileInEmptyEditors(filePath);
 }
 
 const uploadFolder = async () => {
@@ -63,6 +65,7 @@ const uploadFolder = async () => {
     else fileToShow = filePath;
   }
   EditorManager.showFileInEditor(EditorManager.activeEditorName, fileToShow);
+  EditorManager.showFileInEmptyEditors(fileToShow);
 }
 
 const openFilesFromAppArgs = async () => {
@@ -71,12 +74,14 @@ const openFilesFromAppArgs = async () => {
     
     await FileManager.openFile(filePath);
     EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+    EditorManager.showFileInEmptyEditors(filePath);
   }
 }
 
 const openSettingsFile = async () => {
   await FileManager.openFile(userPreferences.settingsFilePath);
   EditorManager.showFileInEditor(EditorManager.activeEditorName, userPreferences.settingsFilePath);
+  EditorManager.showFileInEmptyEditors(userPreferences.settingsFilePath);
 }
 
 const saveAllFilesBeforeClose = async function(){
@@ -231,12 +236,9 @@ class FileManager {
     else{
       App.showStartPage();
       FileManager.activeFilePath = null;
-      if(Object.keys(EditorManager.editors).length > 1){
-        for(let i = (Object.keys(EditorManager.editors).length - 1); i > 1; i--)
-          EditorManager.closeEditor(Object.keys(EditorManager.editors)[i]);
-      }
 
-      EditorManager.showDefaultPage(0);
+      for(const editorName in EditorManager.editors)
+        EditorManager.showDefaultPage(editorName);
     }
   	
 	delete FileManager.files[filePath];
@@ -254,12 +256,8 @@ class FileManager {
 
     await FileNav.removeAllItems();
 
-    if(Object.keys(EditorManager.editors).length > 1){
-      for(let i = (Object.keys(EditorManager.editors).length - 1); i>1; i--)
-        EditorManager.closeEditor(Object.keys(EditorManager.editors)[i]);
-    }
-
-    EditorManager.showDefaultPage(0);
+    for(const editorName in EditorManager.editors)
+      EditorManager.showDefaultPage(editorName);
   }
   static async renameFile(filePath, newFilePath){
     if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))))
