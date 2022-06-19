@@ -45,7 +45,10 @@
   });
     
   Neutralino.events.on("windowClose", async function() {
-    App.close("EXIT");
+    if(window.settings === null || !EditorManager || !FileManager || !FileNav || !Storage)
+      await Neutralino.app.killProcess();
+    else
+      App.close("EXIT");
   });
 }
 
