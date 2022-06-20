@@ -1,56 +1,51 @@
 "use strict";
-
-{
-  if(NL_ARGS.includes("closeImmediately"))
-    App.close();
-  
-  const openEditorPromise = EditorManager.openEditor();
-  Neutralino.events.on("themeReady", async function(){
-    App.showContent();
-  });
+ 
+Neutralino.events.on("themeReady", async function(){
+  App.showContent();
+});
     
-  Neutralino.events.on("settingsReady", async function(){
-    await openEditorPromise;
-    await Promise.all([openFilesAndEditorsFromStorage(), openFilesFromAppArgs()]);
+Neutralino.events.on("settingsReady", async function(){
+  await EditorManager.openEditor();
+  openFilesAndEditorsFromStorage().then(function(){NL_LOADED.push("STORAGE");}, function(error){console.log(error);})
+  openFilesFromAppArgs();
       
-    settings.applySettingsToDOM();
-    settings.applySettingsDOMListeners();
+  settings.applySettingsToDOM();
+  settings.applySettingsDOMListeners();
     
-    FileManager.startAutoSave();
-  });
+  FileManager.startAutoSave();
+});
 
-  window.addEventListener("DOMContentLoaded", async function() {
-    App.showStartPage();
+window.addEventListener("DOMContentLoaded", async function() {
+  App.showStartPage();
   
-    document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
-  });
+  document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
+});
     
-  window.addEventListener("load", async function() {
-    Keybindings.setListener();
-  });
+window.addEventListener("load", async function() {
+  Keybindings.setListener();
+});
     
-  Neutralino.events.on("windowFocus", async function (){
-    try{await FileManager.startAutoSave();}catch{}
-  });
+Neutralino.events.on("windowFocus", async function (){
+  try{await FileManager.startAutoSave();}catch{}
+});
     
-  Neutralino.events.on("windowBlur", async function () {
-    try{await FileManager.stopAutoSave();}catch{}
-  });
+Neutralino.events.on("windowBlur", async function () {
+  try{await FileManager.stopAutoSave();}catch{}
+});
     
-  Neutralino.events.on("serverOffline", async function(){
-    const errorResponse = await Neutralino.os.showMessageBox("Error: App is not responding", "Try to restart app", "RETRY_CANCEL", "ERROR");
+Neutralino.events.on("serverOffline", async function(){
+  const errorResponse = await Neutralino.os.showMessageBox("Error: App is not responding", "Try to restart app", "RETRY_CANCEL", "ERROR");
     
-    if(errorResponse === "RETRY")
-      Neutralino.app.restartProcess();
-  });
+  if(errorResponse === "RETRY")
+    Neutralino.app.restartProcess();
+});
     
-  Neutralino.events.on("windowClose", async function() {
-    if(window.settings === null || !EditorManager || !FileManager || !FileNav || !Storage)
-      await Neutralino.app.killProcess();
-    else
-      App.close("EXIT");
-  });
-}
+Neutralino.events.on("windowClose", async function() {
+  if(window.settings === null || typeof window.settings === "undefined" || typeof EditorManager === "undefined" || typeof FileManager === "undefined" || typeof FileNav === "undefined" || typeof Storage === "undefined")
+    await Neutralino.app.killProcess();
+  else
+    App.close("EXIT");
+});
 
 window.keyboardEventActions = (event, actionKey, action) => {
   if(!event || !actionKey || !action)

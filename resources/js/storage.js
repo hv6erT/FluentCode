@@ -24,7 +24,7 @@ const openFilesAndEditorsFromStorage = async () => {
       }
     }
   }
-
+  
   setSplitView((await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString());
   
   const openFilePromises = [];

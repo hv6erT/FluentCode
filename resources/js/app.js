@@ -1,5 +1,8 @@
 "use strict";
 
+if(NL_ARGS.includes("closeImmediately"))
+    App.close();
+
 class App{
   static async showContent(){
     document.getElementById("loading-main").style.display = "none";

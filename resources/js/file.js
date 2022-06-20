@@ -73,8 +73,10 @@ const openFilesFromAppArgs = async () => {
     const filePath = normalizePath(NL_ARGS[1]);
     
     await FileManager.openFile(filePath);
-    EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
-    EditorManager.showFileInEmptyEditors(filePath);
+    if(FileManager.isOpened(filePath)){
+      EditorManager.showFileInEditor(EditorManager.activeEditorName, filePath);
+      EditorManager.showFileInEmptyEditors(filePath);
+    }
   }
 }
 
