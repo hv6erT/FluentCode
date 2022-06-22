@@ -16,5 +16,5 @@ dist/fluentcode/WebView2Loader.dll
 *.iss
 
 #Node files
-node_modules
-package-lock.json
+node_modules/
+.package-lock.json
