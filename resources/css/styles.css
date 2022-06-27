@@ -17,7 +17,7 @@
     --top-nav-height: 90px;
   }
 }
-@media (max-width: 500px){
+@media (max-width: 650px){
   :root{
     --bottom-short-info-width: 100%;
   }
@@ -39,6 +39,7 @@ main{
 }
 header{
   font-size: 25px;
+  padding: 15px 10px;
 }
 h1, h2, h3, h4, h5, h6{
   font-weight: normal;
@@ -57,7 +58,7 @@ h1, h2, h3, h4, h5, h6{
 ::-webkit-scrollbar-thumb
 {
   	background-clip: content-box;
-  	background-color: var(--scrollbar-color);
+  	background-color: var(--color);
   	border-radius: 3px;
 }
 ::-webkit-scrollbar-corner
@@ -92,7 +93,8 @@ h1, h2, h3, h4, h5, h6{
 }
 /*fluent components*/
 fluent-badge{
-  word-wrap: normal;
+  padding: 5px 0;
+  overflow: auto;
 }
 fluent-menu{
   position: absolute;
@@ -130,6 +132,14 @@ fluent-dialog fluent-tab-panel{
 .settings-fluent-dialog{
   --dialog-width: 600px;
   --dialog-height: max(70vh, 350px);
+}
+.startPage-fluent-anchor{
+  margin: 5px;
+  display: inline-flex;
+}
+.startPage-fluent-anchor > *{
+  padding: 5px 0;
+  margin: 0 5px;
 }
 /*default classes*/
 .main{
@@ -184,7 +194,10 @@ fluent-dialog fluent-tab-panel{
   visibility: visible;
 }
 .editor-article{
-  width: calc(100vw - var(--nav-width));
+  --max-editor-width: calc(100vw - var(--nav-width) - 1px);
+  --max-editor-height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
+  
+  width: var(--max-editor-width);
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
   background-color: var(--first-bg-color);
   border-left: 1px solid var(--third-bg-color);
@@ -196,10 +209,7 @@ fluent-dialog fluent-tab-panel{
   display: flex;
   overflow: hidden;
 }
-.editorContainer-div{
-  --max-editor-width: calc(100vw - var(--nav-width) - 1px);
-  --max-editor-height: calc(100vh - calc(var(--top-nav-height) * 2) - var(--bottom-nav-height));
-  
+.editorContainer-div{  
   overflow: hidden;
   width: var(--max-editor-width);
   height: var(--max-editor-height);
