@@ -73,8 +73,16 @@ export default class Language{
       case "java":
         langSupport = (await import("./codemirror.js")).java();
         break;
+      case "markdown":
+        langSupport = (await import("./codemirror.js")).markdown({
+          defaultCodeLanguage: (await import("./codemirror.js")).htmlLanguage
+        });
+        break;
       case "php":
         langSupport = (await import("./codemirror.js")).php();
+        break;
+      case "python": 
+        langSupport = (await import("./codemirror.js")).python();
         break;
       case "rust": 
         langSupport = (await import("./codemirror.js")).rust();
@@ -134,9 +142,21 @@ export default class Language{
           autocomplete: completeAnyWord
         });
         break;
+      case "markdown":
+        const markdownLanguage = (await import("./codemirror.js")).markdownLanguage;
+        autocompletion = markdownLanguage.data.of({
+          autocomplete: completeAnyWord
+        });
+        break;
       case "php": 
         const phpLanguage = (await import("./codemirror.js")).phpLanguage;
         autocompletion = phpLanguage.data.of({
+          autocomplete: completeAnyWord
+        });
+        break;
+      case "python": 
+        const pythonLanguage = (await import("./codemirror.js")).pythonLanguage;
+        autocompletion = pythonLanguage.data.of({
           autocomplete: completeAnyWord
         });
         break;

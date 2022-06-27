@@ -2,14 +2,16 @@ import {EditorView} from "../editor/index.js";
 
 export default EditorView.theme({
   ".cm-tooltip": {
+    maxWidth: "350px",
+    padding: "3px",
     backgroundColor: "var(--second-bg-color)",
     color: "var(--basic-color)",
     border: "none",
-    borderRadius: "6px",
-    padding: "3px"
+    borderRadius: "6px"
   },
   ".cm-tooltip-autocomplete > ul > li": {
-    borderRadius: "3px"
+    borderRadius: "3px",
+    padding: "3px 0"
   },
   ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
     backgroundColor: "var(--accent-bg-color) !important"
@@ -38,12 +40,5 @@ export default EditorView.theme({
   ".cm-color-preview":{
     zIndex: "100",
     borderRadius: "4px"
-  },
-  ".cm-selection-tooltip":{
-    width: "80px",
-    height: "20px",
-    padding: "5px",
-    overflow: "hidden",
-    display: "flex"
   }
 });

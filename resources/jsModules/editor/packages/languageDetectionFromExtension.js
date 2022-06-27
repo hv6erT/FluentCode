@@ -29,6 +29,7 @@ export default function(extName){
     case "gitignore":
       return "Git files";
     case "md":
+    case "MARKDOWN":
       return "Markdown";
     case "lua":
       return "Lua";
