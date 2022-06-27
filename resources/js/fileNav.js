@@ -33,6 +33,7 @@ class FileNav {
   static #searchItems = {};
   static #groupItems = {};
   static #fileNavNode = document.getElementById("fileNavContainer-div");
+  static #emptyNavNode = document.getElementById("emptyNavContainer-div");
   static #searchNavNode = document.getElementById("fileSearch-fluent-menu");
   static async addItem(fileKey, fileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === true)
@@ -83,6 +84,9 @@ class FileNav {
       FileNav.#groupItems[folderKey].appendChild(FileNav.#fileItems[fileKey]);
     else
       FileNav.#fileNavNode.appendChild(FileNav.#fileItems[fileKey]);
+
+    FileNav.#emptyNavNode.style.display = "none";
+    FileNav.#fileNavNode.style.display = "";
   }
   static async #addGroupItem(folderKey){
     if(FileNav.#groupItems.hasOwnProperty(folderKey) === true)
@@ -148,6 +152,11 @@ class FileNav {
       if(FileNav.#groupItems[folderKey].querySelectorAll(`[data-fileNavItem]`).length === 0)
         await FileNav.#removeGroupItem(folderKey);
     }
+
+    if(Object.keys(FileNav.#fileItems).length === 0){
+      FileNav.#emptyNavNode.style.display = "";
+      FileNav.#fileNavNode.style.display = "none";
+    }
   }
   static async removeAllItems(){
     for(const fileKey in FileNav.#fileItems){
@@ -164,6 +173,9 @@ class FileNav {
       FileNav.#groupItems[folderKey].remove();
 
     FileNav.#groupItems = {};
+
+    FileNav.#emptyNavNode.style.display = "";
+    FileNav.#fileNavNode.style.display = "none";
   }
   static async #removeGroupItem(folderKey){
     if(FileNav.#groupItems.hasOwnProperty(folderKey) === false)

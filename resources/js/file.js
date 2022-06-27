@@ -167,7 +167,7 @@ class FileManager {
       customSelectionTooltip: false,
       customSearchPanel: 
         `<div class="flex">
-          <fluent-text-field name="search" class="margin-y" appearance="filled" placeholder="Search phrases" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
+          <fluent-text-field name="search" class="margin-y" appearance="filled" placeholder="Search phrases" onclick="this.focus()" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {search: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.findNext)"></fluent-text-field>
           <fluent-button id="findPrevious-fluent-button" appearance="stealth" onclick="EditorManager.findPrevious();"><span class="fluent-icon fluent-icon--Previous"></span></fluent-button>
           <fluent-button id="findNext-fluent-button" appearance="stealth" onclick="EditorManager.findNext();"><span class="fluent-icon fluent-icon--Next"></span></fluent-button>
           <div>
@@ -177,7 +177,7 @@ class FileManager {
               <fluent-checkbox onchange="EditorManager.searchAndReplaceUsingForm(EditorManager.activeEditorName)" data-searchInfo="regexp" class="padding-x">Using regexp in search query</fluent-checkbox>
             </fluent-menu>
           </div>
-          <fluent-text-field name="replace" class="margin-y" appearance="filled" placeholder="Replace words" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
+          <fluent-text-field name="replace" class="margin-y" appearance="filled" placeholder="Replace words" onclick="this.focus()" oninput="EditorManager.searchAndReplace(EditorManager.activeEditorName, {replace: this.value})" onkeyup="keyboardEventActions(event, 'Enter', EditorManager.replaceNext)"></fluent-text-field>
           <fluent-button id="replaceNext-fluent-button" appearance="stealth" onclick="EditorManager.replaceNext();"><span class="fluent-icon fluent-icon--Search"></span></fluent-button>
           <fluent-button id="replaceAll-fluent-button" appearance="stealth" onclick="EditorManager.replaceAll();"><span class="fluent-icon fluent-icon--SearchAndApps"></span></fluent-button>
         </div>

@@ -42,6 +42,9 @@ class App{
     for(const nodeId of nodeIdList)
       document.getElementById(nodeId).disabled = false;
   }
+  static async appInfo(){
+    document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
+  }
   static async changeSettingsToDefault(){
     if(!window.settings)
       throw new Error("Settings has not been loaded");

@@ -36,7 +36,7 @@ const setSettings = async () => {
         "second-bg-color": "#ffffff",
         "third-bg-color": "#e6e6e6",
         "basic-color": "#191919",
-        "scrollbar-color": "#898989"
+        "color": "#898989"
       },
       "dark-mode": {
         "theme": "../jsModules/theme/webidea-dark.js",
@@ -46,7 +46,7 @@ const setSettings = async () => {
         "second-bg-color": "#333333",
         "third-bg-color": "#393939",
         "basic-color": "#e1e1e1",
-        "scrollbar-color": "#9E9E9E"
+        "color": "#9E9E9E"
       },
     },
     "app": {
@@ -63,6 +63,7 @@ const setSettings = async () => {
       "any-word-autocompletion": true
     }, 
     "file": {
+      "auto-restore-files": true,
       "auto-save": true,
       "auto-save-time": 60000,
       "save-before-close": true,
@@ -98,7 +99,7 @@ const setColorMode = async () => {
 }
 
 const setTheme = async ()=> {
-  const include = ["accent-bg-color", "first-bg-color", "second-bg-color", "third-bg-color", "basic-color", "scrollbar-color"];
+  const include = ["accent-bg-color", "first-bg-color", "second-bg-color", "third-bg-color", "basic-color", "color"];
   const mode = userPreferences.colorMode + "-mode";
   
   for(const property of include){

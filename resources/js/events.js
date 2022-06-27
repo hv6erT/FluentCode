@@ -6,7 +6,12 @@ Neutralino.events.on("themeReady", async function(){
     
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
-  openFilesAndEditorsFromStorage().then(function(){NL_LOADED.push("STORAGE");}, function(error){console.log(error);})
+
+  if(settings.settings.file["auto-restore-files"] === true)
+    try{await openFilesAndEditorsFromStorage();}catch(error){console.error(error);}
+
+  NL_LOADED.push("STORAGE");
+    
   openFilesFromAppArgs();
       
   settings.applySettingsToDOM();
@@ -18,11 +23,16 @@ Neutralino.events.on("settingsReady", async function(){
 window.addEventListener("DOMContentLoaded", async function() {
   App.showStartPage();
   
-  document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
+  App.appInfo();
 });
     
 window.addEventListener("load", async function() {
   Keybindings.setListener();
+
+  setTimeout(async function(){
+    if(!["SETTINGS", "COLOR", "THEME", "STORAGE"].every(module => NL_LOADED.includes(module)))
+      Neutralino.app.restartProcess();
+  }, 5000)
 });
     
 Neutralino.events.on("windowFocus", async function (){

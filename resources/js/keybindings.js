@@ -7,7 +7,7 @@ class Keybindings{
     "uploadFolder": async function(){uploadFolder();},
     "saveFile": async function(){FileManager.saveFile(FileManager.activeFilePath);},
     "saveAllFiles": async function(){FileManager.saveAllFiles();},
-    "openSettings": async function(){showSettingsMain();}
+    "openSettings": async function(){modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false);}
   };
   static async executeKeybindingEvent(event){
     if(!event instanceof KeyboardEvent)

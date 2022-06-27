@@ -44,10 +44,10 @@ class EditorManager {
     editorNode.setAttribute("data-editorName", editorName);
     EditorManager.editorParentNode.appendChild(editorNode);
 
-    await EditorManager.compareEditorsChanges();
-
     if(window.Editor === null)
       window.Editor = (await import("../jsModules/editor/editor.js")).default;
+    
+    await EditorManager.compareEditorsChanges();
     
     EditorManager.editors[editorName] = new Editor({
       parentNode: editorNode
