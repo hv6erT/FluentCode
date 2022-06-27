@@ -9,11 +9,12 @@ export { lintKeymap } from "@codemirror/lint";
 
 export { htmlLanguage, html } from "@codemirror/lang-html";
 export { cssLanguage, css } from "@codemirror/lang-css";
+export { cppLanguage, cpp } from "@codemirror/lang-cpp";
+export { javaLanguage, java } from "@codemirror/lang-java";
 export { javascriptLanguage, typescriptLanguage, javascript } from "@codemirror/lang-javascript";
 export { jsonLanguage, json } from "@codemirror/lang-json";
-export { javaLanguage, java } from "@codemirror/lang-java";
-export { cppLanguage, cpp } from "@codemirror/lang-cpp";
-export { rustLanguage, rust } from "@codemirror/lang-rust";
+export { markdown, markdownLanguage} from "@codemirror/lang-markdown";
 export { phpLanguage, php } from "@codemirror/lang-php";
 export { pythonLanguage, python } from "@codemirror/lang-python";
+export { rustLanguage, rust } from "@codemirror/lang-rust";
 export { xmlLanguage, xml } from "@codemirror/lang-xml";
