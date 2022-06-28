@@ -77,7 +77,7 @@
           </div>
         </nav>
         <article id="editor-article" class="editor-article" style="display: none;">
-          <fluent-toolbar id="topEditorPanel-nav" class="topNav-fluent-toolbar" style="border-bottom: 1px solid var(--color);">
+          <fluent-toolbar id="topEditorPanel-nav" class="topNav-fluent-toolbar" style="border-bottom: 1px solid var(--third-bg-color);">
             <form id="searchAndReplace-form" slot="start" role="search" style="transition: width 1s ease-in-out; width: auto;"></form>
             <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
               <fluent-button id="cutText-fluent-button" appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>   
@@ -95,8 +95,8 @@
           <div id="editorContainer-div" class="editorContainer-div"></div>
         </article>
         <article id="editorStartPage-article" class="editor-article" style="display: none;">
-          <div class="flex" style="flex-wrap: wrap; width: 100%; height: 100%; padding: 40px 60px; gap: 40px; overflow: auto;">
-            <div style="flex: 300px; height: 180px;">
+          <div class="grid" style="width: 100%; height: 100%; padding-left: 40px; padding-top: 40px; padding-bottom: 40px; grid-template-columns: 1fr; grid-template-rows: repeat(2, 1fr);  gap: 30px; overflow: auto; align-items: center;">
+            <div style="width: 100%;">
               <header>Files</header>
               <fluent-anchor class="startPage-fluent-anchor" onclick="uploadFile();">
                 <span class="fluent-icon fluent-icon--Upload"></span><span>Open files</span>
@@ -111,7 +111,7 @@
                 <span class="fluent-icon fluent-icon--CalendarAgenda"></span><span>Restore last files</span>
               </fluent-anchor>
             </div>
-            <div style="flex: 300px; height: 180px;">
+            <div style="width: 100%;">
               <header>Settings</header>
               <fluent-anchor class="startPage-fluent-anchor" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false);">
                 <span class="fluent-icon fluent-icon--Settings"></span><span>Open settings</span>
