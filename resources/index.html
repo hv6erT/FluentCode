@@ -180,8 +180,8 @@
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <span class="text-lg">New file name: </span>
                   <div class="flex gap">
-                    <fluent-text-field></fluent-text-field>
-                    <fluent-button appearance="accent" class="margin-y">Confirm</fluent-button>
+                    <fluent-text-field data-filePropertiesInfo="filenameWithoutExtension" onkeyup="keyboardEventActions(event, 'Enter', FileManager.renameFileUsingForm);"></fluent-text-field>
+                    <fluent-button appearance="accent" class="margin-y" onclick="FileManager.renameFileUsingForm();">Confirm</fluent-button>
                   </div>
                 </div>
               </fluent-tab-panel>

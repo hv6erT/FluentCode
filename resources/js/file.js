@@ -273,7 +273,14 @@ class FileManager {
     FileManager.files[newFilePath] = FileManager.files[filePath];
     delete FileManager.files[filePath];
 
+    if(FileManager.activeFilePath === filePath)
+      FileManager.activeFilePath = newFilePath;
+
     await FileNav.renameItem(filePath, newFilePath);
+  }
+  static async renameFileUsingForm(){
+    console.log((FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.')))
+    await FileManager.renameFile(FileManager.activeFilePath, (FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.')))
   }
   static async saveFile(filePath){
     if(FileManager.isOpened(filePath) === false || FileManager.isInitialized(filePath) === false)
@@ -333,6 +340,11 @@ class FileManager {
     document.querySelector('[data-filePropertiesInfo="size"]').textContent = formatSize(fileStats.size);
     document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = formatDate(fileStats.createdAt);
     document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = formatDate(fileStats.modifiedAt);
+
+    const filenameWithoutExtensions = filePath.slice(0, filePath.lastIndexOf(".")).slice((filePath.lastIndexOf("/")+1));
+    
+    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value = filenameWithoutExtensions;
+    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').placeholder = filenameWithoutExtensions;
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){

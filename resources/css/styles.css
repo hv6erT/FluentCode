@@ -6,7 +6,6 @@
   --bottom-short-info-width: 20%;
   --nav-width: 230px;
   /*other styles*/
-  -webkit-user-select: none;
   user-select: none;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-size: 13px;
@@ -95,6 +94,7 @@ h1, h2, h3, h4, h5, h6{
 fluent-badge{
   padding: 5px 0;
   overflow: auto;
+  user-select: text;
 }
 fluent-menu{
   position: absolute;
