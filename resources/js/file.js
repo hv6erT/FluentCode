@@ -273,8 +273,12 @@ class FileManager {
     FileManager.files[newFilePath] = FileManager.files[filePath];
     delete FileManager.files[filePath];
 
-    if(FileManager.activeFilePath === filePath)
+    if(FileManager.activeFilePath === filePath){
       FileManager.activeFilePath = newFilePath;
+      
+      FileManager.fileInfo(FileManager.activeFilePath, false);
+      FileManager.filePropertiesInfo(FileManager.activeFilePath);
+    }
 
     await FileNav.renameItem(filePath, newFilePath);
   }
@@ -332,7 +336,7 @@ class FileManager {
 
       const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-      return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}`;
+      return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${ (date.getMinutes() >= 10) ? date.getMinutes() : "0" + date.getMinutes()}`;
     }
 
     document.querySelector('[data-filePropertiesInfo="filename"]').textContent = filePath.slice((filePath.lastIndexOf("/")+1));
