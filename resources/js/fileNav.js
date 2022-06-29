@@ -102,11 +102,10 @@ class FileNav {
     FileNav.#groupItems[folderKey].className = "margin-y margin-top";
     FileNav.#groupItems[folderKey].setAttribute("data-fileNavGroupItem", folderKey);
     FileNav.#groupItems[folderKey].addEventListener("click", async function(event){
-      if(this.expanded === false && FileManager.activeFilePath.includes(folderKey))
+      if(this.expanded === false && folderKey === FileManager.activeFilePath.slice(0, FileManager.activeFilePath.lastIndexOf("/")))
         this.selected = true;
       else{
         this.selected = false;
-        FileNav.changeActive(FileManager.activeFilePath);
       }
     });
 
@@ -120,6 +119,9 @@ class FileNav {
 
     for(const key in FileNav.#fileItems)
       FileNav.#fileItems[key].selected = false;
+
+    for(const key in FileNav.#groupItems)
+      FileNav.#groupItems[key].selected = false;
 
     FileNav.#fileItems[fileKey].selected = true;
   }
