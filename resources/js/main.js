@@ -137,17 +137,28 @@ window.addEventListener("contextmenu", async function(event) {
 });
 
 window.addEventListener("keydown", async function(event) {
+  if((event.key === "+" || event.key === "-" || event.key === "=" || event.key === "_") && event.ctrlKey === true)
+    event.preventDefault();
   if(event.key === "f" && event.ctrlKey === true)
      event.preventDefault();
   if(event.key === "r" && event.ctrlKey === true)
      event.preventDefault();
   if(event.key === "u" && event.ctrlKey === true)
      event.preventDefault();
-});
+}, { passive: false });
+
+window.addEventListener('wheel', async function (event) {
+  if (event.ctrlKey === true) 
+    event.preventDefault();
+}, { passive: false });
 
 window.addEventListener("drop", async function(event) {
   event.preventDefault(); 
-});
+}, { passive: false });
+
+window.addEventListener("dragover", async function(event) {
+  event.preventDefault(); 
+}, { passive: false });
 
 window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", async function () {
   await setColorMode();
