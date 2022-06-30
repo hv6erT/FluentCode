@@ -40,7 +40,9 @@
             <fluent-menu-item onmousedown="uploadFolder();"><div class="flex gap"><span class="fluent-icon fluent-icon--FabricFolderUpload"></span><span>Open directory</span></div></fluent-menu-item>
           </fluent-menu>
         </div>
-        <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
+        <div>
+          <fluent-button id="saveAllFiles-fluent-button" appearance="stealth" onclick="FileManager.saveAllFiles();"><span class="fluent-icon fluent-icon--Save"></span></fluent-button>
+        </div>
         <div>
           <fluent-button appearance="stealth" onclick="toggleNodeDisplay('#moreOptions-fluent-menu')" onblur="hideNode('#moreOptions-fluent-menu')"><span class="fluent-icon fluent-icon--More"></span></fluent-button>
           <fluent-menu id="moreOptions-fluent-menu" style="display: none;">
@@ -48,13 +50,13 @@
             <fluent-menu-item id="closeAllFiles-fluent-menu-item" onmousedown="FileManager.closeAllFiles();"><div class="flex gap"><span class="fluent-icon fluent-icon--PageRemove"></span><span>Close all files</span></div></fluent-menu-item>
           </fluent-menu>
         </div>
-        <div slot="end" class="margin-y">
+        <div slot="end" class="padding-y">
           <fluent-search id="fileSearch-fluent-search" appearance="outline" placeholder="Search in files" style="width: 200px;" onblur="hideNode('#fileSearch-fluent-menu')" oninput='FileNav.searchInFileItems(this.value)'></fluent-search>
           <fluent-menu id="fileSearch-fluent-menu" style="display: none; width: 200px;"></fluent-menu>
         </div>
-        <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
+        <div slot="end" class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
           <fluent-button id="openSplitView-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#openSplitView-fluent-menu')"><span class="fluent-icon fluent-icon--ViewAll2"></span></fluent-button>
-          <fluent-menu id="openSplitView-fluent-menu" class="grid padding-x padding-y gap" style="grid-template-columns: 1fr 1fr; margin-left: -10px; display: none;">
+          <fluent-menu id="openSplitView-fluent-menu" class="grid padding-x padding-y gap" style="grid-template-columns: 1fr 1fr; margin-left: -20px; display: none;">
             <fluent-button appearance="stealth" onmousedown="openSplitView(1, '1')"><span class="fluent-icon fluent-icon--GridViewLarge"></span></fluent-button>
             <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-vertical')"><span class="fluent-icon fluent-icon--DoubleColumn"></span></fluent-button>
             <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-horizontal')"><span class="fluent-icon fluent-icon--CellSplitVertical"></span></fluent-button>
@@ -65,7 +67,9 @@
             <fluent-button appearance="stealth" onmousedown="openSplitView(6, '6')"><span class="fluent-icon fluent-icon--TableFirstColumn"></span></fluent-button>
           </fluent-menu>
         </div>
-        <fluent-button id="settings-fluent-button" slot="end" appearance="stealth" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
+        <div slot="end" class="padding-y">
+          <fluent-button id="settings-fluent-button" appearance="stealth" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--Settings"></span></fluent-button>
+        </div>
       </fluent-toolbar>
       <section class="main-section" style="">
         <nav id="fileSide-nav" class="side-nav padding-x">
@@ -79,17 +83,17 @@
         </nav>
         <article id="editor-article" class="editor-article" style="display: none;">
           <fluent-toolbar id="topEditorPanel-nav" class="topNav-fluent-toolbar" style="border-bottom: 1px solid var(--third-bg-color);">
-            <form id="searchAndReplace-form" slot="start" role="search" style="transition: width 1s ease-in-out; width: auto;"></form>
-            <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
+            <form id="searchAndReplace-form" slot="start" role="search" class="flex" style="transition: width 1s ease-in-out; width: auto;"></form>
+            <div slot="end" class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
               <fluent-button id="cutText-fluent-button" appearance="stealth" onclick="EditorManager.cut();"><span class="fluent-icon fluent-icon--Cut"></span></fluent-button>   
               <fluent-button id="copyText-fluent-button" appearance="stealth" onclick="EditorManager.copy();"><span class="fluent-icon fluent-icon--Copy"></span></fluent-button>   
               <fluent-button id="pasteText-fluent-button" appearance="stealth" onclick="EditorManager.paste();"><span class="fluent-icon fluent-icon--PasteAsText"></span></fluent-button>
             </div>
-            <div slot="end" style="border-right: 1px solid var(--third-bg-color);">
+            <div slot="end" class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
               <fluent-button id="editorUndo-fluent-button" appearance="stealth" onclick="EditorManager.undo();"><span class="fluent-icon fluent-icon--Undo"></span></fluent-button>   
               <fluent-button id="editorRedo-fluent-button" appearance="stealth" onclick="EditorManager.redo();"><span class="fluent-icon fluent-icon--Redo"></span></fluent-button>
             </div>
-            <div slot="end">
+            <div slot="end" class="padding-y">
               <fluent-button id="fileProperties-fluent-button" appearance="stealth" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', false)"><span class="fluent-icon fluent-icon--Info"></span></fluent-button>
             </div>
           </fluent-toolbar>
@@ -136,8 +140,8 @@
         </div>
         <div id="bottomEditorInfo-div" class="flex justify-end gap" style="overflow: hidden; width: calc(50% - calc(var(--bottom-short-info-width) / 2))">
           <span>Ln: </span><span data-editorInfo="currentLine"></span>
-          <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="margin-y" style="color: var(--color);">|</span>
-          <span>Length: </span><span data-editorInfo="length"></span><span class="margin-y" style="color: var(--color);">|</span>
+          <span>Col: </span><span data-editorInfo="currentColumn"></span><span class="padding-y" style="color: var(--color);">|</span>
+          <span>Length: </span><span data-editorInfo="length"></span><span class="padding-y" style="color: var(--color);">|</span>
           <span data-fileInfo="language"></span>
         </div>
       </nav>
@@ -156,6 +160,7 @@
             <fluent-tabs>
               <fluent-tab class="margin-y">Info</fluent-tab>
               <fluent-tab class="margin-y">Edit</fluent-tab>
+              <fluent-tab class="margin-y">Run & preview</fluent-tab>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <div class="flex gap" style="align-items: center;">
@@ -179,10 +184,18 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <span class="text-lg">Edit filename </span>
+                  <span class="text-lg">Edit filename</span>
                   <div class="flex gap">
                     <fluent-text-field data-filePropertiesInfo="filenameWithoutExtension" onkeyup="keyboardEventActions(event, 'Enter', FileManager.renameFileUsingForm);"></fluent-text-field>
                     <fluent-button appearance="accent" class="margin-y" onclick="FileManager.renameFileUsingForm();">Confirm</fluent-button>
+                  </div>
+                </div>
+              </fluent-tab-panel>
+              <fluent-tab-panel class="padding-x padding-y">
+                <div class="flex flex-col margin-x" style="gap: 20px;">
+                  <span class="text-lg">Start cmd command</span>
+                  <div class="flex gap">
+                    
                   </div>
                 </div>
               </fluent-tab-panel>

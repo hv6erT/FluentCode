@@ -40,6 +40,7 @@ class FileNav {
       return;
 
     const iconNode = document.createElement("span");
+    iconNode.slot = "start";
     iconNode.className = "fileNavItemIcon-span";
     iconNode.innerHTML = (fileNavIcons[fileIconKey] !== undefined) ? fileNavIcons[fileIconKey] : "";
 
@@ -48,6 +49,7 @@ class FileNav {
     titleNode.innerText = fileKey.slice((fileKey.lastIndexOf("/")+1));
 
     const closeButtonNode = document.createElement("span");
+    closeButtonNode.slot = "end";
     closeButtonNode.className = "fileNavItemCloseButton-span";
     closeButtonNode.innerHTML = `<span class="fluent-icon fluent-icon--ChromeClose"></span>`;
     closeButtonNode.addEventListener("click", function(event){
@@ -66,7 +68,7 @@ class FileNav {
     }    
 
     FileNav.#fileItems[fileKey] = document.createElement("fluent-tree-item");
-    FileNav.#fileItems[fileKey].className = "fileNavItem margin-y  margin-top";
+    FileNav.#fileItems[fileKey].className = "fileNavItem";
     FileNav.#fileItems[fileKey].setAttribute("data-fileNavItem", fileKey);
     FileNav.#fileItems[fileKey].addEventListener("click", async function(){
       if(FileManager.activeFilePath !== fileKey)
@@ -75,8 +77,10 @@ class FileNav {
         this.selected = true;
     });
     
-    if (fileNavIcons[fileIconKey] !== undefined)
+    if (fileNavIcons[fileIconKey] !== undefined){
       FileNav.#fileItems[fileKey].appendChild(iconNode);
+      FileNav.#fileItems[fileKey].classList.add("fileNavItemWithIcon");
+    }
     FileNav.#fileItems[fileKey].appendChild(titleNode);
     FileNav.#fileItems[fileKey].appendChild(closeButtonNode);
     
@@ -99,7 +103,7 @@ class FileNav {
     });
     
     FileNav.#groupItems[folderKey] = document.createElement("fluent-tree-item");
-    FileNav.#groupItems[folderKey].className = "margin-y margin-top";
+    FileNav.#groupItems[folderKey].className = "fileNavGroupItem";
     FileNav.#groupItems[folderKey].setAttribute("data-fileNavGroupItem", folderKey);
     FileNav.#groupItems[folderKey].addEventListener("click", async function(event){
       if(this.expanded === false && folderKey === FileManager.activeFilePath.slice(0, FileManager.activeFilePath.lastIndexOf("/")))
@@ -126,7 +130,8 @@ class FileNav {
     FileNav.#fileItems[fileKey].selected = true;
 
     const folderKey = fileKey.slice(0, fileKey.lastIndexOf("/"));
-    FileNav.#groupItems[folderKey].expanded = true;
+    if(FileNav.#groupItems.hasOwnProperty(fileKey) === true)
+      FileNav.#groupItems[folderKey].expanded = true;
   }
   static async renameItem(fileKey, newFileKey, newFileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === false || !newFileKey || FileNav.#fileItems.hasOwnProperty(newFileKey) === true || fileKey.slice(0, (fileKey.lastIndexOf("/"))) !== newFileKey.slice(0, (newFileKey.lastIndexOf("/"))))

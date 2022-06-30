@@ -100,12 +100,11 @@ fluent-menu{
   position: absolute;
   z-index: 999;
   margin-top: 10px;
-  margin-left: -10px;
 }
-fluent-button{
-  margin-left: 2px;
-  margin-right: 2px;
-}
+fluent-button > *{
+  margin-left: -2px !important;
+  margin-right: -2px !important;
+} 
 fluent-tab-panel{
   padding: 0;
 }
@@ -148,7 +147,6 @@ fluent-dialog fluent-tab-panel{
 .topNav-fluent-toolbar{
   width: 100%;
   height: var(--top-nav-height);
-  padding: 5px;
 }
 .bottom-nav{
   width: 100vw;
@@ -162,26 +160,28 @@ fluent-dialog fluent-tab-panel{
 .side-nav{
   width: var(--nav-width);
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
+  padding: 10px;
 }
 .side-nav *{
   max-width: calc(var(--nav-width) - 10px);
 }
+.fileNavItem, .fileNavGroupItem{
+  margin: 5px 0;
+}
 .fileNavItem .fileNavItemIcon-span{
-  position: absolute;
-  margin-left: 0;
   max-width: 20px;
   display: flex;
   justify-content: center;
 }
 .fileNavItem .fileNavItemTitle-span{
-  position: absolute;
-  margin-left: 20px;
-  width: calc(100% - 60px);
+  width: calc(var(--nav-width) - 100px);
   overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileNavGroupItem .fileNavItemWithIcon .fileNavItemTitle-span{
+  width: calc(var(--nav-width) - 120px) !important;
 }
 .fileNavItem .fileNavItemCloseButton-span{
-  position: absolute;
-  margin-left: calc(100% - 30px);
   max-width: 20px;
   display: flex;
   justify-content: center;

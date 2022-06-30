@@ -5,7 +5,6 @@
 
 .fluent-icon {
   margin: auto 0;
-  -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   display: inline-block;
   font-family: 'fluent-icons';
