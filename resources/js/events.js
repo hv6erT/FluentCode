@@ -3,7 +3,7 @@
 Neutralino.events.on("themeReady", async function(){
   App.showContent();
 });
-    
+
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
 
@@ -11,7 +11,7 @@ Neutralino.events.on("settingsReady", async function(){
     try{await openFilesAndEditorsFromStorage();}catch(error){console.error(error);}
 
   NL_LOADED.push("STORAGE");
-    
+
   openFilesFromAppArgs();
       
   settings.applySettingsToDOM();
@@ -32,7 +32,7 @@ window.addEventListener("load", async function() {
   setTimeout(async function(){
     if(!["SETTINGS", "COLOR", "THEME", "STORAGE"].every(module => NL_LOADED.includes(module)))
       Neutralino.app.restartProcess();
-  }, 5000)
+  }, 5000);
 });
     
 Neutralino.events.on("windowFocus", async function (){

@@ -124,6 +124,9 @@ class FileNav {
       FileNav.#groupItems[key].selected = false;
 
     FileNav.#fileItems[fileKey].selected = true;
+
+    const folderKey = fileKey.slice(0, fileKey.lastIndexOf("/"));
+    FileNav.#groupItems[folderKey].expanded = true;
   }
   static async renameItem(fileKey, newFileKey, newFileIconKey){
     if(FileNav.#fileItems.hasOwnProperty(fileKey) === false || !newFileKey || FileNav.#fileItems.hasOwnProperty(newFileKey) === true || fileKey.slice(0, (fileKey.lastIndexOf("/"))) !== newFileKey.slice(0, (newFileKey.lastIndexOf("/"))))

@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>Fluecode</title>
+    
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/gridStyles.css">
     <link rel="stylesheet" href="css/cssRules.css">
@@ -154,7 +155,7 @@
           <div style="width: 100%; height: calc(100% - 80px);">
             <fluent-tabs>
               <fluent-tab class="margin-y">Info</fluent-tab>
-              <fluent-tab class="margin-y">Rename</fluent-tab>
+              <fluent-tab class="margin-y">Edit</fluent-tab>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <div class="flex gap" style="align-items: center;">
@@ -178,7 +179,7 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <span class="text-lg">New file name: </span>
+                  <span class="text-lg">Edit filename </span>
                   <div class="flex gap">
                     <fluent-text-field data-filePropertiesInfo="filenameWithoutExtension" onkeyup="keyboardEventActions(event, 'Enter', FileManager.renameFileUsingForm);"></fluent-text-field>
                     <fluent-button appearance="accent" class="margin-y" onclick="FileManager.renameFileUsingForm();">Confirm</fluent-button>
@@ -364,7 +365,7 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <div class="flex">
+                  <div class="flex gap" style="align-items: baseline;">
                     <span>Fluent Code version: </span>
                     <fluent-badge data-appInfo="version"></fluent-badge>
                   </div>
