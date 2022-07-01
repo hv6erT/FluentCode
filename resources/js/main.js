@@ -132,9 +132,13 @@ const setTheme = async ()=> {
 })();
 
 //global events listeners
+window.addEventListener("mouseup", async function(event) {
+  event.preventDefault();
+}, { passive: false });
+
 window.addEventListener("contextmenu", async function(event) {
   event.preventDefault(); 
-});
+}, { passive: false });
 
 window.addEventListener("keydown", async function(event) {
   if((event.key === "+" || event.key === "-" || event.key === "=" || event.key === "_") && event.ctrlKey === true)

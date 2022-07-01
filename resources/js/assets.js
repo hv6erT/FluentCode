@@ -1,4 +1,4 @@
-import {baseLayerLuminance, density} from "./bundles/fluentWebComponents.js";
+import {baseLayerLuminance} from "./bundles/fluentWebComponents.js";
 
 const setColorOnAssets = async () => {
   if(userPreferences.colorMode === "dark"){
@@ -11,8 +11,6 @@ const setColorOnAssets = async () => {
     baseLayerLuminance.setValueFor(document.getElementById("topAppPanel-nav"), 1);
     baseLayerLuminance.setValueFor(document.getElementById("topSettingsPanel-nav"), 1);
   }
-
-  density.setValueFor(document.body, -0.1);
 }
 
 if(NL_LOADED.includes("COLOR") === true)
