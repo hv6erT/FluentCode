@@ -261,7 +261,7 @@ class FileManager {
       EditorManager.showDefaultPage(editorName);
   }
   static async renameFile(filePath, newFilePath){
-    if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))))
+    if(FileManager.isOpened(filePath) === false || !newFilePath || FileManager.isOpened(newFilePath) === true || filePath.slice(0, (filePath.lastIndexOf("/"))) !== newFilePath.slice(0, (newFilePath.lastIndexOf("/"))) || filePath === newFilePath)
       return;
 
     try{await Neutralino.filesystem.moveFile(filePath, newFilePath);}catch{
@@ -282,8 +282,10 @@ class FileManager {
     await FileNav.renameItem(filePath, newFilePath);
   }
   static async renameFileUsingForm(){
-    console.log((FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.')))
-    await FileManager.renameFile(FileManager.activeFilePath, (FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.')))
+    const newFilePath = (FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.'));
+    
+    if(FileManager.activeFilePath !== newFilePath)
+      await FileManager.renameFile(FileManager.activeFilePath, newFilePath);
   }
   static async saveFile(filePath){
     if(FileManager.isOpened(filePath) === false || FileManager.isInitialized(filePath) === false)
@@ -338,7 +340,6 @@ class FileManager {
       return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${ (date.getMinutes() >= 10) ? date.getMinutes() : "0" + date.getMinutes()}`;
     }
 
-    document.querySelector('[data-filePropertiesInfo="filename"]').textContent = filePath.slice((filePath.lastIndexOf("/")+1));
     document.querySelector('[data-filePropertiesInfo="filePath"]').textContent = filePath;
     document.querySelector('[data-filePropertiesInfo="size"]').textContent = formatSize(fileStats.size);
     document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = formatDate(fileStats.createdAt);
@@ -348,6 +349,12 @@ class FileManager {
     
     document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value = filenameWithoutExtensions;
     document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').placeholder = filenameWithoutExtensions;
+
+    const fileInfo = FileManager.files[filePath].fileInfo();
+    
+    const fileType = (fileInfo.language)? `${fileInfo.language} file` : `${filePath.slice(filePath.lastIndexOf(".") + 1).toUpperCase()} file`;
+    
+    document.querySelector('[data-filePropertiesInfo="fileType"]').textContent = fileType;
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){

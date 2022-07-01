@@ -159,12 +159,14 @@
           <div style="width: 100%; height: calc(100% - 80px);">
             <fluent-tabs>
               <fluent-tab class="margin-y">Info</fluent-tab>
-              <fluent-tab class="margin-y">Edit</fluent-tab>
-              <fluent-tab class="margin-y">Run & preview</fluent-tab>
+              <fluent-tab class="margin-y">Run</fluent-tab>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <div class="flex gap" style="align-items: center;">
-                    <span class="text-lg">Filename:</span><fluent-badge data-filePropertiesInfo="filename"></fluent-badge>
+                    <span class="text-lg">Filename:</span><fluent-text-field data-filePropertiesInfo="filenameWithoutExtension" style="width: 250px;"></fluent-text-field>
+                  </div>
+                  <div class="flex gap" style="align-items: center;">
+                    <span class="text-lg">File type:</span><fluent-badge data-filePropertiesInfo="fileType"></fluent-badge>
                   </div>
                   <div class="flex flex-col gap">
                     <span class="text-lg">Full file path:</span><fluent-badge data-filePropertiesInfo="filePath"></fluent-badge>
@@ -184,24 +186,16 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <span class="text-lg">Edit filename</span>
+                  <span class="text-lg">Run</span>
                   <div class="flex gap">
-                    <fluent-text-field data-filePropertiesInfo="filenameWithoutExtension" onkeyup="keyboardEventActions(event, 'Enter', FileManager.renameFileUsingForm);"></fluent-text-field>
-                    <fluent-button appearance="accent" class="margin-y" onclick="FileManager.renameFileUsingForm();">Confirm</fluent-button>
-                  </div>
-                </div>
-              </fluent-tab-panel>
-              <fluent-tab-panel class="padding-x padding-y">
-                <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <span class="text-lg">Start cmd command</span>
-                  <div class="flex gap">
-                    
+                    Will be added soon!
                   </div>
                 </div>
               </fluent-tab-panel>
             </fluent-tabs>
           </div>
           <div class="flex gap justify-end" style="width: 100%; height: 40px; align-items: center;">
+            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true); FileManager.renameFileUsingForm();">Save</fluent-button>
             <fluent-button appearance="outline" onclick="modifyNodeAttribute('#fileProperties-fluent-dialog', 'hidden', true)">Close</fluent-button>
           </div>
         </div>
@@ -409,7 +403,7 @@
             </fluent-tabs>
           </div>
           <div class="flex gap justify-end" style="width: 100%; height: 40px; align-items: center;">
-            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true); App.close('RESTART')">Apply</fluent-button>
+            <fluent-button appearance="accent" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true); App.close('RESTART');">Save & restart</fluent-button>
             <fluent-button appearance="outline" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', true)">Close</fluent-button>
           </div>
         </div>
