@@ -174,12 +174,17 @@ fluent-dialog fluent-tab-panel{
   justify-content: center;
 }
 .fileNavItem .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 100px);
+  width: calc(var(--nav-width) - 75px) !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fileNavItemWithIcon .fileNavItemTitle-span{
+  width: calc(var(--nav-width) - 100px) !important;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .fileNavGroupItem .fileNavItemWithIcon .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 120px) !important;
+  width: calc(var(--nav-width) - 115px) !important;
 }
 .fileNavItem .fileNavItemCloseButton-span{
   max-width: 20px;
