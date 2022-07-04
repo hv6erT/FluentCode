@@ -161,6 +161,7 @@ fluent-dialog fluent-tab-panel{
   width: var(--nav-width);
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
   padding: 10px;
+  overflow: auto;
 }
 .side-nav *{
   max-width: calc(var(--nav-width) - 10px);

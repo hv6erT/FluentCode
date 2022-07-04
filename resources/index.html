@@ -72,9 +72,9 @@
         </div>
       </fluent-toolbar>
       <section class="main-section" style="">
-        <nav id="fileSide-nav" class="side-nav padding-x">
-          <div id="fileNavContainer-div" style="height: 100%; display: none;"></div>
-          <div id="emptyNavContainer-div" style="height: 100%;">
+        <nav id="fileSide-nav" class="side-nav">
+          <div id="fileNavContainer-div" style="min-height: calc(100% - 20px); display: none;"></div>
+          <div id="emptyNavContainer-div" style="height: calc(100% - 20px);">
             <div class="flex flex-col padding-x padding-y justify-center gap" style="height: 100%; align-items: center; color: var(--color);">
               <span class="fluent-icon fluent-icon--FileBug" style="font-size: 40px; margin: 0;"></span>
               <span class="text-center">No files to show. Upload or create files to see them here.</span>
@@ -159,7 +159,7 @@
           <div style="width: 100%; height: calc(100% - 80px);">
             <fluent-tabs>
               <fluent-tab class="margin-y">Info</fluent-tab>
-              <fluent-tab class="margin-y">Run</fluent-tab>
+              <fluent-tab class="margin-y">Run & preview</fluent-tab>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
                   <div class="flex gap" style="align-items: center;">
@@ -186,9 +186,17 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <span class="text-lg">Run</span>
-                  <div class="flex gap">
-                    Will be added soon!
+                  <div class="flex flex-col" style="gap: 20px;">
+                    <span class="text-lg">Run</span>
+                    <div class="flex gap">
+                      Will be added soon!
+                    </div>
+                  </div>
+                  <div class="flex flex-col" style="gap: 20px;">
+                    <span class="text-lg">Preview</span>
+                    <div class="flex gap">
+                      Will be added soon!
+                    </div>
                   </div>
                 </div>
               </fluent-tab-panel>
