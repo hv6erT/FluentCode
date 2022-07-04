@@ -1,7 +1,7 @@
 "use strict";
  
 Neutralino.events.on("themeReady", async function(){
-  App.showContent();
+  await Neutralino.window.show();
 });
 
 Neutralino.events.on("settingsReady", async function(){
@@ -13,6 +13,8 @@ Neutralino.events.on("settingsReady", async function(){
   NL_LOADED.push("STORAGE");
 
   openFilesFromAppArgs();
+
+  App.showContent();
       
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();

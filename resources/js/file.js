@@ -1,9 +1,7 @@
 "use strict";
 
 const uploadFile = async () => {
-  await Neutralino.window.hide();
   const data = await Neutralino.os.showOpenDialog("Upload file", {multiSelections: true});
-  await Neutralino.window.show();
   await Neutralino.window.focus();
   const filePaths = data.map(function(filePath){return normalizePath(filePath);});
 
@@ -22,9 +20,7 @@ const uploadFile = async () => {
 }
 
 const createNewFile = async () => {
-  await Neutralino.window.hide();
   const filePath = normalizePath(await Neutralino.os.showSaveDialog("Create new file"));
-  await Neutralino.window.show();
   await Neutralino.window.focus();
   if(!filePath)
     return;
@@ -43,9 +39,7 @@ const createNewFile = async () => {
 }
 
 const uploadFolder = async () => {
-  await Neutralino.window.hide();
   const folderPath = normalizePath(await Neutralino.os.showFolderDialog("Upload directory"));
-  await Neutralino.window.show();
   await Neutralino.window.focus();
   const filePaths = (await Neutralino.filesystem.readDirectory(folderPath)).filter(function(object){
     if(object.type === "FILE")
@@ -218,6 +212,8 @@ class FileManager {
     await FileNav.changeActive(filePath);
     
     FileManager.activeFilePath = filePath;
+
+    Neutralino.window.setTitle(`Fluent Code - ${filePath.slice((filePath.lastIndexOf("/") + 1))}`);
     FileManager.fileInfo(filePath, false);
     FileManager.filePropertiesInfo(filePath);
   }
