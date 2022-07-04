@@ -50,7 +50,8 @@ const openLastFilesFromStorage = async () => {
   await Promise.allSettled(openFilePromises);
 
   if(FileManager.activeFilePath === null && Object.keys(FileManager.files).length > 0)
-    await EditorManager.showFileInEditor(EditorManager.activeEditorName, Object.keys(FileManager.files)[0]);
+    EditorManager.showFileInEmptyEditors(Object.keys(FileManager.files)[0]);
+  
 }
 
 class Storage{
