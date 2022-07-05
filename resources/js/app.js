@@ -8,6 +8,10 @@ class App{
     document.getElementById("loading-main").style.display = "none";
     document.getElementById("content-main").style.display = "";
   }
+  static async showLoader(){
+    document.getElementById("loading-main").style.display = "";
+    document.getElementById("content-main").style.display = "none";
+  }
   static async showStartPage(){
     document.getElementById("editor-article").style.display = "none";
     document.getElementById("editorStartPage-article").style.display = "";

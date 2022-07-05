@@ -26,15 +26,4 @@ export default class Css {
       property = "--" + property;
     return getComputedStyle(document.documentElement).getPropertyValue(property);
   }
-  static async changeColorSchame(colorSchame){
-    if(colorSchame === "system" || colorSchame === "normal"){
-      document.documentElement.style.colorScheme = "normal";
-    }
-    else if(colorSchame === "light")
-      document.documentElement.style.colorScheme = "light dark";
-    else if(colorSchame === "dark")
-      document.documentElement.style.colorScheme = "dark light";
-    else
-      throw new Error("Invalid colorSchame param value");
-  }
 }

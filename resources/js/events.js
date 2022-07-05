@@ -1,7 +1,9 @@
 "use strict";
+
+NL_LOADING_TIME = Date.now();
  
 Neutralino.events.on("themeReady", async function(){
-  await Neutralino.window.show();
+  App.showLoader();
 });
 
 Neutralino.events.on("settingsReady", async function(){
@@ -15,6 +17,9 @@ Neutralino.events.on("settingsReady", async function(){
   openFilesFromAppArgs();
 
   App.showContent();
+  NL_LOADING_TIME = Date.now() - NL_LOADING_TIME;
+
+  Neutralino.debug.log(`Total loading time: ${NL_LOADING_TIME} ms`);
       
   settings.applySettingsToDOM();
   settings.applySettingsDOMListeners();

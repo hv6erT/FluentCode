@@ -1,5 +1,10 @@
 "use-strict";
 
+import Settings from "../jsModules/settings/index.js";
+import Css from "../jsModules/css/index.js";
+import Editor from "../jsModules/editor/editor.js";
+import File from "../jsModules/editor/file.js";
+
 //global scope functions and vars
 window.normalizePath = (filePath) => {
   if (typeof filePath === "string")
@@ -7,12 +12,12 @@ window.normalizePath = (filePath) => {
   else throw new Error("Invalid argument type, normalizePath requires string as param");
 }
 
-window.File = null;
-window.Editor = null;
+window.File = File;
+window.Editor = Editor;
 window.Templates = null;
-window.Css = (await import("../jsModules/css/index.js")).default;
-window.settings = null;
+window.Css = Css;
 
+window.settings = null;
 window.userPreferences = {
   colorMode: null,
   splitViewType: null,
@@ -21,7 +26,6 @@ window.userPreferences = {
 };
 
 //other functions
-import Settings from "../jsModules/settings/index.js";
 
 const setSettings = async () => {
   let defaultSettings, userSettings;
@@ -84,10 +88,11 @@ const setSettings = async () => {
     userSettings = JSON.parse(await Neutralino.filesystem.readFile(userPreferences.settingsFilePath))
   }catch(error){
     userSettings = {};
-    try{await Neutralino.filesystem.createDirectory(userPreferences.settingsFilePath.slice(0, userPreferences.settingsFilePath.lastIndexOf("/")));}catch{}
-    await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(userSettings));
+    Neutralino.filesystem.createDirectory(userPreferences.settingsFilePath.slice(0, userPreferences.settingsFilePath.lastIndexOf("/"))).then(async function(){
+      Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(userSettings));
+    });
+    
   }
-
   window.settings = new Settings(defaultSettings, userSettings);
 }
 
@@ -106,8 +111,6 @@ const setTheme = async ()=> {
     const value = settings.settings.modes[mode][property];
     Css.setCSSVariable(property, value);
   }
-  
-  Css.changeColorSchame(userPreferences.colorMode);
 }
 
 (async function(){
