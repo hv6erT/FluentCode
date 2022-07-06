@@ -1,7 +1,7 @@
 /*default styles*/
 :root{
   /*css variables*/
-  --top-nav-height: 45px;
+  --top-nav-height: 50px;
   --bottom-nav-height: 30px;
   --bottom-short-info-width: 20%;
   --nav-width: 230px;

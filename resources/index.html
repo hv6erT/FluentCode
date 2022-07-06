@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html style="color-scheme: light dark;">
   <head>
     <meta charset="UTF-8">
     <title>Fluecode</title>
@@ -29,7 +29,7 @@
     <script defer src="js/events.js"></script>
     <script defer type="module" src="js/main.js"></script>
   </head>
-  <body>
+  <body style="background: Canvas;">
     <main id="content-main" class="main" style="display: none;">
       <fluent-toolbar id="topAppPanel-nav" class="topNav-fluent-toolbar" style="background-color: var(--second-bg-color);">
         <div>
@@ -186,18 +186,7 @@
               </fluent-tab-panel>
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col margin-x" style="gap: 20px;">
-                  <div class="flex flex-col" style="gap: 20px;">
-                    <span class="text-lg">Run</span>
-                    <div class="flex gap">
-                      Will be added soon!
-                    </div>
-                  </div>
-                  <div class="flex flex-col" style="gap: 20px;">
-                    <span class="text-lg">Preview</span>
-                    <div class="flex gap">
-                      Will be added soon!
-                    </div>
-                  </div>
+                  
                 </div>
               </fluent-tab-panel>
             </fluent-tabs>
@@ -417,7 +406,7 @@
         </div>
       </fluent-dialog>
     </main>
-    <main id="loading-main" class="main">
+    <main id="loading-main" class="main" style="display: none;">
       <div class="flex" style="position: absolute; width: 100%; height: 100%; justify-content: center; align-items: center;">
         <fluent-progress-ring></fluent-progress-ring>
       </div>
