@@ -233,6 +233,7 @@ class FileManager {
     else{
       App.showStartPage();
       FileManager.activeFilePath = null;
+      Neutralino.window.setTitle("Fluent Code");
 
       for(const editorName in EditorManager.editors)
         EditorManager.showDefaultPage(editorName);
@@ -250,6 +251,7 @@ class FileManager {
     
     FileManager.files = [];
     FileManager.activeFilePath = null;
+    Neutralino.window.setTitle("Fluent Code");
 
     await FileNav.removeAllItems();
 
@@ -341,14 +343,14 @@ class FileManager {
     document.querySelector('[data-filePropertiesInfo="creationDate"]').textContent = formatDate(fileStats.createdAt);
     document.querySelector('[data-filePropertiesInfo="modifyDate"]').textContent = formatDate(fileStats.modifiedAt);
 
-    const filenameWithoutExtensions = filePath.slice(0, filePath.lastIndexOf(".")).slice((filePath.lastIndexOf("/")+1));
+    const filenameWithoutExtension = (filePath.lastIndexOf(".") !== -1)? filePath.slice(0, filePath.lastIndexOf(".")).slice((filePath.lastIndexOf("/")+1)) : filePath.slice((filePath.lastIndexOf("/")+1));
     
-    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value = filenameWithoutExtensions;
-    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').placeholder = filenameWithoutExtensions;
+    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value = filenameWithoutExtension;
+    document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').placeholder = filenameWithoutExtension;
 
     const fileInfo = FileManager.files[filePath].fileInfo();
     
-    const fileType = (fileInfo.language)? `${fileInfo.language} file` : `${filePath.slice(filePath.lastIndexOf(".") + 1).toUpperCase()} file`;
+    const fileType = (fileInfo.language)? `${fileInfo.language} file` : `${(filePath.lastIndexOf(".") !== -1)? filePath.slice(filePath.lastIndexOf(".") + 1).toUpperCase() : filenameWithoutExtension.toUpperCase()} file`;
     
     document.querySelector('[data-filePropertiesInfo="fileType"]').textContent = fileType;
   }
