@@ -130,7 +130,7 @@ class FileNav {
     FileNav.#fileItems[fileKey].selected = true;
 
     const folderKey = fileKey.slice(0, fileKey.lastIndexOf("/"));
-    if(FileNav.#groupItems.hasOwnProperty(fileKey) === true)
+    if(FileNav.#groupItems.hasOwnProperty(folderKey) === true)
       FileNav.#groupItems[folderKey].expanded = true;
   }
   static async renameItem(fileKey, newFileKey, newFileIconKey){
@@ -194,6 +194,7 @@ class FileNav {
     FileNav.#groupItems[folderKey].remove();
     delete FileNav.#groupItems[folderKey];
   }
+
   static async searchInFileItems(searchFilePath){
     FileNav.#searchNavNode.innerHTML = "";
     
@@ -206,7 +207,7 @@ class FileNav {
       if(key.includes(searchFilePath) === true){        
         const node = document.createElement("fluent-menu-item");
         node.innerHTML = `
-        <div class="flex gap">
+        <div style="display: flex; gap: 10px;">
           <div>${FileNav.#fileItems[key].querySelector(".fileNavItemIcon-span").innerHTML}</div>
           <div>${FileNav.#fileItems[key].querySelector(".fileNavItemTitle-span").innerHTML}</div>
         </div>
@@ -219,9 +220,9 @@ class FileNav {
         FileNav.#searchNavNode.appendChild(node);
       }
     }
-
+    
     if(FileNav.#searchNavNode.childNodes.length > 0)
-      FileNav.#searchNavNode.style.display = "";
+        FileNav.#searchNavNode.style.display = "";
     else 
       FileNav.#searchNavNode.style.display = "none";
   }

@@ -19,15 +19,23 @@ class App{
     document.getElementById("bottomFileInfo-div").style.visibility = "hidden";
     document.getElementById("bottomEditorInfo-div").style.visibility = "hidden";
   
-    const nodeIdList = [
+    const disableNodeIdList = [
       "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
     ];
   
-    for(const nodeId of nodeIdList)
+    for(const nodeId of disableNodeIdList)
       document.getElementById(nodeId).disabled = true;
+
+    const hideNodeIdList = [
+      "fileSearch-fluent-menu",
+      "openSplitView-fluent-menu"
+    ];
+
+    for(const nodeId of hideNodeIdList)
+      document.getElementById(nodeId).style.display = "none";
   }
   static async showEditorPage(){
     document.getElementById("editorStartPage-article").style.display = "none";
@@ -36,14 +44,14 @@ class App{
     document.getElementById("bottomFileInfo-div").style.visibility = "";
     document.getElementById("bottomEditorInfo-div").style.visibility = "";
   
-    const nodeIdList = [
+    const disableNodeIdList = [
       "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
       "fileProperties-fluent-button"
     ];
   
-    for(const nodeId of nodeIdList)
+    for(const nodeId of disableNodeIdList)
       document.getElementById(nodeId).disabled = false;
   }
   static async appInfo(){
@@ -114,7 +122,7 @@ class App{
           return;
       }
   
-    await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys(), Storage.saveSplitViewType()]);
+    await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys(), Storage.saveAdditionalInfo()]);
   
     if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){
       await App.update("EXIT");

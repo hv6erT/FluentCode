@@ -63,10 +63,3 @@ Neutralino.events.on("windowClose", async function() {
   else
     App.close("EXIT");
 });
-
-window.keyboardEventActions = (event, actionKey, action) => {
-  if(!event || !actionKey || !action)
-    return;
-  if(event.key == actionKey)
-    return action();
-}
