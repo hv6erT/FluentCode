@@ -1,3 +1,4 @@
+
 "use strict";
 
 if(NL_ARGS.includes("closeImmediately"))
@@ -23,7 +24,8 @@ class App{
       "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
-      "fileProperties-fluent-button"
+      "fileProperties-fluent-button",
+      "runFile-fluent-button"
     ];
   
     for(const nodeId of disableNodeIdList)
@@ -48,7 +50,8 @@ class App{
       "openSplitView-fluent-button",
       "saveAllFiles-fluent-button",
       "closeAllFiles-fluent-menu-item",
-      "fileProperties-fluent-button"
+      "fileProperties-fluent-button",
+      "runFile-fluent-button"
     ];
   
     for(const nodeId of disableNodeIdList)

@@ -87,8 +87,14 @@ h1, h2, h3, h4, h5, h6{
   margin-left: 5px;
   margin-right: 5px;
 }
-.gap{
+.gap-sm{
   gap: 5px;
+}
+.gap-md{
+  gap: 10px;
+}
+.gap-lg{
+  gap: 20px;
 }
 /*fluent components*/
 fluent-badge{
@@ -162,6 +168,7 @@ fluent-dialog fluent-tab-panel{
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
   padding: 10px;
   overflow: auto;
+  scrollbar-gutter: stable;
 }
 .side-nav *{
   max-width: calc(var(--nav-width) - 10px);
@@ -183,6 +190,9 @@ fluent-dialog fluent-tab-panel{
   width: calc(var(--nav-width) - 100px) !important;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.fileNavGroupItem .fileNavItem .fileNavItemTitle-span{
+  width: calc(var(--nav-width) - 90px) !important;
 }
 .fileNavGroupItem .fileNavItemWithIcon .fileNavItemTitle-span{
   width: calc(var(--nav-width) - 115px) !important;

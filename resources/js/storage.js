@@ -25,7 +25,7 @@ const openFilesAndEditorsFromStorage = async () => {
     }
   }
   
-  setSplitView((await Storage.getSplitViewType()) ?? Object.keys(EditorManager.editors).length.toString());
+  setSplitView((await Storage.getAdditionalInfo())?.splitViewType ?? Object.keys(EditorManager.editors).length.toString());
   
   const openFilePromises = [];
   
@@ -55,6 +55,7 @@ const openLastFilesFromStorage = async () => {
 }
 
 class Storage{
+  static #buffer = {};
   static async saveFileKeys(){
     let fileObject = {};
     for(const fileKey in FileManager.files)
@@ -69,25 +70,28 @@ class Storage{
 
     await Neutralino.storage.setData("editors", JSON.stringify(editorObject));
   }
-  static async saveSplitViewType(){
-    await Neutralino.storage.setData("splitViewType", userPreferences.splitViewType);
+  static async saveAdditionalInfo(){
+    const additionalInfo = {
+      splitViewType: userPreferences.splitViewType
+    };
+    await Neutralino.storage.setData("additional-info", JSON.stringify(additionalInfo));
   }
-  static async getSplitViewType(){
+  static async getAdditionalInfo(){
     try{
-      return await Neutralino.storage.getData("splitViewType")
+      return (Storage.#buffer["additional-info"]) ? Storage.#buffer["additional-info"] : Storage.#buffer["additional-info"] = JSON.parse(await Neutralino.storage.getData("additional-info"));
     }
     catch{}
   }
   static async getFileKeys(){
     try{
-      return JSON.parse(await Neutralino.storage.getData("files"));
+      return (Storage.#buffer["files"]) ? Storage.#buffer["files"] : Storage.#buffer["files"] = JSON.parse(await Neutralino.storage.getData("files"));
     }catch{
       return {};
     }
   }
   static async getEditorKeys(){
     try{
-      return JSON.parse(await Neutralino.storage.getData("editors"));
+      return (Storage.#buffer["editors"]) ? Storage.#buffer["editors"] : Storage.#buffer["editors"] = JSON.parse(await Neutralino.storage.getData("editors"));
     }catch{
       return {};
     }
@@ -110,7 +114,7 @@ class Storage{
   }
   static async getLastFileKeys(){
     try{
-      return JSON.parse(await Neutralino.storage.getData("last-files"));
+      return (Storage.#buffer["last-files"]) ? Storage.#buffer["last-files"] : Storage.#buffer["last-files"] = JSON.parse(await Neutralino.storage.getData("last-files"));
     }catch{
       return {};
     }

@@ -99,6 +99,7 @@ const saveAllFilesBeforeClose = async function(){
 
 class FileManager {
   static files = {};
+  static additionalFileInfo = {};
   static activeFilePath = null;
   static isOpened(filePath){
     return FileManager.files.hasOwnProperty(filePath);
@@ -279,11 +280,11 @@ class FileManager {
 
     await FileNav.renameItem(filePath, newFilePath);
   }
-  static async renameFileUsingForm(){
-    const newFilePath = (FileManager.activeFilePath.slice(0, (FileManager.activeFilePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + FileManager.activeFilePath.slice(FileManager.activeFilePath.lastIndexOf('.'));
+  static async renameFileUsingForm(filePath){
+    const newFilePath = (filePath.slice(0, (filePath.lastIndexOf('/') + 1))) + document.querySelector('[data-filePropertiesInfo="filenameWithoutExtension"]').value + filePath.slice(filePath.lastIndexOf('.'));
     
-    if(FileManager.activeFilePath !== newFilePath)
-      await FileManager.renameFile(FileManager.activeFilePath, newFilePath);
+    if(filePath !== newFilePath)
+      await FileManager.renameFile(filePath , newFilePath);
   }
   static async saveFile(filePath){
     if(FileManager.isOpened(filePath) === false || FileManager.isInitialized(filePath) === false)
@@ -311,6 +312,46 @@ class FileManager {
     }
 
     App.showBottomNotification("Files saved", 5000);
+  }
+  static async runFile(filePath){
+    const folderPath = filePath.slice(0, filePath.lastIndexOf("/"));
+    
+    const additionalFileInfo = FileManager.getAdditionalFileInfo(filePath);
+    
+    if(!additionalFileInfo){
+      App.showBottomNotification("Set preview options to run this file");
+      return;
+    }
+
+    let hasRunOption = false;
+    
+    if(additionalFileInfo.shouldOpenInDefaultApp === true){
+      hasRunOption = true;
+      Neutralino.os.open(filePath);
+    }
+
+    if(additionalFileInfo.shouldExecuteCommand === true && additionalFileInfo.executeCommandValue){
+      hasRunOption = true;
+      Neutralino.os.execCommand(`cd ${folderPath} && ${additionalFileInfo.executeCommandValue}`, {background: true});
+    }
+
+    if(hasRunOption === true)
+      App.showBottomNotification("Opening preview...", 4000);
+    else 
+      App.showBottomNotification("None of preview options has been set")
+  }
+  static async setAdditionalFileInfo(filePath, additionalInfo){
+    FileManager.additionalFileInfo[filePath] = additionalInfo;
+  }
+  static async setAdditionalFileInfoUsingForm(filePath){
+    FileManager.additionalFileInfo[filePath] = {
+      shouldOpenInDefaultApp: document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked,
+      shouldExecuteCommand: document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked,
+      executeCommandValue: document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value
+    };
+  }
+  static getAdditionalFileInfo(filePath){
+    return FileManager.additionalFileInfo[filePath];
   }
   static async filePropertiesInfo(filePath){
     if(FileManager.isOpened(filePath) === false)
