@@ -314,6 +314,9 @@ class FileManager {
     App.showBottomNotification("Files saved", 5000);
   }
   static async runFile(filePath){
+    if(FileManager.isOpened(filePath) === false)
+      return;
+    
     const folderPath = filePath.slice(0, filePath.lastIndexOf("/"));
     
     const additionalFileInfo = FileManager.getAdditionalFileInfo(filePath);
@@ -341,9 +344,15 @@ class FileManager {
       App.showBottomNotification("None of preview options has been set")
   }
   static async setAdditionalFileInfo(filePath, additionalInfo){
+    if(FileManager.isOpened(filePath) === false)
+      return;
+    
     FileManager.additionalFileInfo[filePath] = additionalInfo;
   }
   static async setAdditionalFileInfoUsingForm(filePath){
+    if(FileManager.isOpened(filePath) === false)
+      return;
+    
     FileManager.additionalFileInfo[filePath] = {
       shouldOpenInDefaultApp: document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked,
       shouldExecuteCommand: document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked,
@@ -394,6 +403,10 @@ class FileManager {
     const fileType = (fileInfo.language)? `${fileInfo.language} file` : `${(filePath.lastIndexOf(".") !== -1)? filePath.slice(filePath.lastIndexOf(".") + 1).toUpperCase() : filenameWithoutExtension.toUpperCase()} file`;
     
     document.querySelector('[data-filePropertiesInfo="fileType"]').textContent = fileType;
+
+    document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldOpenInDefaultApp;
+    document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldExecuteCommand;
+    document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value = FileManager.additionalFileInfo[filePath]?.executeCommandValue;
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){

@@ -38,6 +38,12 @@ const openFilesAndEditorsFromStorage = async () => {
 
   if(Object.keys(FileManager.files).length > 0)
     EditorManager.showFileInEmptyEditors(Object.keys(FileManager.files)[0]);
+
+  const additionalFileInfo = (await Storage.getAdditionalInfo())?.additionalFileInfo;
+  
+  for(const filePath in additionalFileInfo){
+    FileManager.setAdditionalFileInfo(filePath, additionalFileInfo[filePath]);
+  }
 }
 
 const openLastFilesFromStorage = async () => {
@@ -72,7 +78,8 @@ class Storage{
   }
   static async saveAdditionalInfo(){
     const additionalInfo = {
-      splitViewType: userPreferences.splitViewType
+      splitViewType: userPreferences.splitViewType,
+      additionalFileInfo: FileManager.additionalFileInfo
     };
     await Neutralino.storage.setData("additional-info", JSON.stringify(additionalInfo));
   }
