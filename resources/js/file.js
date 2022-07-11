@@ -406,7 +406,7 @@ class FileManager {
 
     document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldOpenInDefaultApp;
     document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldExecuteCommand;
-    document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value = FileManager.additionalFileInfo[filePath]?.executeCommandValue;
+    document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value = FileManager.additionalFileInfo[filePath]?.executeCommandValue ?? "";
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){
