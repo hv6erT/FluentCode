@@ -1,8 +1,7 @@
-
 "use strict";
 
 if(NL_ARGS.includes("closeImmediately"))
-    App.close();
+  App.close();
 
 class App{
   static async showContent(){

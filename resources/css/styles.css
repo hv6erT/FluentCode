@@ -175,6 +175,7 @@ fluent-dialog fluent-tab-panel{
 }
 .fileNavItem, .fileNavGroupItem{
   margin: 5px 0;
+  padding: 0;
 }
 .fileNavItem .fileNavItemIcon-span{
   max-width: 20px;
