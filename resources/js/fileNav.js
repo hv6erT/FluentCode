@@ -97,7 +97,16 @@ class FileNav {
       return;
 
     const titleNode = document.createElement("span");
-    titleNode.innerText = folderKey;
+    if(folderKey.length > 25 && folderKey.indexOf("/") !== folderKey.lastIndexOf("/")){
+      let title = folderKey.slice(0, folderKey.lastIndexOf("/"));
+      title = title.substr(title.lastIndexOf("/"));
+      title += folderKey.substr(folderKey.lastIndexOf("/"));
+
+      titleNode.innerText = `...${title}`;
+    } 
+    else
+      titleNode.innerText = folderKey;
+    
     titleNode.addEventListener("click", async function(){
       FileNav.#groupItems[folderKey].expanded = !FileNav.#groupItems[folderKey].expanded;
     });
