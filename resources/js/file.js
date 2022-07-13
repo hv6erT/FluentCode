@@ -335,7 +335,7 @@ class FileManager {
 
     if(additionalFileInfo.shouldExecuteCommand === true && additionalFileInfo.executeCommandValue){
       hasRunOption = true;
-      Neutralino.os.execCommand(`cd ${folderPath} && ${additionalFileInfo.executeCommandValue}`, {background: true});
+      Neutralino.os.execCommand(`cd "${folderPath}" && ${additionalFileInfo.executeCommandValue}`, {background: true});
     }
 
     if(hasRunOption === true)
