@@ -140,11 +140,11 @@ fluent-dialog fluent-tab-panel{
 }
 .startPage-fluent-anchor{
   margin: 5px;
-  display: inline-flex;
 }
 .startPage-fluent-anchor > *{
-  padding: 5px 0;
+  padding: 0;
   margin: 0 5px;
+  float: left;
 }
 /*default classes*/
 .main{
