@@ -333,9 +333,18 @@ class FileManager {
       Neutralino.os.open(filePath);
     }
 
-    if(additionalFileInfo.shouldExecuteCommand === true && additionalFileInfo.executeCommandValue){
+    if(additionalFileInfo.shouldExecuteCommand === true && typeof additionalFileInfo.executeCommandValue === "string"){
       hasRunOption = true;
-      Neutralino.os.execCommand(`cd "${folderPath}" && ${additionalFileInfo.executeCommandValue}`, {background: true});
+      Neutralino.os.execCommand(`cd /d "${folderPath}" && ${additionalFileInfo.executeCommandValue}`, {background: true});
+    }
+
+    if(additionalFileInfo.shouldOpenLink === true && typeof additionalFileInfo.openLinkValue === "string"){
+      hasRunOption = true;
+      
+      if(additionalFileInfo.openLinkValue.includes(":") === true)
+        Neutralino.os.open(additionalFileInfo.openLinkValue);
+      else
+        Neutralino.os.open(`http:/${additionalFileInfo.openLinkValue}`);
     }
 
     if(hasRunOption === true)
@@ -356,7 +365,9 @@ class FileManager {
     FileManager.additionalFileInfo[filePath] = {
       shouldOpenInDefaultApp: document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked,
       shouldExecuteCommand: document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked,
-      executeCommandValue: document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value
+      executeCommandValue: document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value,
+      shouldOpenLink: document.querySelector('[data-additionalFileInfo="openLinkOption"]').checked,
+      openLinkValue: document.querySelector('[data-additionalFileInfo="openLinkValue"]').value
     };
   }
   static getAdditionalFileInfo(filePath){
@@ -407,6 +418,8 @@ class FileManager {
     document.querySelector('[data-additionalFileInfo="openInDefaultAppOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldOpenInDefaultApp;
     document.querySelector('[data-additionalFileInfo="exeCommandOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldExecuteCommand;
     document.querySelector('[data-additionalFileInfo="exeCommandValue"]').value = FileManager.additionalFileInfo[filePath]?.executeCommandValue ?? "";
+    document.querySelector('[data-additionalFileInfo="openLinkOption"]').checked = FileManager.additionalFileInfo[filePath]?.shouldOpenLink;
+    document.querySelector('[data-additionalFileInfo="openLinkValue"]').value = FileManager.additionalFileInfo[filePath]?.openLinkValue ?? "";
   }
   static #fileInfoTimeout = null;
   static async fileInfo(filePath, useTimeout = true){
