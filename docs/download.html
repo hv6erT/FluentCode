@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fast and simple code editor with fluent design intuitive interface">
+    <meta name="keywords" content="Code, Editor, Fast, Fluent, Opensource, HTML, CSS, JS, Javascript">
+    <meta name="author" content="hv6erT">
+    <title>Fluent Code - opensource code editor</title>
+
+    <link rel="icon" href="assets/appIcon.png"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+    
+    <script defer src="js/script.js"></script>
+    <script defer src="js/bundles/platform.js"></script>
+    <script>
+      async function downloadForDetectedSystem(){
+        if(["Windows"].includes(platform.os.family))
+          downloadFile(downloads.win_installer, "Fluent Code Installer.exe");
+        else if (["Linux", "Ubuntu", "Debian", "Fedora", "Red Hat", "SuSE"].includes(platform.os.family))
+          downloadFile(downloads.linux_portable, "Fluent Code for Linux (Portable).zip");
+        else if(["Mac OS X", "OS X"].includes(platform.os.family))
+          downloadFile(downloads.darwin_portable, "Fluent Code for MacOS (Portable).zip");
+      }
+    </script>
+    <script async type="module" src="js/module.js"></script>
+  </head>
+  <body>
+    <nav class="top-nav">
+      <div class="top-nav-item top-nav-item-start">
+        <div style="display: flex; align-items: center; gap: 10px;" onclick="changeLocation('./index.html')">
+          <img width="40" height="40" src="assets/appIcon.svg"/>
+          <h4>Fluent Code</h4>
+        </div>
+      </div>
+      <div class="top-nav-item top-nav-item-end">
+      </div>
+    </nav>
+    <section class="section" style="background-color: var(--first-color);">
+      <div class="section-item" style="height: 50vw;">
+        <h1 style="text-align: center;">Download ⭳</h1>
+        <p style="text-align: center;">Choose version for your computer</p>
+        <div style="display: flex; justify-content: center;">
+          <fluent-button appearance="accent" onclick="downloadForDetectedSystem()">Download for your system</fluent-button>
+        </div>
+        <p style="text-align: center; font-size: .75rem;">Download version for detected operating system</p>
+      </div>
+      <div class="section-item section-item-horizontal-stretch">
+        <div class="section-item-content-0">
+          <h4 style="text-align: center;">Windows 10/11</h4>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <fluent-button appearance="accent" onclick="downloadFile(downloads.win_installer, 'Fluent Code Installer.exe')">Download windows installer</fluent-button>
+            <fluent-button appearance="accent" onclick="downloadFile(downloads.win_portable, 'Fluent Code Portable.zip')">Download portable kit</fluent-button>
+          </div>
+          <p style="text-align: center;">To work, Fluent Code needs Webview2 installed (it is preinstalled on Windows 11). If you work on Windows 10, you can download it here:</p>
+          <div style="display: flex; justify-content: center;">
+            <fluent-button appearance="outline" onclick="changeLocation('https://developer.microsoft.com/en-us/microsoft-edge/webview2/')">Download Webview2</fluent-button>
+          </div>
+        </div>
+        <div class="section-item-content-1">
+          <h4 style="text-align: center;">Linux</h4>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <fluent-button appearance="accent" onclick="downloadFile(downloads.linux_portable, 'Fluent Code for Linux (Portable).zip')">Download for Linux</fluent-button>
+          </div>
+          <p style="text-align: center;">On Linux Fluent Code uses gtk-webkit2 package. Make sure that you have it installed.</p>
+        </div>
+        <div class="section-item-content-2">
+          <h4 style="text-align: center;">Mac OS</h4>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <fluent-button appearance="accent" onclick="downloadFile(downloads.darwin_portable, 'Fluent Code for MacOS (Portable).zip')">Download for Mac OS (Universal)</fluent-button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <div class="footer-item footer-item-start">
+        <fluent-button appearance="lightweight" onclick="changeLocation('./download.html')">Download</fluent-button>
+      </div>
+      <div class="footer-item footer-item-end">
+        <fluent-button appearance="lightweight" onclick="changeLocation('https://github.com/hv6erT/FluentCode')">Github</fluent-button>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,9 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Fast and simple code editor with fluent design intuitive interface">
+    <meta name="keywords" content="Code, Editor, Fast, Fluent, Opensource, HTML, CSS, JS, Javascript">
+    <meta name="author" content="hv6erT">
+    <title>Fluent Code - opensource code editor</title>
+
+    <link rel="icon" href="assets/appIcon.png"/>
+    <link rel="stylesheet" href="css/styles.css"/>
     
+    <script defer src="js/script.js"></script>
+    <script async type="module" src="js/module.js"></script>
   </head>
   <body>
-    Es
+    <nav class="top-nav">
+      <div class="top-nav-item top-nav-item-start">
+        <div style="display: flex; align-items: center; gap: 10px;" onclick="changeLocation('./index.html')">
+          <img width="40" height="40" src="assets/appIcon.svg"/>
+          <h4>Fluent Code</h4>
+        </div>
+      </div>
+      <div class="top-nav-item top-nav-item-end">
+        <fluent-button appearance="accent" onclick="changeLocation('./download.html')">Download</fluent-button>
+      </div>
+    </nav>
+    <section class="section" style="background-color: var(--first-color);">
+      <div class="section-item">
+        <h1 style="text-align: center;">⚡Lighting fast ⚡</h1>
+        <p style="text-align: center;">Working faster without useless features. Took less than 5MB on disk.</p>
+        <div style="display: flex; justify-content: center;">
+          <fluent-button appearance="accent" onclick="changeLocation('./download.html')">Download for your system</fluent-button>
+        </div>
+      </div>
+      <div class="section-item">
+        <div style="height: calc(100vh - var(--top-nav-height) - 80px); background-image: url('assets/promo-1.png'); background-repeat: no-repeat; border-radius: 20px;"></div>
+      </div>
+    </section>
+    <section class="section" style="background-color: var(--second-color);">
+      <div class="section-item section-item-horizontal">
+        <div>
+          <h3>Intuitive interface </h3>
+          <p style="max-width: 600px; color: var(--text-first-color);">Simple, flexible and easy to learn interface to empower your work. No unused buttons, menus and options. Built with Fluent Design concepts in mind. </p>
+        </div>
+        <div style="width: 250px; height: 250px; background-image: url('assets/promo-2.png'); background-repeat: no-repeat; border-radius: 50%;"></div>
+      </div>
+      <div class="section-item section-item-horizontal section-item-reverse">
+        <div style="width: 250px; height: 250px; background-image: url('assets/promo-3.png'); background-repeat: no-repeat; border-radius: 50%;"></div>
+        <div>
+          <h3>Advanced split view</h3>
+          <p style="max-width: 600px; color: var(--text-first-color);">Many split view options to make the editing fast and pleasure. Editor remember your layout and it will be restored after restart</p>
+        </div>
+      </div>
+    </section>
+    <section class="section" style="background-color: var(--second-color);">
+      <div class="section-item section-item-horizontal">
+        <div>
+          <h3>Color preview </h3>
+          <p style="max-width: 600px; color: var(--text-first-color);">Preview colors by just setting cursor on it.</p>
+        </div>
+        <div style="width: 250px; height: 250px; background-image: url('assets/promo-4.png'); background-repeat: no-repeat; border-radius: 50%;"></div>
+      </div>
+      <div class="section-item section-item-horizontal section-item-reverse">
+        <div style="width: 250px; height: 250px; background-image: url('assets/promo-5.png'); background-repeat: no-repeat; border-radius: 50%; "></div>
+        <div>
+          <h3>File preview</h3>
+          <p style="max-width: 600px; color: var(--text-first-color);">File preview let you execute commands and reopen files to see the changes</p>
+        </div>
+      </div>
+    </section>
+    <aside class="aside-info">
+      <p>🛈 Fluent Design was created by Microsoft Corporation that is <strong>not</strong> associated with Fluent Code app. Fluent Code only uses Fluent Web Components to create interface.</p>
+    </aside>
+    <footer class="footer">
+      <div class="footer-item footer-item-start">
+        <fluent-button appearance="lightweight" onclick="changeLocation('./download.html')">Download</fluent-button>
+      </div>
+      <div class="footer-item footer-item-end">
+        <fluent-button appearance="lightweight" onclick="changeLocation('https://github.com/hv6erT/FluentCode')">Github</fluent-button>
+      </div>
+    </footer>
   </body>
 </html>
