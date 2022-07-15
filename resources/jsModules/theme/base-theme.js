@@ -18,11 +18,19 @@ export default EditorView.theme({
   },
   ".cm-progress-bar":{
     width: "100%",
-    height: "2px",
+    height: "5px",
     margin: "0",
     position: "sticky",
     zIndex: "100",
-    transitionDuration: "1s"
+    transitionDuration: "1s",
+    appearance: "none",
+    borderRadius: "0"
+  },
+  ".cm-progress-bar::-webkit-progress-bar": {
+    backgroundColor: "transparent"
+  },
+  ".cm-progress-bar::-webkit-progress-value": {
+    backgroundColor: "var(--third-bg-color)"
   },
   ".cm-color-preview-background":{
     width: "40px",
