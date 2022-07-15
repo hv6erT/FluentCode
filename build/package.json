@@ -1,6 +1,8 @@
 {
   "type": "module",
   "dependencies": {
+    "adm-zip": "^0.5.9",
+    "innosetup-compiler": "^6.2.0",
     "rcedit": "^3.0.1"
   }
 }

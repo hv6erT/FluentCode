@@ -1,7 +1,11 @@
+const startTime = Date.now();
+
 import childProcess from "child_process";
 import fileSystem from "fs";
 
 import rcedit from "rcedit";
+import admZip from "adm-zip";
+import innoSetup from "innosetup-compiler";
 
 const appInfo = JSON.parse(await fileSystem.promises.readFile("./../neutralino.config.json"));
 
@@ -29,3 +33,43 @@ const updateInfo = {
 };
 
 await fileSystem.promises.writeFile("../dist/update.json", JSON.stringify(updateInfo, null, 4));
+
+//Step 5. Create installation files for windows portable
+
+(async function () {
+  const zip = new admZip();
+  zip.addLocalFile("../dist/fluentcode/Fluent Code.exe");
+  zip.addLocalFile("../dist/fluentcode/WebView2Loader.dll");
+  zip.addLocalFile("../dist/fluentcode/resources.neu");
+  zip.writeZip("../dist/Fluent Code Portable.zip");
+})();
+
+//Step 6. Create installation files for linux portable
+
+(async function () {
+  const zip = new admZip();
+  zip.addLocalFile("../dist/fluentcode/Fluent Code for Linux");
+  zip.addLocalFile("../dist/fluentcode/WebView2Loader.dll");
+  zip.addLocalFile("../dist/fluentcode/resources.neu");
+  zip.writeZip("../dist/Fluent Code for Linux (Portable).zip");
+})();
+
+//Step 7. Crete instllation files for Mac OS portable
+
+(async function () {
+  const zip = new admZip();
+  zip.addLocalFile("../dist/fluentcode/Fluent Code for Mac OS");
+  zip.addLocalFile("../dist/fluentcode/WebView2Loader.dll");
+  zip.addLocalFile("../dist/fluentcode/resources.neu");
+  zip.writeZip("../dist/Fluent Code for MacOS (Portable).zip");
+})();
+
+//Step 8. Create windows installator using innosetup
+
+innoSetup("./pack.iss");
+
+//Finish
+
+const endTime = Date.now();
+
+console.log(`Fluent Code build finished in ${endTime - startTime}ms`);
