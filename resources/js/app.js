@@ -80,6 +80,9 @@ class App{
     else if(time !== undefined)
       throw new Error("Invalid value of time param. Param should be a Number");
   }
+  /*
+    closeType / restartType: "EXIT" | "RESTART" | "UPDATE"
+  */
   static async update(restartType = "RESTART"){
     try {
       const manifest = await Neutralino.updater.checkForUpdates(userPreferences.updateManifestURL);
@@ -90,10 +93,13 @@ class App{
 
         if(restartType === "EXIT")
           await Neutralino.app.restartProcess({ args: '--closeImmediately'});
-        else if(restartType === "RESTART")
+        else if(restartType === "RESTART" || restartType === "UPDATE")
           await Neutralino.app.restartProcess();
         else 
           throw new Error("Unknown restartType option");
+      }
+      else if(restartType === "UPDATE"){
+        App.showBottomNotification('You have the newest version of Fluent Code', 5000);
       }
     }
     catch(error) {
@@ -102,11 +108,13 @@ class App{
       }
     }
   }
-  static async close(closeType = "EXIT"){    
-    Neutralino.window.hide();
-    
+  static async close(closeType = "EXIT"){
+    if(closeType !== "UPDATE")
+      Neutralino.window.hide();
+
+    //saving files
     if(settings.settings.file["save-before-close"] === true)
-      saveAllFilesBeforeClose();    
+      saveAllFilesBeforeClose();
     else{
       const questionResponse = await Neutralino.os.showMessageBox("Unsaved changes", `Do you want to save your work?`, "YES_NO_CANCEL", "QUESTION");
   
@@ -115,7 +123,8 @@ class App{
       else if(questionResponse === "CANCEL")
         return;
     }
-  
+
+    //saving settings
     if(settings.hasChanged() === true)
       try{await Neutralino.filesystem.writeFile(userPreferences.settingsFilePath, JSON.stringify(settings.userSettings, "", 4));}catch(error){
         const settingsSaveConfirmResponse = await Neutralino.os.showMessageBox("Error: Settings could not be saved", `Settings could not be saved, do you want to close anyway? \n Error message: "${error.message}"`, "YES_NO", "ERROR");
@@ -123,13 +132,16 @@ class App{
         if(settingsSaveConfirmResponse === "NO")
           return;
       }
-  
+
+    //saving file and editor keys to storage
     await Promise.allSettled([Storage.saveFileKeys(), Storage.saveEditorKeys(), Storage.saveLastFileKeys(), Storage.saveAdditionalInfo()]);
-  
-    if(settings.settings.app["auto-update"] === true && closeType === "EXIT"){
-      await App.update("EXIT");
+
+    //update (if specified)
+    if((settings.settings.app["auto-update"] === true && closeType === "EXIT") || closeType === "UPDATE"){
+      await App.update(closeType);
     }
-    
+
+    //close
     if(closeType === "EXIT"){
       if(NL_OS !== "Darwin")
         await Neutralino.app.exit();
@@ -137,7 +149,7 @@ class App{
     else if(closeType === "RESTART"){
       await Neutralino.app.restartProcess();
     }
-    else 
+    else if(closeType !== "UPDATE")
       throw new Error("Unknown closeType option");
   }
 }

@@ -272,7 +272,11 @@
                   </div>
                   <fluent-divider></fluent-divider>
                   <div class="flex justify-between">
-                    <div>Auto update</div>
+                    <div>Check for updates</div>
+                    <fluent-button appearance="accent" onclick="App.close('UPDATE')">Update & restart</fluent-button>
+                  </div>
+                  <div class="flex justify-between">
+                    <div>Auto install updates</div>
                     <fluent-switch data-settings='["app", "auto-update"]' data-settings-type="checkbox">
                       <span slot="checked-message">On</span>
                       <span slot="unchecked-message">Off</span>
