@@ -29,6 +29,7 @@ Neutralino.events.on("settingsReady", async function(){
 
 window.addEventListener("DOMContentLoaded", async function() {
   App.showStartPage();
+  restoreWindowStateFromStorage();
   
   App.appInfo();
 });

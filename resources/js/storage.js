@@ -3,6 +3,9 @@
 const openFilesAndEditorsFromStorage = async () => {
   const fileObject = await Storage.getFileKeys();
   const editorObject = await Storage.getEditorKeys();
+
+  if(!fileObject && !editorObject)
+    return;
   
   editorKeyFor: for(const editorKey in editorObject){
     if(editorKey != 0)
@@ -49,6 +52,9 @@ const openFilesAndEditorsFromStorage = async () => {
 const openLastFilesFromStorage = async () => {
   const fileObject = await Storage.getLastFileKeys();
 
+  if(!fileObject)
+    return;
+
   const openFilePromises = [];
   for(const fileKey in fileObject)
     openFilePromises.push(FileManager.openFile(fileKey));
@@ -57,7 +63,22 @@ const openLastFilesFromStorage = async () => {
 
   if(FileManager.activeFilePath === null && Object.keys(FileManager.files).length > 0)
     EditorManager.showFileInEmptyEditors(Object.keys(FileManager.files)[0]);
-  
+}
+
+const restoreWindowStateFromStorage = async () => {
+  const additionalWindowInfo = (await Storage.getAdditionalInfo()).additionalWindowInfo;
+
+  if(!additionalWindowInfo)
+    return;
+
+  if(additionalWindowInfo.isMaximized === true)
+    Neutralino.window.maximize();
+
+  if(additionalWindowInfo.isFullScreen === true)
+    Neutralino.window.setFullScreen();
+
+  Neutralino.window.move(additionalWindowInfo.position.x, additionalWindowInfo.position.y);
+  Neutralino.window.setSize(additionalWindowInfo.size);
 }
 
 class Storage{
@@ -79,7 +100,13 @@ class Storage{
   static async saveAdditionalInfo(){
     const additionalInfo = {
       splitViewType: userPreferences.splitViewType,
-      additionalFileInfo: FileManager.additionalFileInfo
+      additionalFileInfo: FileManager.additionalFileInfo,
+      additionalWindowInfo: {
+        isMaximized: await Neutralino.window.isMaximized(),
+        isFullScreen: await Neutralino.window.isFullScreen(),
+        position: await Neutralino.window.getPosition(),
+        size: await Neutralino.window.getSize()
+      }
     };
     await Neutralino.storage.setData("additional-info", JSON.stringify(additionalInfo));
   }
