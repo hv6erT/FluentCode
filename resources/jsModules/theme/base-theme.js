@@ -2,11 +2,11 @@ import {EditorView} from "../editor/index.js";
 
 export default EditorView.theme({
   ".cm-tooltip": {
-    maxWidth: "350px",
+    maxWidth: "300px",
     padding: "3px",
-    backgroundColor: "var(--second-bg-color)",
-    color: "var(--basic-color)",
-    border: "none",
+    backgroundColor: "var(--first-bg-color)",
+    color: "var(--color)",
+    border: "2px solid var(--second-bg-color)",
     borderRadius: "6px"
   },
   ".cm-tooltip-autocomplete > ul > li": {
@@ -14,11 +14,12 @@ export default EditorView.theme({
     padding: "3px 0"
   },
   ".cm-tooltip-autocomplete > ul > li[aria-selected]": {
-    backgroundColor: "var(--accent-bg-color) !important"
+    backgroundColor: "var(--accent-bg-color) !important",
+    color: "var(--basic-color) !important"
   },
   ".cm-progress-bar":{
     width: "100%",
-    height: "5px",
+    height: "4px",
     margin: "0",
     position: "sticky",
     zIndex: "100",
