@@ -1,6 +1,7 @@
 export { EditorView, highlightSpecialChars, drawSelection, dropCursor, highlightActiveLine, keymap, ViewPlugin, hoverTooltip, showTooltip, panels,lineNumbers, highlightActiveLineGutter, rectangularSelection} from "@codemirror/view";
 export { EditorState, Annotation, StateField} from "@codemirror/state";
 export { indentOnInput, bracketMatching, foldGutter, foldKeymap, defaultHighlightStyle, HighlightStyle, syntaxHighlighting} from "@codemirror/language";
+export {languages} from "@codemirror/language-data";
 export { tags} from "@lezer/highlight";
 export { defaultKeymap, indentWithTab, history, historyKeymap, undoSelection, redoSelection, undoDepth, redoDepth} from "@codemirror/commands";
 export { highlightSelectionMatches, searchKeymap, openSearchPanel, closeSearchPanel, findNext, findPrevious, replaceNext, replaceAll, SearchQuery, setSearchQuery, getSearchQuery, search } from "@codemirror/search";

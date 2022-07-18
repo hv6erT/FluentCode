@@ -6,6 +6,7 @@ export default {
     file: "./codemirror.js",
     format: 'es'
   },
+  inlineDynamicImports: true,
   plugins: [nodeResolve()],
   treeshake: false
 };

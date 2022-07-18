@@ -1,6 +1,6 @@
 const ignoreAutocompleteIn = ["TemplateString", "LineComment", "BlockComment", "VariableDefinition", "PropertyDefinition"];
 
-import {ifNotIn} from "./codemirror.js";
+import {ifNotIn, languages} from "./codemirror.js";
 
 import languageDetectionFromExtension from "./packages/languageDetectionFromExtension.js";
 
@@ -9,7 +9,7 @@ export default class Language{
   static async autocompleteFromLanguageName(langName){
     if (!langName)
       return null;
-      
+    
     langName = langName.toLowerCase();
     let autocompletion;
     switch(langName){
@@ -75,7 +75,7 @@ export default class Language{
         break;
       case "markdown":
         langSupport = (await import("./codemirror.js")).markdown({
-          defaultCodeLanguage: (await import("./codemirror.js")).htmlLanguage
+          codeLanguages: languages
         });
         break;
       case "php":
