@@ -17,7 +17,8 @@ function getWordByPosition(str, pos){
 }
 
 function validateProperty(string){
-  return string.replace(new RegExp("^:"), "").replace(new RegExp(";+$"), "").replace(new RegExp(",+$"), "");
+  string = string.replace(new RegExp("^:"), "").replace(new RegExp(";+$"), "").replace(new RegExp(",+$"), "").replace(new RegExp(`^"`), "").replace(new RegExp(`"+$`), "");
+  return string;
 }
 
 export default class Features{
