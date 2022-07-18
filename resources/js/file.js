@@ -396,7 +396,7 @@ class FileManager {
 
       const monthsNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-      return `${date.getDay()} ${monthsNames[date.getMonth()]} ${date.getFullYear()}, ${date.getHours()}:${ (date.getMinutes() >= 10) ? date.getMinutes() : "0" + date.getMinutes()}`;
+      return `${date.getDate()} ${monthsNames[(date.getMonth() + 1)]} ${date.getFullYear()}, ${date.getHours()}:${ (date.getMinutes() >= 10) ? date.getMinutes() : "0" + date.getMinutes()}`;
     }
 
     document.querySelector('[data-filePropertiesInfo="filePath"]').textContent = filePath;
