@@ -36,11 +36,6 @@ window.addEventListener("DOMContentLoaded", async function() {
     
 window.addEventListener("load", async function() {
   Keybindings.setListener();
-
-  setTimeout(async function(){
-    if(!["SETTINGS", "COLOR", "THEME", "STORAGE"].every(module => NL_LOADED.includes(module)))
-      Neutralino.app.restartProcess();
-  }, 5000);
 });
     
 Neutralino.events.on("windowFocus", async function (){
