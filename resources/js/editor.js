@@ -20,6 +20,10 @@ const openSplitView = async(numberOfEditors, gridValue) =>{
 
       await EditorManager.closeEditor(editorName);
     }
+    for(const filePath in FileManager.files){
+      if(EditorManager.editors[EditorManager.activeEditorName].getActive() === FileManager.files[filePath])
+        FileManager.changeActive(filePath);
+    }
   }
 
   EditorManager.editorParentNode.setAttribute("data-editorContainerGrid", gridValue);
