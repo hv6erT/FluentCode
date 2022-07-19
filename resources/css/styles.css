@@ -108,8 +108,8 @@ fluent-menu{
   margin-top: 10px;
 }
 fluent-button > *{
-  margin-left: -2px !important;
-  margin-right: -2px !important;
+  margin-left: -3px !important;
+  margin-right: -3px !important;
 } 
 fluent-tab-panel{
   padding: 0;
@@ -117,6 +117,7 @@ fluent-tab-panel{
 fluent-dialog{
   --dialog-width: 400px;
   --dialog-height: max(70vh, 350px);
+  z-index: 999999999999;
 }
 fluent-tab-panel{
   overflow: auto;
