@@ -30,13 +30,7 @@ class App{
     for(const nodeId of disableNodeIdList)
       document.getElementById(nodeId).disabled = true;
 
-    const hideNodeIdList = [
-      "fileSearch-fluent-menu",
-      "openSplitView-fluent-menu"
-    ];
-
-    for(const nodeId of hideNodeIdList)
-      document.getElementById(nodeId).style.display = "none";
+    App.hideMenusAndTooltips();
   }
   static async showEditorPage(){
     document.getElementById("editorStartPage-article").style.display = "none";
@@ -55,6 +49,19 @@ class App{
   
     for(const nodeId of disableNodeIdList)
       document.getElementById(nodeId).disabled = false;
+  }
+  static async hideMenusAndTooltips(){
+    const hideNodeIdList = [
+      "fileSearch-fluent-menu",
+      "searchOptions-fluent-menu",
+      "openSplitView-fluent-menu"
+    ];
+
+    for(const nodeId of hideNodeIdList){
+      const node = document.getElementById(nodeId)
+      if(node)
+        node.style.display = "none";
+    }
   }
   static async appInfo(){
     document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
