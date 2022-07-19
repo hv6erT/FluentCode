@@ -51,7 +51,7 @@ class FileNav {
     const closeButtonNode = document.createElement("span");
     closeButtonNode.slot = "end";
     closeButtonNode.className = "fileNavItemCloseButton-span";
-    closeButtonNode.innerHTML = `<span class="fluent-icon fluent-icon--ChromeClose"></span>`;
+    closeButtonNode.innerHTML = `<span class="fluent-icons-Dismiss" style="font-size: 14px;"></span>`;
     closeButtonNode.addEventListener("click", function(event){
       event.stopPropagation();
       FileManager.closeFile(fileKey);

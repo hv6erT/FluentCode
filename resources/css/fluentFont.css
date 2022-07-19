@@ -5,3 +5,8 @@
     font-style: normal;
     font-display: swap;
 }
+
+[class^="fluent-icons-"], [class*=" fluent-icons-"]{
+  margin: auto 0;
+  display: inline-block;
+}

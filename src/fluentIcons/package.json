@@ -1,0 +1,6 @@
+{
+  "type": "module",
+  "dependencies": {
+    "svgtofont": "^3.2.1"
+  }
+}

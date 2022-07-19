@@ -1,0 +1,48 @@
+@font-face {
+  font-family: "fluentIconsFont";
+  src: url('../fonts/Fluent-UI/fluentIconsFont.ttf') format('truetype');
+}
+
+[class^="fluent-icons-"], [class*=" fluent-icons-"] {
+  font-family: 'fluentIconsFont' !important;
+  font-size:18px;
+  font-style:normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.fluent-icons-AddCircle:before { content: "\ea01"; }
+.fluent-icons-ArrowCounterclockwise:before { content: "\ea02"; }
+.fluent-icons-ArrowNext:before { content: "\ea03"; }
+.fluent-icons-ArrowPrevious:before { content: "\ea04"; }
+.fluent-icons-ArrowRedo:before { content: "\ea05"; }
+.fluent-icons-ArrowUndo:before { content: "\ea06"; }
+.fluent-icons-ArrowUpload:before { content: "\ea07"; }
+.fluent-icons-BoardSplit:before { content: "\ea08"; }
+.fluent-icons-BroadActivityFeed:before { content: "\ea09"; }
+.fluent-icons-CalendarClock:before { content: "\ea0a"; }
+.fluent-icons-ClipboardPaste:before { content: "\ea0b"; }
+.fluent-icons-ColumnTriple:before { content: "\ea0c"; }
+.fluent-icons-Copy:before { content: "\ea0d"; }
+.fluent-icons-Cut:before { content: "\ea0e"; }
+.fluent-icons-Dismiss:before { content: "\ea0f"; }
+.fluent-icons-DocumentAdd:before { content: "\ea10"; }
+.fluent-icons-DocumentError:before { content: "\ea11"; }
+.fluent-icons-DocumentHeaderRemove:before { content: "\ea12"; }
+.fluent-icons-DocumentSearch:before { content: "\ea13"; }
+.fluent-icons-DualScreenGroup:before { content: "\ea14"; }
+.fluent-icons-EditSettings:before { content: "\ea15"; }
+.fluent-icons-Filter:before { content: "\ea16"; }
+.fluent-icons-FolderOpen:before { content: "\ea17"; }
+.fluent-icons-Info:before { content: "\ea18"; }
+.fluent-icons-MoreHorizontal:before { content: "\ea19"; }
+.fluent-icons-Play:before { content: "\ea1a"; }
+.fluent-icons-RectangleLandscape:before { content: "\ea1b"; }
+.fluent-icons-Save:before { content: "\ea1c"; }
+.fluent-icons-Search:before { content: "\ea1d"; }
+.fluent-icons-Settings:before { content: "\ea1e"; }
+.fluent-icons-SplitHorizontal:before { content: "\ea1f"; }
+.fluent-icons-SplitVertical:before { content: "\ea20"; }
+.fluent-icons-TableSimple:before { content: "\ea21"; }
+.fluent-icons-TableStackBelow:before { content: "\ea22"; }
