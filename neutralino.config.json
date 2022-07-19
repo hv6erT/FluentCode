@@ -15,13 +15,11 @@
     "app.*",
     "window.*",
     "clipboard.*",
-    "computer.*",
     "filesystem.*",
     "os.*",
     "debug.*",
     "events.*",
     "storage.*",
-    "updater.*",
     "extensions.*"
   ],
   "globalVariables": {
@@ -51,7 +49,7 @@
     "resourcesPath": "/resources/",
     "extensionsPath": "/extensions/",
     "clientLibrary": "/resources/js/neutralino.js",
-    "binaryVersion": "4.7.0",
-    "clientVersion": "3.6.0"
+    "binaryVersion": "4.6.0",
+    "clientVersion": "3.5.0"
   }
 }
