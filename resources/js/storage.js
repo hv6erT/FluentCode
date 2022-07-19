@@ -71,14 +71,19 @@ const restoreWindowStateFromStorage = async () => {
   if(!additionalWindowInfo)
     return;
 
+  const screenInfo = (await Neutralino.computer.getDisplays())[0];
+
   if(additionalWindowInfo.isMaximized === true)
     Neutralino.window.maximize();
 
   if(additionalWindowInfo.isFullScreen === true)
     Neutralino.window.setFullScreen();
 
-  Neutralino.window.move(additionalWindowInfo.position.x, additionalWindowInfo.position.y);
-  Neutralino.window.setSize(additionalWindowInfo.size);
+  if(screenInfo.resolution.width > additionalWindowInfo.position.x && screenInfo.resolution.height > additionalWindowInfo.position.y)
+    Neutralino.window.move(additionalWindowInfo.position.x, additionalWindowInfo.position.y);
+
+  if(screenInfo.resolution.width >= additionalWindowInfo.size.width && screenInfo.resolution.height > additionalWindowInfo.size.height)
+    Neutralino.window.setSize(additionalWindowInfo.size);
 }
 
 class Storage{
