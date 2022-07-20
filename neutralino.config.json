@@ -19,6 +19,7 @@
     "os.*",
     "debug.*",
     "events.*",
+    "computer.*",
     "storage.*",
     "extensions.*"
   ],
