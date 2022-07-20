@@ -167,12 +167,12 @@ fluent-dialog fluent-tab-panel{
 .side-nav{
   width: var(--nav-width);
   height: calc(100vh - var(--top-nav-height) - var(--bottom-nav-height));
-  padding: 10px;
+  padding: 6px;
   overflow: auto;
   scrollbar-gutter: stable;
 }
 .side-nav *{
-  max-width: calc(var(--nav-width) - 10px);
+  max-width: calc(var(--nav-width) - 6px);
 }
 .fileNavItem, .fileNavGroupItem{
   margin: 5px 0;
@@ -184,20 +184,23 @@ fluent-dialog fluent-tab-panel{
   justify-content: center;
 }
 .fileNavItem .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 75px) !important;
+  width: calc(var(--nav-width) - 70px) !important;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .fileNavItemWithIcon .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 100px) !important;
+  width: calc(var(--nav-width) - 95px) !important;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.fileNavGroupItem .fileNavItem{
+  margin-left: 10px;
+}
 .fileNavGroupItem .fileNavItem .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 90px) !important;
+  width: calc(var(--nav-width) - 95px) !important;
 }
 .fileNavGroupItem .fileNavItemWithIcon .fileNavItemTitle-span{
-  width: calc(var(--nav-width) - 115px) !important;
+  width: calc(var(--nav-width) - 120px) !important;
 }
 .fileNavItem .fileNavItemCloseButton-span{
   max-width: 20px;
