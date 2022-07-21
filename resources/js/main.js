@@ -57,7 +57,7 @@ const setSettings = async () => {
       "auto-update": true
     },
     "editor": {
-      "font-size": 13,
+      "font-size": 15,
       "line-wrapping": false,
       "tab-size": 4,
       "color-preview": true,
