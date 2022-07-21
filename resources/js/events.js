@@ -4,6 +4,7 @@ NL_LOADING_TIME = Date.now();
  
 Neutralino.events.on("themeReady", async function(){
   App.showLoader();
+  Neutralino.window.show();
 });
 
 Neutralino.events.on("settingsReady", async function(){
