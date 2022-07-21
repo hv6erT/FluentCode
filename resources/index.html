@@ -53,11 +53,11 @@
         </div>
         <div slot="end" class="padding-y">
           <fluent-search id="fileSearch-fluent-search" appearance="outline" placeholder="Search in files" style="width: 200px;" onclick="FileNav.searchInFileItems(this.value); this.focus();" oninput='searchEventAction(event, function(){FileNav.searchInFileItems(document.getElementById("fileSearch-fluent-search").value);})' onkeyup='keyboardEventActions(event, "Enter", function(){FileNav.searchInFileItems(document.getElementById("fileSearch-fluent-search").value);})'></fluent-search>
-          <fluent-menu id="fileSearch-fluent-menu" style="width: 200px;"></fluent-menu>
+          <fluent-menu id="fileSearch-fluent-menu" style="width: 200px; display: none;"></fluent-menu>
         </div>
         <div slot="end" class="padding-y" style="border-right: 1px solid var(--third-bg-color);">
           <fluent-button id="openSplitView-fluent-button" appearance="stealth" onclick="toggleNodeDisplay('#openSplitView-fluent-menu')" onblur="hideNode('#openSplitView-fluent-menu')"><span class="fluent-icons-BoardSplit"></span></fluent-button>
-          <fluent-menu id="openSplitView-fluent-menu" class="grid padding-x padding-y gap-sm" style="grid-template-columns: 1fr 1fr; margin-left: -20px;">
+          <fluent-menu id="openSplitView-fluent-menu" class="grid padding-x padding-y gap-sm" style="grid-template-columns: 1fr 1fr; margin-left: -20px; display: none;">
             <fluent-button appearance="stealth" onmousedown="openSplitView(1, '1')"><span class="fluent-icons-RectangleLandscape"></span></fluent-button>
             <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-vertical')"><span class="fluent-icons-SplitVertical"></span></fluent-button>
             <fluent-button appearance="stealth" onmousedown="openSplitView(2, '2-horizontal')"><span class="fluent-icons-SplitHorizontal"></span></fluent-button>
@@ -69,7 +69,7 @@
           </fluent-menu>
         </div>
         <div slot="end" class="padding-y">
-          <fluent-button id="settings-fluent-button" appearance="stealth" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false); App.hideMenusAndTooltips();"><span class="fluent-icons-Settings"></span></fluent-button>
+          <fluent-button id="settings-fluent-button" appearance="stealth" onclick="App.applySettingsToDOM(); App.appInfo(); modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false); App.hideMenusAndTooltips();"><span class="fluent-icons-Settings"></span></fluent-button>
         </div>
       </fluent-toolbar>
       <section class="main-section" style="">
@@ -405,7 +405,7 @@
                           <li>Codemirror 6</li>
                           <li>Fluent WebComponents</li>
                           <li>Devicon</li>
-                          <li>Fabric UI icon font from MDL Package</li>
+                          <li>Fluent System UI Icons</li>
                           <li>Segoe UI font from MDL Package</li>
                         </ul>
                       </div>

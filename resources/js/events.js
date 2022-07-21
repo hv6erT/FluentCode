@@ -4,35 +4,39 @@ NL_LOADING_TIME = Date.now();
  
 Neutralino.events.on("themeReady", async function(){
   App.showLoader();
-  Neutralino.window.show();
+  
+  await Neutralino.window.show();
+  await Neutralino.window.focus();
 });
 
 Neutralino.events.on("settingsReady", async function(){
   await EditorManager.openEditor();
 
+  const openFilesPromises = [];
+
   if(settings.settings.file["auto-restore-files"] === true)
-    try{await openFilesAndEditorsFromStorage();}catch(error){console.error(error);}
+    openFilesPromises.push(openFilesAndEditorsFromStorage().catch(function(error){console.error(error);}));
 
   NL_LOADED.push("STORAGE");
 
-  openFilesFromAppArgs();
+  openFilesPromises.push(openFilesFromAppArgs());
 
+  await Promise.allSettled(openFilesPromises);
+
+  if(Object.keys(FileManager.files).length === 0)
+    App.showStartPage();
+  
   App.showContent();
+  
   NL_LOADING_TIME = Date.now() - NL_LOADING_TIME;
 
   Neutralino.debug.log(`Total loading time: ${NL_LOADING_TIME} ms`);
-      
-  settings.applySettingsToDOM();
-  settings.applySettingsDOMListeners();
     
   FileManager.startAutoSave();
 });
 
 window.addEventListener("DOMContentLoaded", async function() {
-  App.showStartPage();
   restoreWindowStateFromStorage();
-  
-  App.appInfo();
 });
     
 window.addEventListener("load", async function() {

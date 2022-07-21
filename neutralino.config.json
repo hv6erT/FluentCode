@@ -9,7 +9,7 @@
   "enableNativeAPI": true,
   "logging": {
     "enabled": true,
-    "writeToLogFile": true
+    "writeToLogFile": false
   },
   "nativeAllowList": [
     "app.*",

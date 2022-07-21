@@ -29,8 +29,6 @@ class App{
   
     for(const nodeId of disableNodeIdList)
       document.getElementById(nodeId).disabled = true;
-
-    App.hideMenusAndTooltips();
   }
   static async showEditorPage(){
     document.getElementById("editorStartPage-article").style.display = "none";
@@ -63,8 +61,14 @@ class App{
         node.style.display = "none";
     }
   }
+  static #hasAppInfoBeenApplied = false;
   static async appInfo(){
+    if(App.#hasAppInfoBeenApplied === true)
+      return;
+    
     document.querySelector('[data-appInfo="version"]').textContent = NL_APPVERSION;
+
+    App.#hasAppInfoBeenApplied = true;
   }
   static async changeSettingsToDefault(){
     if(!window.settings)
@@ -72,6 +76,19 @@ class App{
     
     settings.changeSettingsToDefault();
     App.showBottomNotification('Settings has been changed to default', 5000);
+  }
+  static #haveSettingsBeenApplied = false;
+  static async applySettingsToDOM(){ //apply settings to DOM (once)
+    if(!window.settings)
+      throw new Error("Settings has not been loaded");
+
+    if(App.#haveSettingsBeenApplied === true)
+      return;
+    
+    settings.applySettingsToDOM();
+    settings.applySettingsDOMListeners();
+
+    App.#haveSettingsBeenApplied = true;
   }
   static async showBottomNotification(message, time = 5000){
     const node = document.getElementById("bottomShortInfo-span");
