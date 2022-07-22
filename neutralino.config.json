@@ -40,7 +40,7 @@
       "enableInspector": false,
       "borderless": false,
       "maximize": false,
-      "hidden": true,
+      "hidden": false,
       "resizable": true,
       "exitProcessOnClose": false
     }
