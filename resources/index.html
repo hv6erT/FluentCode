@@ -119,7 +119,7 @@
             </div>
             <div style="width: 100%;">
               <header>Settings</header>
-              <fluent-anchor class="startPage-fluent-anchor" onclick="modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false); App.hideMenusAndTooltips();">
+              <fluent-anchor class="startPage-fluent-anchor" onclick="App.applySettingsToDOM(); App.appInfo(); modifyNodeAttribute('#settings-fluent-dialog', 'hidden', false); App.hideMenusAndTooltips();">
                 <span class="fluent-icons-Settings"></span><span>Open settings</span>
               </fluent-anchor>
               <fluent-anchor class="startPage-fluent-anchor" onclick="openSettingsFile();">
@@ -345,7 +345,7 @@
               <fluent-tab-panel class="padding-x padding-y">
                 <div class="flex flex-col gap-lg margin-x">
                   <div class="flex justify-between">
-                    <div>Restore recently used files when opened</div>
+                    <div>Restore recently used files on open</div>
                     <fluent-switch data-settings='["file", "auto-restore-files"]' data-settings-type="checkbox">
                       <span slot="checked-message">On</span>
                       <span slot="unchecked-message">Off</span>
