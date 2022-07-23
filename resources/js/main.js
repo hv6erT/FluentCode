@@ -2,26 +2,38 @@
 
 import Settings from "../jsModules/settings/index.js";
 import Css from "../jsModules/css/index.js";
-import Editor from "../jsModules/editor/editor.js";
-import File from "../jsModules/editor/file.js";
+window.Css = Css;
 
-//global scope functions and vars
-window.normalizePath = (filePath) => {
-  if (typeof filePath === "string")
-    return filePath.replace(/^\\\\\?\\/,"").replace(/\\/g,'\/').replace(/\/\/+/g,'\/');
-  else throw new Error("Invalid argument type, normalizePath requires string as param");
+import Editor from "../jsModules/editor/editor.js";
+window.Editor = Editor;
+
+import File from "../jsModules/editor/file.js";
+window.File = File;
+window.Templates = null;
+
+import editorBaseTheme from "../jsModules/theme/base-theme.js";
+import editorAppTheme from "../jsModules/theme/app-theme.js";
+window.editorThemeModules = {
+  baseTheme: editorBaseTheme,
+  appTheme: editorAppTheme,
+  customTheme: null
+}
+window.editorHighlightModules = {
+  customHighlight: null
 }
 
-window.File = File;
-window.Editor = Editor;
-window.Templates = null;
-window.Css = Css;
+//global scope functions and vars
+window.toUnixPath = (filePath) => {
+  if (typeof filePath === "string")
+    return filePath.replace(/^\\\\\?\\/,"").replace(/\\/g,'\/').replace(/\/\/+/g,'\/');
+  else throw new Error("Invalid argument type, toUnixPath requires string as param");
+}
 
 window.settings = null;
 window.userPreferences = {
   colorMode: null,
   splitViewType: null,
-  settingsFilePath: normalizePath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
+  settingsFilePath: toUnixPath(await Neutralino.os.getPath("documents")) + "/FluentCode/settings.json",
   updateManifestURL: "https://raw.githubusercontent.com/hv6erT/FluentCode/main/dist/update.json"
 };
 

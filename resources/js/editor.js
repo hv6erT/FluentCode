@@ -47,9 +47,6 @@ class EditorManager {
   	editorNode.classList.add("editor-div");
     editorNode.setAttribute("data-editorName", editorName);
     EditorManager.editorParentNode.appendChild(editorNode);
-
-    if(window.Editor === null)
-      window.Editor = (await import("../jsModules/editor/editor.js")).default;
     
     await EditorManager.compareEditorsChanges();
     

@@ -3,7 +3,7 @@
 const uploadFile = async () => {
   const data = await Neutralino.os.showOpenDialog("Upload file", {multiSelections: true});
   await Neutralino.window.focus();
-  const filePaths = data.map(function(filePath){return normalizePath(filePath);});
+  const filePaths = data.map(function(filePath){return toUnixPath(filePath);});
 
   if(filePaths.length === 0)
     return;
@@ -20,7 +20,7 @@ const uploadFile = async () => {
 }
 
 const createNewFile = async () => {
-  const filePath = normalizePath(await Neutralino.os.showSaveDialog("Create new file"));
+  const filePath = toUnixPath(await Neutralino.os.showSaveDialog("Create new file"));
   await Neutralino.window.focus();
   if(!filePath)
     return;
@@ -39,13 +39,13 @@ const createNewFile = async () => {
 }
 
 const uploadFolder = async () => {
-  const folderPath = normalizePath(await Neutralino.os.showFolderDialog("Upload directory"));
+  const folderPath = toUnixPath(await Neutralino.os.showFolderDialog("Upload directory"));
   await Neutralino.window.focus();
   const filePaths = (await Neutralino.filesystem.readDirectory(folderPath)).filter(function(object){
     if(object.type === "FILE")
       return object;
   }).map(function(object){
-    return normalizePath(folderPath + "/" + object.entry);
+    return toUnixPath(folderPath + "/" + object.entry);
   });
   
   if(filePaths.length === 0)
@@ -64,7 +64,7 @@ const uploadFolder = async () => {
 
 const openFilesFromAppArgs = async () => {
   if(NL_ARGS.length > 1){
-    const filePath = normalizePath(NL_ARGS[1]);
+    const filePath = toUnixPath(NL_ARGS[1]);
     
     await FileManager.openFile(filePath);
     if(FileManager.isOpened(filePath)){
@@ -118,31 +118,27 @@ class FileManager {
     }
     return true;
   }
-  static #fileTheme = null;
-  static #fileHighlight = null;
   static async openFile(filePath){
     if(FileManager.isOpened(filePath) === true || await FileManager.canAccess(filePath) === false)
       return;
 
-    if(FileManager.#fileTheme === null){
-      const baseThemePath = "../jsModules/theme/base-theme.js", appThemePath = "../jsModules/theme/app-theme.js", themePath = settings.settings.modes[`${userPreferences.colorMode}-mode`].theme;
-
-      FileManager.#fileTheme = [
-        (await import(baseThemePath)).default,
-        (await import(appThemePath)).default
-      ];
-
-      const customFileTheme = (await import(themePath)).default;
-      if(customFileTheme)
-        FileManager.#fileTheme.push(customFileTheme);
+    if(window.editorThemeModules?.customTheme === null){
+      const themePath = settings.settings.modes[`${userPreferences.colorMode}-mode`].theme;
+      const customTheme = (await import(themePath)).default;
+      if(customTheme)
+        window.editorThemeModules.customTheme = customTheme;
+      else
+        delete window.editorThemeModules.customTheme;
     }
 
-    if(FileManager.#fileHighlight === null){
+    if(window.editorHighlightModules?.customHighlight === null){
       const highlightPath = settings.settings.modes[`${userPreferences.colorMode}-mode`].highlight;
-      const customFileHighlight = (await import(highlightPath)).default;
+      const customHighlight = (await import(highlightPath)).default;
 
-      if(customFileHighlight)
-        FileManager.#fileHighlight = [customFileHighlight];
+      if(customHighlight)
+        window.editorHighlightModules.customHighlight = customHighlight;
+      else 
+        delete window.editorHighlightModules.customHighlight;
     }
 
     if(window.File === null)
@@ -150,8 +146,8 @@ class FileManager {
     
     FileManager.files[filePath] = new File({
       panelNode: document.getElementById("top-nav-search-box"),
-      theme: FileManager.#fileTheme,
-      highlight: FileManager.#fileHighlight,
+      theme: Object.values(window.editorThemeModules),
+      highlight: Object.values(window.editorHighlightModules),
       tabSize: settings.settings.editor["tab-size"],
       tabSupport: false,
       fontSize: (settings.settings.editor["font-size"]+"px"),
